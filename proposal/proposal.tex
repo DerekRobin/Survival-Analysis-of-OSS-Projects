@@ -1,0 +1,57 @@
+\documentclass[conference]{IEEEtran}
+
+% Packages
+
+\usepackage{cite}
+\usepackage{listings}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{parskip}
+\setlength{\parskip}{1em}
+\usepackage[bottom]{footmisc}
+\usepackage{url}
+\begin{document}
+\input{commands}
+
+\title{CSC-578B Project Proposal}
+
+\author{\IEEEauthorblockN{Derek Robinson, Keanelek Enns, Neha X, Manish Sihag}
+\IEEEauthorblockA{\textit{Department of Computer Science} \\
+\textit{University of Victoria}\\
+Victoria, Canada \\
+drobinson@uvic.ca, keanelekenns@uvic.ca, manishsihag@uvic.ca}
+}
+
+% make the title area
+\maketitle
+
+\section{Motivation}
+
+\begin{enumerate}
+    \item We agree with authors' motivation in \cite{ali2020cheating} (developers should understand attributes that correspond to long lasting projects). Therefore we want to see if the study was credible and if there were any gaps in the study.
+    \item We want to see if there are any differences between the Bayesian approach and the methods used in the paper. Do they both find the same thing?
+    \item If we have time, we would like to see if there are other attributes that can predict longevity of a project (or maybe test other threshold values)
+\end{enumerate}
+
+\section{Materials and Methods} %This is the same as Research Strategies in the proposal instructions
+
+\begin{enumerate}
+    \item We will follow the methods outlined \cite{ali2020cheating} for the replication portion of our study.
+    \item In the comparison portion of our study we will take a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}
+\end{enumerate}
+
+\section{Limitations}
+
+\derek{I feel like we need to brainstorm some limitations because I am at a loss}
+
+\section{Expected Results}
+
+We expect to find similar results to that of \cite{ali2020cheating} using the same method. We will then compare the results of the Bayesian approach to those of our replication.
+
+\bibliographystyle{IEEEtran}
+\bibliography{../refs/refs.bib}
+\end{document}
