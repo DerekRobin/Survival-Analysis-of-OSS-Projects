@@ -17,13 +17,13 @@
 \begin{document}
 \input{commands}
 
-\title{CSC-578B Project Proposal}
+\title{Two Differing Approaches to Survival Analysis of Open Source Python Projects}
 
 \author{\IEEEauthorblockN{Derek Robinson, Keanelek Enns, Neha Koulecar, Manish Sihag}
 \IEEEauthorblockA{\textit{Department of Computer Science} \\
 \textit{University of Victoria}\\
 Victoria, Canada \\
-drobinson@uvic.ca, keanelekenns@uvic.ca, neha's email manishsihag@uvic.ca}
+\{drobinson, keanelekenns, nehakoulecar, manishsihag\}@uvic.ca}
 }
 
 % make the title area
@@ -31,26 +31,37 @@ drobinson@uvic.ca, keanelekenns@uvic.ca, neha's email manishsihag@uvic.ca}
 
 \section{Motivation}
 
+The developers of Open Source Software (OSS) projects are often part of decentralized and geographically distributed teams of volunteers. As these developers are volunteering their free time to build software which is free for the masses they likely want to ensure the projects they work on do not become inactive. If OSS developers knew which projects would remain active and which would become inactive they could better decide if their free time was worth volunteering to a given project. Understanding which attributes of an OSS project lead to its longevity is what motived Ali \emph{et al.} to apply survival analysis techniques commonly found in biostatistics to study the probability of survival for popular OSS Python projects \cite{ali2020cheating}. We resonate with this motivation and would like to lend credibility to the findings of \cite{ali2020cheating} by replicating the study. In addition to the replication study, we also plan on applying a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}. The Bayesian portion of our paper is motivated by wanting to compare the findings of the two different approaches to survival analysis.
+
+Thus, the research questions we plan on answering are as follows:
+
 \begin{enumerate}
-    \item We agree with authors' motivation in \cite{ali2020cheating} (developers should understand attributes that correspond to long lasting projects). Therefore we want to see if the study was credible and if there were any gaps in the study.
-    \item We want to see if there are any differences between the Bayesian approach and the methods used in the paper. Do they both find the same thing?
-    \item If we have time, we would like to see if there are other attributes that can predict longevity of a project (or maybe test other threshold values)
+    \item What attributes of an OSS project lead to its survival?
+    \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
 \end{enumerate}
 
-\section{Materials and Methods} %This is the same as Research Strategies in the proposal instructions
+% If we have time, we would like to see if there are other attributes that can predict longevity of a project (or maybe test other threshold values)
+
+\section{Research Strategies}
+
+\subsection{Method}
 
 \begin{enumerate}
     \item We will follow the methods outlined \cite{ali2020cheating} for the replication portion of our study.
     \item In the comparison portion of our study we will take a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}
 \end{enumerate}
 
-\section{Limitations}
+\subsection{Data}
 
-\derek{I feel like we need to brainstorm some limitations because I am at a loss}
+In order to perform survival analysis using the methods discussed above, a dataset which records the repositories for projects on common VCSs in their entirety, including, a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) is required \cite{ali2020cheating}. The \emph{popular-3k-python} subset of the Software Heritage graph dataset \cite{pietri2019software} is what will be used in both our replication study and Bayesian survival analysis study. This dataset contains information on roughly 3000 popular Python projects which were hosted on Gitlab, GitHub, Debian, and PyPI between 2005 and 2018.
 
 \section{Expected Results}
 
-We expect to find similar results to that of \cite{ali2020cheating} using the same method. We will then compare the results of the Bayesian approach to those of our replication.
+We expect that our replication of \cite{ali2020cheating} will yield similar results the original analysis. This is because we are attempting to follow the same approach in order to lend credibility to their findings. Additionally, as the survival analysis techniques outlined in \cite{ali2020cheating} and the Bayesian approach to survival analysis outlined in \cite{kelter2020bayesian} are two differing approaches to the same goal, we suspect that the results of both will be comparable.
+
+\section{Limitations}
+
+\derek{I feel like we need to brainstorm some limitations because I am at a loss}
 
 \bibliographystyle{IEEEtran}
 \bibliography{../refs/refs.bib}
