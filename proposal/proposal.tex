@@ -67,7 +67,9 @@ Both the data we analyze and the methods of analysis have their own respective l
 
 \subsection{Limitations of the Methods}
 
+Survival analysis methods such as the K-M estimator and the Cox Proportional-Hazards model have limitations of their own. When applying the K-M estimator, it is common to use a log-rank test to test the significance between the two groups which are being compared. The log-rank test only tells you whether or not the probability of survival is statistically significant between the two groups and is not able to provide any information about the size of the difference between the two groups \cite{stel2011kaplan}. Additionally, the K-M estimator does not account for confounding factors \cite{stel2011kaplan}. In more traditional uses of the K-M estimator, an example of a confounding factor could be the age of the study participants. However, in our use case, we have not been unable to identify any confounding factors. The Cox Proportional-Hazards model comes with is used with the assumption that over the period of observation the hazards within each group are proportional \cite{stel2011cox}. If the assumption that the hazards within each group are proportional is not true, then the Cox Proportional-Hazards model will lead to incorrect estimates of the survival probability \cite{stel2011cox}.
 
+The Bayesian approach to survival analysis comes with its own limitations as well. As pointed out by Renganathan, Bayesian survival analysis can be subjective as the analyst places their own bias into the model when selecting the prior distributions \cite{renganathan2016overview}. In order to mitigate this bias, prior selection requires both epistemological and ontological reasoning.
 
 \subsection{Limitations of the Data}
 
