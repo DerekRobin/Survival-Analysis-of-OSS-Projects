@@ -26,39 +26,40 @@ Victoria, Canada \\
 \{drobinson, keanelekenns, nehakoulecar, manishsihag\}@uvic.ca}
 }
 
-% make the title area
 \maketitle
 
 \section{Motivation}
 
-The developers of Open Source Software (OSS) projects are often part of decentralized and geographically distributed teams of volunteers. As these developers volunteer their free time to build software that is free for the masses, they likely want to ensure the projects they work on do not become inactive. If OSS developers knew which projects would remain active and which would become inactive, they could better decide if their free time was worth volunteering to a given project. Understanding which attributes of an OSS project lead to its longevity is what motivated Ali \emph{et al.} to apply survival analysis techniques commonly found in biostatistics to study the probability of survival for popular OSS Python projects \cite{ali2020cheating}. We resonate with this motivation and would like to replicate \cite{ali2020cheating} in order to determine if there are any short comings in their analysis. In addition to the replication study, we also plan on applying a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}. The Bayesian portion of our paper is motivated by comparing the findings of the two different approaches to survival analysis.
+The developers of Open Source Software (OSS) projects are often part of decentralized and geographically distributed teams of volunteers. As these developers volunteer their free time to build free software for the masses, they likely want to ensure the projects they work on do not become inactive. If OSS developers knew which projects would remain active and which would become inactive, they could better decide if their free time was worth volunteering to a given project. Understanding which attributes of an OSS project lead to its longevity is what motivated Ali \emph{et al.} to apply survival analysis techniques commonly found in biostatistics to study the probability of survival for popular OSS Python projects \cite{ali2020cheating}. Ali \emph{et al.} specifically studied the effect of publishing major releases, the use of multiple repositories, the type of version control system (VCS), and the size of the volunteer team had on the survival of OSS Python projects. We resonate with ALi \emph{et al.'s} motivation and would like to replicate \cite{ali2020cheating} in order to determine if there are any shortcomings in their analysis. In addition to the replication study, we also plan on applying a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}. The Bayesian portion of our paper is motivated by comparing the findings of the two different approaches to survival analysis.
 
 Thus, the research questions we plan on answering are as follows:
 
 \begin{enumerate}
-    \item What attributes of an OSS project lead to its survival?
-    \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
+    \item \textbf{How do major releases, the use of multiple repositories, the type of VCS, and the size of the volunteer team affect the survival of an OSS Python project?}\\
+    \item \textbf{How do the findings of frequentist survival analysis differ from Bayesian survival analysis?}
 \end{enumerate}
-
-% If we have time, we would like to see if there are other attributes that can predict longevity of a project (or maybe test other threshold values)
 
 \section{Research Strategies}
 
 \subsection{Data}
 
-In order to perform survival analysis using the methods discussed in the following subsection, a dataset which records the repositories for projects on common VCSs in their entirety, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) is required \cite{ali2020cheating}. The \emph{popular-3k-python} subset of the Software Heritage graph dataset \cite{pietri2019software} is what will be used in both our replication study and Bayesian survival analysis study. This dataset contains information on roughly 3000 popular Python projects which were hosted on Gitlab, GitHub, Debian, and PyPI between 2005 and 2018.
-
+Performing survival analysis of OSS projects requires a dataset that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) is required \cite{ali2020cheating}. The \emph{popular-3k-python} subset of the Software Heritage graph dataset \cite{pietri2019software} is what will be used in both our replication study and Bayesian survival analysis study. This dataset contains information on roughly 3000 popular Python projects hosted on Gitlab, GitHub, Debian, and PyPI between 2005 and 2018.
+ 
 \subsection{Methods}
 
-Survival analysis is a set of methods used to determine how long an entity will live and is most often used in the medical field. For example, survival analysis techniques can be used to determine the probability that a patient will survive when given a certain treatment. The methods of survival analysis we will be using in the replication study are the Kaplan-Meier (K-M) survival estimator and we will also be fitting a Cox Proportional-Hazards model. For the comparison between traditional survival analysis and Bayesian survival analysis, we will be applying the methods found in \cite{kelter2020bayesian}. 
+Survival analysis is a set of methods used to determine how long an entity will live and is most often used in the medical field. For example, survival analysis techniques can determine the probability that a patient will survive when given a certain treatment. The methods of survival analysis we will be using in the replication study are the Kaplan-Meier (K-M) survival estimator, and we will also be fitting a Cox Proportional-Hazards model. For the comparison between traditional survival analysis and Bayesian survival analysis, we will be applying the methods found in \cite{kelter2020bayesian}. 
 
 \subsubsection{Kaplan-Meier Estimator and Cox Proportional-Hazards Model}
 
-When applying survival analysis techniques, one very important aspect is censoring. If our event of interest is the inactivity of a project and this event does not occur during the time span which our data records, then the time to event is said to be censored. Ali \emph{et al.} decided that the time span that they would analyze was 165 months long, starting in 2005 and ending in January 2018. They also deemed that any project "that has revisions beyond the Janurary 2018 cutoff date is surely active and is deemed censored." \cite{ali2020cheating}
+When applying survival analysis techniques, one very important aspect is censoring. If our event of interest is the inactivity of a project and this event does not occur during the period our data covers, then the time to event is said to be censored. Ali \emph{et al.} decided that the period that they would analyze was 165 months long, starting in 2005 and ending in January 2018. They also deemed that any project ``that has revisions beyond the January 2018 cutoff date is surely active and is deemed censored.'' \cite{ali2020cheating} The K-M estimator is used to estimate the survival function. In our use case, the K-M estimator will estimate the probability that the duration of a project is longer than time $t$. The other analysis we will be performing is fitting a Cox Proportional-Hazards model. The Cox Proportional-Hazards model is a regression model that will allow us to investigate the association between the survival of a project and its key attributes.
+
+\subsubsection{Bayesian Survival Analysis}
+
+For the second portion of our study, we will be applying the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. More specifically, we will be using a parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$. We will then use our model to visualize the posterior survival functions for the following four project attributes: major releases, VCS of the project, use of multiple VCSs, and team size.
 
 \section{Expected Results}
 
-We expect that our replication of \cite{ali2020cheating} will yield similar results the original analysis. This is because we are attempting to follow the same approach in order to lend credibility to their findings. Additionally, as the survival analysis techniques outlined in \cite{ali2020cheating} and the Bayesian approach to survival analysis outlined in \cite{kelter2020bayesian} are two differing approaches to the same goal, we suspect that the results of both will be comparable.
+We expect that our replication of \cite{ali2020cheating} will yield similar results to the original analysis. Additionally, as the survival analysis techniques outlined in \cite{ali2020cheating} and the Bayesian approach to survival analysis outlined in \cite{kelter2020bayesian} are two different approaches to the same goal, we suspect that the results of both will be comparable.
 
 \section{Limitations}
 
@@ -70,7 +71,7 @@ Both the data we analyze and the methods of analysis have their own respective l
 
 \subsection{Limitations of the Data}
 
-The data we are analyzing has been aggregated from multiple version control systems across the web over a long period of time. As such, the data set is not fully reproducible as pointed out by the original authors of the Software Heritage Graph \cite{pietri2019software}. Additionally, we cannot be sure that the data we are analyzing is a full history of the respective repositories. This is because the history of commits to any repository can be modified by the admin of the repository.
+The data we are analyzing has been aggregated from multiple version control systems across the web over a long period. As such, the data set is not fully reproducible, as pointed out by the original authors of the Software Heritage Graph \cite{pietri2019software}. Additionally, we cannot ensure that the data we are analyzing is a full history of the respective repositories. The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking.
 
 \bibliographystyle{IEEEtran}
 \bibliography{../refs/refs.bib}
