@@ -1,7 +1,6 @@
 \documentclass[conference]{IEEEtran}
 
 % Packages
-
 \usepackage{cite}
 \usepackage{listings}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -11,13 +10,18 @@
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage{parskip}
-\setlength{\parskip}{1em}
+%\setlength{\parskip}{1em}
 \usepackage[bottom]{footmisc}
 \usepackage{url}
+\usepackage{enumitem}
 \begin{document}
-\input{commands}
 
-\title{Two Differing Approaches to Survival Analysis of Open Source Python Projects}
+\input{commands}
+\newlist{questions}{enumerate}{2}
+\setlist[questions,1]{label=RQ\arabic*.,ref=RQ\arabic*}
+\setlist[questions,2]{label=(\alph*),ref=\thequestionsi(\alph*)}
+
+\title{A Research Proposal for \\``Two Differing Approaches to Survival Analysis of Open Source Python Projects''}
 
 \author{\IEEEauthorblockN{Derek Robinson, Keanelek Enns, Neha Koulecar, Manish Sihag}
 \IEEEauthorblockA{\textit{Department of Computer Science} \\
@@ -34,10 +38,10 @@ The developers of Open Source Software (OSS) projects are often part of decentra
 
 Thus, the research questions we plan on answering are as follows:
 
-\begin{enumerate}
-    \item \textbf{How do major releases, the use of multiple repositories, the type of VCS, and the size of the volunteer team affect the survival of an OSS Python project?}\\
-    \item \textbf{How do the findings of frequentist survival analysis differ from Bayesian survival analysis?}
-\end{enumerate}
+\begin{questions}
+    \item How do major releases, the use of multiple repositories, the type of VCS, and the size of the volunteer team affect the survival of an OSS Python project?
+    \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
+\end{questions}
 
 \section{Research Strategies}
 
