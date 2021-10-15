@@ -10,7 +10,6 @@
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage{parskip}
-%\setlength{\parskip}{1em}
 \usepackage[bottom]{footmisc}
 \usepackage{url}
 \usepackage{enumitem}
@@ -36,7 +35,7 @@ Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}
 
 \section{Motivation}
 
-The developers of Open Source Software (OSS) projects are often part of decentralized and geographically distributed teams of volunteers. As these developers volunteer their free time to build free software for the masses, they likely want to ensure the projects they work on do not become inactive. If OSS developers are aware of key attributes that are associated with long-lasting projects, they can make informed assessments of a given project before devoting their time to it or they can strive to make their own projects exhibit those attributes. Understanding which attributes of an OSS project lead to its longevity is what motivated Ali \emph{et al.} to apply survival analysis techniques commonly found in biostatistics to study the probability of survival for popular OSS Python projects \cite{ali2020cheating}. Ali \emph{et al.} specifically studied the effect that publishing major releases, the use of multiple repositories, the type of version control system (VCS), and the size of the volunteer team had on the survival of OSS Python projects. We resonate with Ali \emph{et al.'s} motivation and would like to replicate \cite{ali2020cheating} in order to determine if there are any shortcomings in their analysis. In addition to the replication study, we also plan on applying a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}. The Bayesian portion of our paper is motivated by comparing the findings of the two different approaches to survival analysis.
+The developers of Open Source Software (OSS) projects are often part of decentralized and geographically distributed teams of volunteers. As these developers volunteer their free time to build free software for the masses, they likely want to ensure the projects they work on do not become inactive. Suppose OSS developers are aware of key attributes associated with long-lasting projects. In that case, they can make informed assessments of a given project before devoting their time to it or strive to make their projects exhibit those attributes. Understanding which attributes of an OSS project lead to its longevity is what motivated Ali \emph{et al.} to apply the Kaplan-Meier estimator, and Cox Proportional-Hazards model to study the probability of survival for popular OSS Python projects \cite{ali2020cheating}. The Kaplan-Meier estimator and Cox Proportional-Hazards model are both frequentist survival analysis methods commonly used in biostatistics.  Ali \emph{et al.} specifically studied the effect that publishing major releases, the use of multiple repositories, the type of version control system (VCS), and the size of the volunteer team had on the survival of OSS Python projects. We resonate with Ali \emph{et al.'s} motivation and would like to replicate \cite{ali2020cheating} in order to determine if there are any shortcomings in their analysis. In addition to the replication study, we also plan on applying a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}. The Bayesian portion of our paper is motivated by comparing the frequentist approach to survival analysis with the Bayesian approach to survival analysis.
 
 Thus, the research questions we plan on answering are as follows:
 
@@ -61,11 +60,11 @@ When applying survival analysis techniques, one very important aspect is censori
 
 \subsubsection{Bayesian Survival Analysis}
 
-For the second portion of our study, we will be applying the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. More specifically, we will be using a parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$. We will then use our model to visualize the posterior survival functions for the following four project attributes: major releases, VCS of the project, use of multiple VCSs, and team size.
+For the second portion of our study, we will be applying the same methods as found demonstrated in \cite{kelter2020bayesian}. More specifically, we will be using a parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$. We will then use our model to visualize the posterior survival functions for the following four project attributes: major releases, VCS of the project, use of multiple VCSs, and team size.
 
 \section{Expected Results}
 
-We expect that our replication of \cite{ali2020cheating} will yield similar results to the original analysis. Additionally, as the survival analysis techniques outlined in \cite{ali2020cheating} and the Bayesian approach to survival analysis outlined in \cite{kelter2020bayesian} are two different approaches to the same goal, we suspect that the results of both will be comparable.
+We hope that our replication of \cite{ali2020cheating} will yield similar results to the original analysis. Additionally, as the survival analysis techniques outlined in \cite{ali2020cheating} and the Bayesian approach to survival analysis outlined in \cite{kelter2020bayesian} are two different approaches to the same goal, we suspect that the results of both will be comparable.
 
 \section{Limitations}
 
