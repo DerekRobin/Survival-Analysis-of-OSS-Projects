@@ -14,6 +14,7 @@
 \usepackage[bottom]{footmisc}
 \usepackage{url}
 \usepackage{enumitem}
+\usepackage{hyperref}
 \begin{document}
 
 \input{commands}
@@ -27,7 +28,8 @@
 \IEEEauthorblockA{\textit{Department of Computer Science} \\
 \textit{University of Victoria}\\
 Victoria, Canada \\
-\{drobinson, keanelekenns, nehakoulecar, manishsihag\}@uvic.ca}
+\{drobinson, keanelekenns, nehakoulecar, manishsihag\}@uvic.ca} \\
+Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}
 }
 
 \maketitle
@@ -81,7 +83,7 @@ The Bayesian approach to survival analysis comes with its own limitations as wel
 
 \subsection{Limitations of the Data}
 
-The dataset we are analyzing has been aggregated from multiple version control systems across the web over a long period. As such, the data set is not fully reproducible, as pointed out by the original authors of the Software Heritage Graph \cite{pietri2019software}. Additionally, we cannot ensure that the data we are analyzing is a full history of the respective repositories. The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking.
+The dataset we are analyzing has been aggregated from multiple version control systems across the web over a long period. As such, the dataset is not fully reproducible, as pointed out by the original authors of the Software Heritage Graph \cite{pietri2019software}. Additionally, we cannot ensure that the data we are analyzing is a full history of the respective repositories. The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking.
 
 \bibliographystyle{IEEEtran}
 \bibliography{../refs/refs.bib}
