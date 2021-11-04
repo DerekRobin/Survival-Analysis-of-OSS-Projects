@@ -1,0 +1,13 @@
+---
+title: "CSC 578B Database Connection Test"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+data <- read.csv('data.csv')
+```
+
