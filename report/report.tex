@@ -1,0 +1,59 @@
+\documentclass[conference]{IEEEtran}
+
+% Packages
+\usepackage{cite}
+\usepackage{listings}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{parskip}
+%\setlength{\parskip}{1em}
+\usepackage[bottom]{footmisc}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\begin{document}
+
+\input{commands}
+\newlist{questions}{enumerate}{2}
+\setlist[questions,1]{label=RQ\arabic*.,ref=RQ\arabic*}
+\setlist[questions,2]{label=(\alph*),ref=\thequestionsi(\alph*)}
+
+\title{Two Differing Approaches to Survival Analysis of Open Source Python Projects}
+
+\author{\IEEEauthorblockN{Derek Robinson, Keanelek Enns, Neha Koulecar, Manish Sihag}
+\IEEEauthorblockA{\textit{Department of Computer Science} \\
+\textit{University of Victoria}\\
+Victoria, Canada \\
+\{drobinson, keanelekenns, nehakoulecar, manishsihag\}@uvic.ca} \\
+Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}
+}
+
+\maketitle
+
+\section{Introduction}
+
+\cite{ali2020cheating}.
+
+\section{Methods}
+
+\subsection{Replication}
+
+\subsection{Bayesian Survival Analysis}
+
+\section{Results}
+
+\section{Limitations}
+
+\subsection{Limitations of the Methods}
+
+\subsection{Limitations of the Data}
+
+\section{Conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{../refs/refs.bib}
+\end{document}
