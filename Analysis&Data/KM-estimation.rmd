@@ -1,0 +1,57 @@
+---
+title: "Survival Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages(c("survival", "survminer", "dplyr"))
+```
+
+## Load required packages
+
+```{r, include=FALSE}
+library(survival)
+library(survminer)
+library(dplyr)
+```
+
+## Data
+
+```{r}
+a_data <- read.csv('Analysis&Data/data.csv', stringsAsFactors = TRUE)
+a_data$status <-replace(a_data$status, a_data$status==0,2)
+```
+
+# Dichotomize age and change data labels
+
+```{r}
+a_data$major_releases <- factor(a_data$major_releases, 
+                     levels = c("0", "1"), 
+                     labels = c("no", "yes"))
+```
+
+                     
+## Kaplan-Meier method
+```{r, include=FALSE}
+surv_object <- Surv(time = a_data$duration, event = a_data$status)
+```
+
+```{r,include=FALSE, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+fit1 <- survfit(surv_object ~ major_releases, data = a_data, conf.type="log-log")
+summary(fit1)
+
+ggsurvplot(fit1, data = a_data, pval = TRUE)
+```
+
+```{r,include=FALSE, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+fit2 <- survfit(surv_object ~ host_type, data = a_data, conf.type="log-log")
+ggsurvplot(fit2, data = a_data, pval = TRUE)
+```
+
+
+```{r,include=FALSE, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+fit3 <- survfit(surv_object ~ multi_repo, data = a_data, conf.type="log-log")
+ggsurvplot(fit3, data = a_data, pval = TRUE)
+```
+
