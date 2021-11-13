@@ -9,6 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(cache = TRUE)
 #install.packages(c("survival"))
 library(survival)
+library(survminer)
 ```
 
 ## Data
@@ -78,4 +79,25 @@ fit5 <- survfit(surv_object ~ developers_count, data = a_data)
 summary(fit5)
 ggsurvplot(fit5, data = a_data, pval = TRUE, conf.int = TRUE, legend.labs = c("author count <= 20", "author count > 20"))
 ```
+
+# Fit a Cox proportional hazards model
+
+hazard function h(t). It describes the probability of an event or its hazard if the subject survived up to that particular time point (t).  It measures the instantaneous risk of death. We need the hazard function to consider covariates when we compare survival of the projects. cox proportional hazards models allow ua to include covariates. We can build Cox proportional hazards models using the coxph function and visualize them using the ggforest.
+
+
+```{r}
+fit.coxph <- coxph(surv_object ~ major_releases + multi_repo + developers_count + host_type, 
+                   data = a_data)
+ggforest(fit.coxph, data = a_data)
+```
+
+Lets see the results, breifly an HR > 1 indicates an increased risk of death and An HR < 1, on the other hand, indicates a decreased risk.
+
+For example, for multi_repo the HR is less than 1, which pridicts that there is less chance of death for the projects with a multi_repo.
+
+NOTE: the ratio seems different from the table 1 from paper, due to differnt reference point. (For example, reference for major_release is from NO, whereas the reference point for that is Yes in paper.)
+
+
+One thing I find odd is the numbers, like it says there is only 53 repos with major releases whereas it says 118 in paper. 
+
 
