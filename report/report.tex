@@ -149,27 +149,79 @@ The authors of this paper resonate with Ali \emph{et al.'s} motivation.
 This paper serves as a replication of \cite{ali2020cheating} and seeks to determine if there are gaps or shortcomings in their analysis. 
 This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease. 
 In addition to the replication, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of frequentist and bayesian approaches in the same domain.
-Thus, the research questions we plan on answering are as follows:
+Thus, the research questions this paper answers are as follows:
 
 \begin{questions}
     \item How do major releases, the use of multiple repositories, the type of VCS, and the size of the volunteer team affect the survival of an OSS Python project?
+    \item Are there any shortcomings or gaps in the study done by Ali \emph{et al.}?
     \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
 \end{questions}
 
+The following section describes the methods used for both the replication study and the bayesian analysis study.
+Section 3 shows the results for each analysis.
+Section 4 is a discussion about the limitations of the study, the differences between the types of analysis performed, and suggestions about future work in the topic.
+The final section concludes by summarizing the purpose and findings of this paper. 
 
 \section{Methods}
 
+Most of the work done in this study has been documented in a repository for the benefit of the reader.
+A reference to this repository \keanu{and more?} can be found in appendix A below. \keanu{define artifacts?}
+
 \subsection{Replication}
+
+\keanu{I'm having a hard time figuring out what Neil would want here. I don't want to just repeat what the original study said, but I'm not sure what else to do}
+
+Steps in the replication:
+
+Importing data from Software Heritage Graph \cite{pietri2019software}
+
+Inspecting the provided schema
+
+Crafting queries to give us the necessary information (join necessary tables and group by appropriate fields, filter out dates that were out of range, create indicator field for censoring etc.)
+
+Constructing additional fields (multi\_repo and duration) using pandas in python. Sort by duration and plot project from start to end month to recreate figure 1.
+
+Perform frequentist analysis on data using survival package in R. First apply kaplan meier based on each attribute, then run Cox proportional hazards tool on the data.
 
 \subsection{Bayesian Survival Analysis}
 
+\keanu{I don't have anything to write for this}
+
+
 \section{Results}
 
-\section{Limitations}
+\subsection{Replication}
 
-\subsection{Limitations of the Methods}
+We found the results of our replication study to be extremely similar to those shown in the original paper.
 
-\subsection{Limitations of the Data}
+\keanu{Put images here}
+
+\keanu{talk about significance and meaning of the KM and Cox results}
+
+\subsection{Bayesian Survival Analysis}
+
+\keanu{Nothing for this yet}
+
+\section{Discussion}
+
+\subsection{Limitations}
+
+\subsubsection{Limitations of the Methods}
+
+The method Ali \emph{et al.} used for censoring was slightly ambiguous.
+
+\subsubsection{Limitations of the Data}
+
+There was no clear method for determining whether a project was hosted in multiple repositories.
+The only unique identifier for each project was a url, from which the project name was extracted using regular expressions.
+This may have resulted in the extraction of inconsistent project names across host types.
+The assumption is that each project that was hosted on multiple repositories would be given the exact same name, and that projects of the same name hosted on different platforms were indeed the same project (which may not always be the case).
+Additionally, it is possible for users on Github to give their projects the exact same name as pre-existing projects created by other users.
+However, this issue was accounted for in our analysis, but it is unclear whether Ali \emph{et al.} accounted for this.
+
+\subsection{Comparison of Analyses}
+
+\subsection{Future Work}
 
 \section{Conclusion}
 
