@@ -58,6 +58,9 @@
 %% end of the preamble, start of the body of the document source.
 \begin{document}
 
+% Specify path to images
+\graphicspath{ {./img/} }
+
 % import custom commands found in commands.tex
 \input{commands}
 % set up commands to format RQ nicely
@@ -112,14 +115,20 @@
 \begin{CCSXML}
 <ccs2012>
 <concept>
+<concept_id>10011007.10011074.10011134.10003559</concept_id>
+<concept_desc>Software and its engineering~Open source model</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
 <concept_id>10002951.10003227.10003351</concept_id>
 <concept_desc>Information systems~Data mining</concept_desc>
-<concept_significance>500</concept_significance>
+<concept_significance>300</concept_significance>
 </concept>
 </ccs2012>
 \end{CCSXML}
 
-\ccsdesc[500]{Information systems~Data mining}
+\ccsdesc[500]{Software and its engineering~Open source model}
+\ccsdesc[300]{Information systems~Data mining}
 
 %%
 %% Keywords. The author(s) should pick words that accurately describe
@@ -197,6 +206,49 @@ Perform frequentist analysis on data using survival package in R. First apply ka
 We found the results of our replication study to be extremely similar to those shown in the original paper.
 
 \keanu{Put images here}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{figure1.jpg}
+\Description{}
+\caption{Graph of project timelines within the given time frame. The projects are ordered by duration.}
+\label{fig:figure-1}
+\end{figure}
+
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}
+        \centering
+        \includegraphics[width=0.45\textwidth]{major-releases.png}   
+        \label{fig:major releases}
+    \end{subfigure}
+    \begin{subfigure}
+        \centering 
+        \includegraphics[width=0.45\textwidth]{host_type.png}
+        \label{fig:host type}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure} 
+        \centering 
+        \includegraphics[width=0.45\textwidth]{multi_repo.png}
+        \label{fig:multi repo}
+    \end{subfigure}
+    \begin{subfigure}   
+        \centering 
+        \includegraphics[width=0.45\textwidth]{img/author_count.png} 
+        \label{fig:author count}
+    \end{subfigure}
+    \caption
+    {\small KM curves of the python project data analyzed by major releases, host type, multiple repository hosting, and number of authors} 
+    \label{fig:KM curves}
+\end{figure*}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{cox-ratios.png}
+\Description{}
+\caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
+\label{fig:Cox}
+\end{figure}
 
 \keanu{talk about significance and meaning of the KM and Cox results}
 
