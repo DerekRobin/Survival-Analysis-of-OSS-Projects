@@ -106,7 +106,7 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-% Pending
+\keanu{Abstract Pending}
 \end{abstract}
 
 %%
@@ -166,10 +166,25 @@ Thus, the research questions this paper answers are as follows:
     \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
 \end{questions}
 
-The following section describes the methods used for both the replication study and the bayesian analysis study.
-Section 3 shows the results for each analysis.
-Section 4 is a discussion about the limitations of the study, the differences between the types of analysis performed, and suggestions about future work in the topic.
+The following section describes the data used for the studies in this paper. Section 3 covers the methods used for both the replication and bayesian analysis study.
+Section 4 shows the results for each analysis.
+Section 5 is a discussion about the limitations of the study, the differences between the types of analysis performed, and suggestions about future work in the topic.
 The final section concludes by summarizing the purpose and findings of this paper. 
+
+\section{Data}
+
+Performing survival analysis of OSS projects requires a dataset that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}.
+The \emph{popular-3k-python} subset of the Software Heritage graph dataset \cite{pietri2019software} was used in both the replication and Bayesian \keanu{should bayesian be capitalized?} survival analysis study.
+This dataset \keanu{dataset or data set?} contains information on roughly 3000 popular Python projects hosted on Gitlab, GitHub, Debian, and PyPI between 2005 and 2018.
+The Software Heritage Graph offers a tutorial on how to import this data \cite{SQLdataset}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.25]{dataset-schema.png}
+\Description{}
+\caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
+\label{fig:Schema}
+\end{figure}
 
 \section{Methods}
 
@@ -197,6 +212,7 @@ Perform frequentist analysis on data using survival package in R. First apply ka
 
 \subsection{Bayesian Survival Analysis}
 
+A common distribution for survival analysis is the exponential distribution \cite{kelter2020bayesian, rethinking}.
 \keanu{I don't have anything to write for this}
 
 \section{Results}
