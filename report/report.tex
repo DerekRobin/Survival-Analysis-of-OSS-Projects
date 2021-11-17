@@ -162,7 +162,6 @@ Thus, the research questions this paper answers are as follows:
 
 \begin{questions}
     \item How do major releases, the use of multiple repositories, the type of VCS, and the size of the volunteer team affect the survival of an OSS Python project?
-    \item Are there any shortcomings or gaps in the study done by Ali \emph{et al.}?
     \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
 \end{questions}
 
@@ -173,18 +172,19 @@ The final section concludes by summarizing the purpose and findings of this pape
 
 \section{Data}
 
-Performing survival analysis of OSS projects requires a dataset that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}.
-The \emph{popular-3k-python} subset of the Software Heritage graph dataset \cite{pietri2019software} was used in both the replication and Bayesian \keanu{should bayesian be capitalized?} survival analysis study.
-This dataset \keanu{dataset or data set?} contains information on roughly 3000 popular Python projects hosted on Gitlab, GitHub, Debian, and PyPI between 2005 and 2018.
+Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}.
+The \emph{popular-3k-python} subset of the Software Heritage graph data set \cite{pietri2019software} was used in both the replication and Bayesian \keanu{should bayesian be capitalized?} survival analysis study.
+This data set \keanu{dataset or data set? Doing a little bit of searching, it appears that dataset is more of a jargon term, so maybe we should try to stick with data set.} contains information on roughly 3000 popular Python projects hosted on Gitlab, GitHub, Debian, and PyPI between 2005 and 2018.
 The Software Heritage Graph offers a tutorial on how to import this data \cite{SQLdataset}.
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.25]{dataset-schema.png}
-\Description{}
-\caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images} \derek{I don't think that we really need the schema in the paper}}
-\label{fig:Schema}
-\end{figure}
+% If we want filler we can add the schema diagram and talk about it.
+% \begin{figure}[h]
+% \centering
+% \includegraphics[scale=0.25]{dataset-schema.png}
+% \Description{}
+% \caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images} \derek{I don't think that we really need the schema in the paper}}
+% \label{fig:Schema}
+% \end{figure}
 
 \section{Methods}
 
@@ -287,6 +287,12 @@ The method Ali \emph{et al.} used for censoring was slightly ambiguous.
 
 \subsubsection{Limitations of the Data}
 
+There are inherent differences in the ways developers use the different hosting services \keanu{I have a strong intuition that this is the case, it looks like PyPi and debian don't have as much granularity compared to git and only show major releases, but I don't have anything to back this up, so maybe we can find something to cite for that}. This may skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product. This may hide information about the number of developers and the commit frequency.
+
+It may also be worth noting that this data is only for Python projects and that it is possible that different behaviours are associated with development in different languages.
+Python is a relatively easy language to use, and can often be used for small tasks that are not maintained.
+However, because this data set comprises popular projects, it is unlikely to contain projects that were used for a small task and discarded.
+
 There was no clear method for determining whether a project was hosted in multiple repositories.
 The only unique identifier for each project was a url, from which the project name was extracted using regular expressions.
 This may have resulted in the extraction of inconsistent project names across host types.
@@ -309,6 +315,8 @@ It is unclear how this happened.
 \subsection{Future Work}
 
 Increase the time frame of the study (the original paper could not do this because the paper was written in 2018).
+
+Perform separate studies on each hosting platform to remove variability in the way the platforms are utilized.
 
 \section{Conclusion}
 
