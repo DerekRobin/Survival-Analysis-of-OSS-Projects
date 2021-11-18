@@ -205,15 +205,37 @@ The first step in the replication was to obtain the data set and gain a proper u
 A postgreSQL server was created and the data was imported following the tutorial provided by the Software Heritage organization \cite{SQLdataset}.
 The data set includes a load.sql file which creates the database according the the schema diagram mentioned in the \emph{Data} section of this paper.
 After analyzing this database, queries were created in order to join the necessary tables and extract the relevant values.
-The queries accomplish the following objectives: they group records by the url field of the origin table (used to identify projects), filter records to be within the desired timeframe of May 9, 2005 to Jan. 1, 2018, count distinct authors that have participated in a given project, record the host service (depicted by the type field of the origin table), record the earliest and latest revisions associated with each project url, and
-\keanu{should we show pseudocode of one of the queries?}
+The queries accomplish the following objectives: they group records by the url field of the origin table (used to identify projects), filter records to be within the desired time frame of May 9, 2005 to Jan. 1, 2018, count distinct authors that have participated in a given project, record the host service (depicted by the type field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
+\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}
 
 Inside of the repository there is a jupyter notebook (Analysis&Data/data-collection.ipynb).
-This notebook used popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results.
+This notebook used popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results. \keanu{This section is getting really long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
 
-Constructing additional fields (multi\_repo and duration) using pandas in python. Sort by duration and plot project from start to end month to recreate figure 1.
+When applying survival analysis techniques, two critical concepts are events of interest and censoring.
+In the case of this paper, as well as the original paper, the event of interest is the abandonment of a project.
+That is, if a project stops receiving revisions, it is considered abandoned.
+However, it is impossible to determine whether a project will receive revisions in the future, so a threshold of some kind is required to determine whether the project has indeed been abandoned for the purposes of the study.
+This is where censoring is used.
+Censoring involves using data from subjects of a study for which the time of interest is not observed.
+There are multiple types of censoring in survival analysis, but this study uses random censoring \keanu{or right censoring, we should flesh out the terminology as I have seen some conflicting definitions}.
+Random censoring involves removing subjects (in this case projects) from a study at varying times relative to when they began being observed \cite{renganathan2016overview}. \keanu{find another citation to support this, http://www.stat.columbia.edu/~madigan/W2025/notes/survival.pdf mentions it, but refer to it as random type 1 right censoring}
 
-Perform frequentist analysis on data using survival package in R. First apply kaplan meier based on each attribute, then run Cox proportional hazards tool on the data.
+Ali \emph{et al.} set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
+This paper uses the same time frame and determines exact beginning and ending dates.
+Using January 1, 2018 as a strict end date and maintaining the study duration as 4620 days (165 months as defined), the beginning date is found to be May 9, 2005.
+
+Projects are censored if there is reason to believe that they would receive revisions after the end of the time frame (i.e. the last \emph{observed} revision is unlikely to be the last revision of the project).
+In this paper, any project with revisions on or after November 1, 2017 were censored. 
+\keanu{NOTE: Our censoring method may change. This is because the paper \cite{ali2020cheating} conflicted with the video presentation \cite{ali2020video} with respect to the censoring method. After further inspection, it appears the method in the paper is superior, as we only censor data that truly had revisions after the time frame (though this probably will not affect many of the data points)}
+The reason this is considered random censoring is because projects that are censored have varying start dates within the time frame of the study.
+
+\keanu{discuss methods for KM and Cox}
+
+\subsection{Revision Frequency Analysis}
+
+The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'', but never addresses this measurement.
+This paper seeks to explore this method of assessment.
+
 
 \subsection{Bayesian Survival Analysis}
 
