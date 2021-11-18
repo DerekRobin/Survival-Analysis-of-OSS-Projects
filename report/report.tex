@@ -146,7 +146,7 @@ The developers of Open Source Software (OSS) projects are often part of decentra
 As these developers volunteer their free time to build such OSS projects, they likely want to be confident that the projects they work on will not become inactive.
 If OSS developers are aware of key attributes that are associated with long-lasting projects, they can make informed assessments of a given project before devoting their time to it or they can strive to make their own projects exhibit those attributes.
 Understanding which attributes of an OSS project lead to its longevity is what motivated Ali \emph{et al.} to apply survival analysis techniques commonly found in biostatistics to study the probability of survival for popular OSS Python projects \cite{ali2020cheating}.
-Ali \emph{et al.} specifically studied the effect of the following attributes on the survival of OSS Python projects: publishing major releases, the use of multiple repositories, the type of version control system (VCS), and the size of the volunteer team.
+Ali \emph{et al.} specifically studied the effect of the following attributes on the survival of OSS Python projects: publishing major releases, the use of multiple hosting services, the type of version control system (VCS), and the size of the volunteer team.
 
 Survival analysis is a set of methods used to determine how long an entity will live (or the time to a given event) and is most often used in the medical field.
 \keanu{do we need to find a citation for this claim/definition?}
@@ -155,36 +155,43 @@ Ali \emph{et al.} use a frequentist approach to survival analysis with methods i
 Though there are advantages to using such approaches \keanu{list some advantages and cite}, another approach to survival analysis, Bayesian analysis, has its own set of advantages, namely \keanu{find the advantages, list them, cite}.
 
 The authors of this paper resonate with Ali \emph{et al.'s} motivation. 
-This paper serves as a replication of \cite{ali2020cheating} and seeks to determine if there are gaps or shortcomings in their analysis. 
-This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease. 
-In addition to the replication, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of frequentist and bayesian approaches in the same domain.
+This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on)  and seeks to determine if there are gaps or shortcomings in their analysis.
+This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease.
+For the sake of the authors' curiousity, an additional attribute of the data was analyzed: the commit frequency of the project.
+In addition to the replication, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of frequentist and Bayesian approaches in the same domain.
 Thus, the research questions this paper answers are as follows:
 
 \begin{questions}
-    \item How do major releases, the use of multiple repositories, the type of VCS, and the size of the volunteer team affect the survival of an OSS Python project?
-    \item Are there any shortcomings or gaps in the study done by Ali \emph{et al.}?
+    \item How do major releases, the use of multiple hosting services, the type of VCS, and the size of the volunteer team affect the probability of survival of an OSS Python project?
+    \item How does the commit frequency of an OSS Python project affect the probability of it's survival?
     \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
 \end{questions}
 
-The following section describes the data used for the studies in this paper. Section 3 covers the methods used for both the replication and bayesian analysis study.
+The following section describes the data used for the studies in this paper. Section 3 covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis studies.
 Section 4 shows the results for each analysis.
 Section 5 is a discussion about the limitations of the study, the differences between the types of analysis performed, and suggestions about future work in the topic.
 The final section concludes by summarizing the purpose and findings of this paper. 
 
 \section{Data}
 
-Performing survival analysis of OSS projects requires a dataset that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}.
-The \emph{popular-3k-python} subset of the Software Heritage graph dataset \cite{pietri2019software} was used in both the replication and Bayesian \keanu{should bayesian be capitalized?} survival analysis study.
-This dataset \keanu{dataset or data set?} contains information on roughly 3000 popular Python projects hosted on Gitlab, GitHub, Debian, and PyPI between 2005 and 2018.
-The Software Heritage Graph offers a tutorial on how to import this data \cite{SQLdataset}.
+Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}.
+Revisions are used to assess the activity or health of a project.
+The assumption of the original paper was that revisions, no matter how far apart, indicate a healthy project.
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.25]{dataset-schema.png}
-\Description{}
-\caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images} \derek{I don't think that we really need the schema in the paper}}
-\label{fig:Schema}
-\end{figure}
+The \emph{popular-3k-python} subset of the Software Heritage graph data set \cite{pietri2019software} was used in both the original paper and this paper.
+This data set \keanu{Doing a little bit of searching, it appears that dataset is more of a jargon term, so maybe we should try to stick with data set.} contains information on roughly 3000 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI between 2005 and 2018.
+The Software Heritage Graph offers a tutorial on how to import this data \cite{SQLdataset} as well as an explanation of the structure of the data set (a database schema can be seen in figure 2 of their document) \cite{pietri2019software}.
+
+Most of the analyzed features or attributes of the projects in the original study are not present in the raw data set; data manipulation was required in order to calculate and extract the desired attributes of the projects.
+
+% If we want filler we can add the schema diagram and talk about it.
+% \begin{figure}[h]
+% \centering
+% \includegraphics[scale=0.25]{dataset-schema.png}
+% \Description{}
+% \caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images} \derek{I don't think that we really need the schema in the paper}}
+% \label{fig:Schema}
+% \end{figure}
 
 \section{Methods}
 
@@ -193,14 +200,7 @@ A reference to this repository \keanu{and more?} can be found in appendix A belo
 
 \subsection{Replication}
 
-\keanu{I'm having a hard time figuring out what Neil would want here. I don't want to just repeat what the original study said, but I'm not sure what else to do}
-\derek{We need to to talk about the same topcis that Ali et al. did. 
-However, we need to use our own language. 
-Maybe finding another SE replication paper and basing it off how they talk about the same topics as the original?}
-
-Steps in the replication:
-
-Importing data from Software Heritage Graph \cite{pietri2019software}
+The first step in the replication was to obtain the data set and gain a proper understanding of it. A postgreSQL server was created and the data was imported following the tutorial provided by the Software Heritage organization \cite{SQLdataset}.
 
 Inspecting the provided schema
 
@@ -260,7 +260,7 @@ We found the results of our replication study to be extremely similar to those s
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{cox-ratios.png}
+\includegraphics[scale=0.75]{cox-ratios.png}
 \Description{}
 \caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
 \label{fig:Cox}
@@ -287,10 +287,16 @@ The method Ali \emph{et al.} used for censoring was slightly ambiguous.
 
 \subsubsection{Limitations of the Data}
 
+There are inherent differences in the ways developers use the different hosting services \keanu{I have a strong intuition that this is the case, it looks like PyPi and debian don't have as much granularity compared to git and only show major releases, but I don't have anything to back this up, so maybe we can find something to cite for that}. This may skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product. This may hide information about the number of developers and the commit frequency.
+
+It may also be worth noting that this data is only for Python projects and that it is possible that different behaviours are associated with development in different languages.
+Python is a relatively easy language to use, and can often be used for small tasks that are not maintained.
+However, because this data set comprises popular projects, it is unlikely to contain projects that were used for a small task and discarded.
+
 There was no clear method for determining whether a project was hosted in multiple repositories.
 The only unique identifier for each project was a url, from which the project name was extracted using regular expressions.
 This may have resulted in the extraction of inconsistent project names across host types.
-The assumption is that each project that was hosted on multiple repositories would be given the exact same name, and that projects of the same name hosted on different platforms were indeed the same project (which may not always be the case).
+The assumption is that each project that was hosted on multiple repositories would be given the exact same name, and that projects of the same name hosted on different services were indeed the same project (which may not always be the case).
 Additionally, it is possible for users on Github to give their projects the exact same name as pre-existing projects created by other users.
 However, this issue was accounted for in our analysis, but it is unclear whether Ali \emph{et al.} accounted for this.
 
@@ -310,6 +316,8 @@ It is unclear how this happened.
 
 Increase the time frame of the study (the original paper could not do this because the paper was written in 2018).
 
+Perform separate studies on each hosting service to remove variability in the way the services are utilized.
+
 \section{Conclusion}
 
 %%
@@ -324,6 +332,8 @@ Increase the time frame of the study (the original paper could not do this becau
 
 \section{Artifacts}
 Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}
+
+Data Set: \url{https://annex.softwareheritage.org/public/dataset/graph/latest/popular-3k-python/sql/}
 
 \end{document}
 \endinput

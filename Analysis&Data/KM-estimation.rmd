@@ -21,6 +21,7 @@ a_data <- read.csv('data.csv', stringsAsFactors = TRUE)
 ## Dichotomize and change data labels
 
 ```{r}
+colnames(a_data)[which(names(a_data) == "commit_freq_above_median")] <- "high_freq"
 a_data$major_releases <- car::recode(a_data$major_releases, "0 = 'No'; 1 = 'Yes'")
 a_data$multi_repo <- car::recode(a_data$multi_repo, "0 = 'No'; 1 = 'Yes'") 
 a_data$developers_count <- car::recode(a_data$author_count, "0:20 = '< 20'; 21:max(a_data$author_count) = '> 20'")
@@ -79,6 +80,13 @@ fit5 <- survfit(surv_object ~ developers_count, data = a_data)
 summary(fit5)
 ggsurvplot(fit5, data = a_data, pval = TRUE, conf.int = TRUE, legend.labs = c("author count <= 20", "author count > 20"))
 ```
+lets stratify the curve depending if the commit frequency is above median
+```{r, warning=FALSE, message=FALSE, results='hide'}
+fit6 <- survfit(surv_object ~ high_freq, data = a_data)
+summary(fit6)
+ggsurvplot(fit6, data = a_data, pval = TRUE, conf.int = TRUE)
+```
+
 
 # Fit a Cox proportional hazards model
 
@@ -86,7 +94,7 @@ hazard function h(t). It describes the probability of an event or its hazard if 
 
 
 ```{r}
-fit.coxph <- coxph(surv_object ~ major_releases + multi_repo + developers_count + host_type, 
+fit.coxph <- coxph(surv_object ~ major_releases + multi_repo + developers_count + host_type + high_freq, 
                    data = a_data)
 ggforest(fit.coxph, data = a_data)
 ```
