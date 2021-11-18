@@ -167,22 +167,31 @@ Thus, the research questions this paper answers are as follows:
     \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
 \end{questions}
 
-The following section describes the data used for the studies in this paper. Section 3 covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis studies.
+The following section describes the data used for the studies in this paper as well as the process used for manipulating the data into a usable state.
+Section 3 covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis studies.
 Section 4 shows the results for each analysis.
-Section 5 is a discussion about the limitations of the study, the differences between the types of analysis performed, and suggestions about future work in the topic.
+Section 5 is a discussion about the comparative differences between the analyses performed, the limitations of the study, related work, and suggestions for future work in the topic.
 The final section concludes by summarizing the purpose and findings of this paper. 
 
 \section{Data}
 
 Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}.
 Revisions are used to assess the activity or health of a project.
-The assumption of the original paper was that revisions, no matter how far apart, indicate a healthy project.
 
-The \emph{popular-3k-python} subset of the Software Heritage graph data set \cite{pietri2019software} was used in both the original paper and this paper.
+The \emph{popular-3k-python} subset of the Software Heritage graph data set \cite{pietri2019software} contains the necessary information and was used in both the original paper and this paper (a reference to the data set can be found in the \emph{Artifacts} appendix of this paper).
 This data set \keanu{Doing a little bit of searching, it appears that dataset is more of a jargon term, so maybe we should try to stick with data set.} contains information on roughly 3000 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI between 2005 and 2018.
-The Software Heritage Graph offers a tutorial on how to import this data \cite{SQLdataset} as well as an explanation of the structure of the data set (a database schema can be seen in figure 2 of their document) \cite{pietri2019software}.
+The Software Heritage organization offers a tutorial on how to import this data by creating a postgreSQL database \cite{SQLdataset} as well as an explanation of the structure of the database (a database schema can be seen in figure 2 of their document \cite{pietri2019software}) .
 
-Most of the analyzed features or attributes of the projects in the original study are not present in the raw data set; data manipulation was required in order to calculate and extract the desired attributes of the projects.
+Though the data contains all the necessary information to perform survival analysis on, it requires manipulation into a new format before the analysis can be carried out. 
+For example, most of the analyzed features or attributes of the projects in the original paper are not present in the raw data set and need to be calculated.
+The work done in this study has been documented in a repository for the benefit of the reader.
+References to the repository can be found in appendix A below and the jupyter notebook used to perform the data manipulation can be found in Analysis\&Data/data-collection.ipynb. \keanu{Is there a more formal way to indicate this?}
+
+Queries were created in order to join the necessary tables and extract the relevant values.
+The queries accomplish the following objectives: they group records by the url field of the origin table (used to identify projects), filter records to be within the desired time frame, count distinct authors that have participated in a given project, record the host service (depicted by the type field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
+\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}
+
+The notebook uses popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results. \keanu{This section is getting long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
 
 % If we want filler we can add the schema diagram and talk about it.
 % \begin{figure}[h]
@@ -195,23 +204,9 @@ Most of the analyzed features or attributes of the projects in the original stud
 
 \section{Methods}
 
-Most of the work done in this study has been documented in a repository for the benefit of the reader.
-References to the repository and the data set used \keanu{and more?} can be found in appendix A below.
-\keanu{define artifacts?}
-
 \subsection{Replication}
 
-The first step in the replication was to obtain the data set and gain a proper understanding of it.
-A postgreSQL server was created and the data was imported following the tutorial provided by the Software Heritage organization \cite{SQLdataset}.
-The data set includes a load.sql file which creates the database according the the schema diagram mentioned in the \emph{Data} section of this paper.
-After analyzing this database, queries were created in order to join the necessary tables and extract the relevant values.
-The queries accomplish the following objectives: they group records by the url field of the origin table (used to identify projects), filter records to be within the desired time frame of May 9, 2005 to Jan. 1, 2018, count distinct authors that have participated in a given project, record the host service (depicted by the type field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
-\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}
-
-Inside of the repository there is a jupyter notebook (Analysis&Data/data-collection.ipynb).
-This notebook used popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results. \keanu{This section is getting really long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
-
-When applying survival analysis techniques, two critical concepts are events of interest and censoring.
+Two critical concepts in survival analysis are events of interest and censoring.
 In the case of this paper, as well as the original paper, the event of interest is the abandonment of a project.
 That is, if a project stops receiving revisions, it is considered abandoned.
 However, it is impossible to determine whether a project will receive revisions in the future, so a threshold of some kind is required to determine whether the project has indeed been abandoned for the purposes of the study.
@@ -228,8 +223,23 @@ Projects are censored if there is reason to believe that they would receive revi
 In this paper, any project with revisions on or after November 1, 2017 were censored. 
 \keanu{NOTE: Our censoring method may change. This is because the paper \cite{ali2020cheating} conflicted with the video presentation \cite{ali2020video} with respect to the censoring method. After further inspection, it appears the method in the paper is superior, as we only censor data that truly had revisions after the time frame (though this probably will not affect many of the data points)}
 The reason this is considered random censoring is because projects that are censored have varying start dates within the time frame of the study.
+The distribution of the project timeline can be seen in Figure \ref{fig:figure-1} which is a replication of Figure 1 in the original paper.
 
-\keanu{discuss methods for KM and Cox}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{figure1.jpg}
+\Description{}
+\caption{Graph of project timelines within the given time frame. The projects are ordered by duration and plotted from and to their respective beginning and ending dates.}
+\label{fig:figure-1}
+\end{figure}
+
+With duration values associated with each project and information about whether each project is censored or not, the survival analysis can be performed.
+The analysis was carried out using an R notebook (this can be found in the repository under Analysis\&Data/KM-estimation.rmd \keanu{should probably change R notebook name to include Cox, maybe just frequentist-analysis.rmd?}).
+
+\keanu{Manish, I need your help here because you know best how to explain what you did. For example, I am not sure how/if you used these references \cite{survivalRpackage, stel2011cox, stel2011kaplan}}
+
+% From proposal:
+% The K-M estimator is used to estimate the survival function. In our use case, the K-M estimator will estimate the probability that the duration of a project is longer than time $t$. The other analysis we will be performing is fitting a Cox Proportional-Hazards model. The Cox Proportional-Hazards model is a regression model that will allow us to investigate the association between the survival of a project and its key attributes.
 
 \subsection{Revision Frequency Analysis}
 
@@ -240,22 +250,16 @@ This paper seeks to explore this method of assessment.
 \subsection{Bayesian Survival Analysis}
 
 A common distribution for survival analysis is the exponential distribution \cite{kelter2020bayesian, rethinking}.
-\keanu{I don't have anything to write for this}
+
+
+% From proposal (slightly revised to make sense in this context):
+% [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, VCS of the project, use of multiple VCSs, team size, and revision frequency.
 
 \section{Results}
 
 \subsection{Replication}
 
 We found the results of our replication study to be extremely similar to those shown in the original paper.
-
-\keanu{Put images here}
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.5]{figure1.jpg}
-\Description{}
-\caption{Graph of project timelines within the given time frame. The projects are ordered by duration.}
-\label{fig:figure-1}
-\end{figure}
 
 \begin{figure*}[h]
     \centering
@@ -298,6 +302,16 @@ We found the results of our replication study to be extremely similar to those s
 \keanu{As you can see in the Cox table summary, the numbers in each category are slightly different than the original study,
  we plan to look further into what has caused this difference in values}
 
+\subsection{Revision Frequency Analysis}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.75]{commit_freq.png}
+\Description{}
+\caption{KM curve for the data by revision frequency \keanu{need a better caption}}
+\label{fig:freq}
+\end{figure}
+
 \subsection{Bayesian Survival Analysis}
 
 \keanu{Nothing for this yet}
@@ -306,13 +320,37 @@ We found the results of our replication study to be extremely similar to those s
 
 \subsection{Comparison of Analyses}
 
+\keanu{We are not ready for a comparison yet}
+
 \subsection{Limitations}
 
 \subsubsection{Limitations of the Methods}
 
-The method Ali \emph{et al.} used for censoring was slightly ambiguous.
+The original paper \cite{ali2020cheating} and the MSR presentation given \cite{ali2020video} have contradicting methods of censoring.
+The method discussed in the original paper was deemed superior and used in this paper.
+
+Many details of the original paper's methods are left out for the sake of brevity.
+This lead to assumptions being made when manipulating the data.
+Hence, there are variations in the values retrieved compared to the original paper.
+\keanu{NOTE: We are continuing to look into the possible causes of these inconsistencies. We will analyze our data-collection jupyter notebook and compare it with the end result of the R notebook to verify consistency between them before concluding it is an issue with the methods used}
+
+% This following section is from the proposal and should be
+% refined for the final report
+Survival analysis methods such as the K-M estimator and the Cox Proportional-Hazards model have limitations of their own. When applying the K-M estimator, it is common to use a log-rank test to test the significance between the two groups which are being compared. The log-rank test only tells you whether or not the probability of survival is statistically significant between the two groups and is not able to provide any information about the size of the difference between the two groups \cite{stel2011kaplan}. Additionally, the K-M estimator does not account for confounding factors \cite{stel2011kaplan}. In more traditional uses of the K-M estimator, an example of a confounding factor could be the age of the study participants.
+In our use case, we may have confounding factors such as the experience level of the developers or whether the developers received funding to work on the project.
+Neither of these factors are represented in the dataset.
+The Cox Proportional-Hazards model is used with the assumption that, over the period of observation, the hazards within each group are proportional \cite{stel2011cox}.
+If the assumption that the hazards within each group are proportional is not true, then the Cox Proportional-Hazards model will lead to incorrect estimates of the survival probability \cite{stel2011cox}.
+
+The Bayesian approach to survival analysis comes with its own limitations as well. As pointed out by Renganathan, Bayesian survival analysis can be subjective as the analyst places their own bias into the model when selecting the prior distributions \cite{renganathan2016overview}. In order to mitigate this bias, prior selection requires both epistemological and ontological reasoning.
 
 \subsubsection{Limitations of the Data}
+
+The data set in this study has been aggregated from multiple version control systems across the web over a large period of time.
+As such, the data set is not fully reproducible, as pointed out by the original authors of the Software Heritage organization \cite{pietri2019software}.
+Additionally, it cannot be ensured that the data contains a full history of the respective repositories.
+The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking.
+\keanu{add citation to perils of mining git?}
 
 There are inherent differences in the ways developers use the different hosting services \keanu{I have a strong intuition that this is the case, it looks like PyPi and debian don't have as much granularity compared to git and only show major releases, but I don't have anything to back this up, so maybe we can find something to cite for that}. This may skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product. This may hide information about the number of developers and the commit frequency.
 
@@ -337,7 +375,10 @@ This is to be expected with any SE study, as recent years have lead to an expone
 The data set contained many revisions (over 4 million) that were not associated with project URLs.
 It is unclear how this happened.
 
-\subsubsection{Replication Challenges}
+% Not sure we need this
+%\subsubsection{Replication Challenges}
+
+\subsection{Related Work}
 
 \subsection{Future Work}
 
