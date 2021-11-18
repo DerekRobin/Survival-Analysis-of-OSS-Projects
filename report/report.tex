@@ -196,15 +196,20 @@ Most of the analyzed features or attributes of the projects in the original stud
 \section{Methods}
 
 Most of the work done in this study has been documented in a repository for the benefit of the reader.
-A reference to this repository \keanu{and more?} can be found in appendix A below. \keanu{define artifacts?}
+References to the repository and the data set used \keanu{and more?} can be found in appendix A below.
+\keanu{define artifacts?}
 
 \subsection{Replication}
 
-The first step in the replication was to obtain the data set and gain a proper understanding of it. A postgreSQL server was created and the data was imported following the tutorial provided by the Software Heritage organization \cite{SQLdataset}.
+The first step in the replication was to obtain the data set and gain a proper understanding of it.
+A postgreSQL server was created and the data was imported following the tutorial provided by the Software Heritage organization \cite{SQLdataset}.
+The data set includes a load.sql file which creates the database according the the schema diagram mentioned in the \emph{Data} section of this paper.
+After analyzing this database, queries were created in order to join the necessary tables and extract the relevant values.
+The queries accomplish the following objectives: they group records by the url field of the origin table (used to identify projects), filter records to be within the desired timeframe of May 9, 2005 to Jan. 1, 2018, count distinct authors that have participated in a given project, record the host service (depicted by the type field of the origin table), record the earliest and latest revisions associated with each project url, and
+\keanu{should we show pseudocode of one of the queries?}
 
-Inspecting the provided schema
-
-Crafting queries to give us the necessary information (join necessary tables and group by appropriate fields, filter out dates that were out of range, create indicator field for censoring etc.)
+Inside of the repository there is a jupyter notebook (Analysis&Data/data-collection.ipynb).
+This notebook used popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results.
 
 Constructing additional fields (multi\_repo and duration) using pandas in python. Sort by duration and plot project from start to end month to recreate figure 1.
 
