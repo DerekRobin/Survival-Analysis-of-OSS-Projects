@@ -258,7 +258,10 @@ HR represents a relative risk of death that compares one instance of a binary fe
 \subsection{Revision Frequency Analysis}
 
 The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'', but never addresses this measurement.
-This paper seeks to explore this method of assessment.
+This paper seeks to explore this method of assessment. 
+We dichotomized the commit frequency into two groups depending on the frequency above and below the median. 
+We apply both the K-M estimator to and the Cox Proportional-Hazards model on the data to stratify the effects of high commit frequency on the overall health of an open source project.
+\manish{Not sure what we can add more, the process of using KM is already described in the above section}
 
 
 \subsection{Bayesian Survival Analysis}
