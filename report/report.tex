@@ -263,7 +263,17 @@ This paper seeks to explore this method of assessment.
 
 \subsection{Bayesian Survival Analysis}
 
-A common distribution for survival analysis is the exponential distribution \cite{kelter2020bayesian, rethinking}.
+This section focuses on the Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}. 
+Although applying the Bayesian approach to survival analysis is less common due to computational difficulties, it offers multiple advantages over the frequentist approach. 
+The Bayesian analysis uses posterior distributions of model parameters to conclude them. 
+These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) algorithms. 
+The statistical modelling language used for Bayesian analysis is Stan, specifically the rstan interface, and the R packages used are survival and tidybayes.
+
+We have used a parametric exponential model that assumes the survival times of a project y = (y1, y2, . . . , yn) is exponentially distributed with parameter \lambda.
+
+We have so far derived a posterior survival function for one of the project's attributes: the use of multiple VCSs. 
+We will be further deriving posterior survival functions for remaining attributes, namely major releases, VCS of the project, commit frequency and author count. 
+And then perform a comparison with Kaplan Meier results to draw answers to our research questions.
 
 
 % From proposal (slightly revised to make sense in this context):
