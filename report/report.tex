@@ -238,6 +238,20 @@ The analysis was carried out using an R notebook (this can be found in the repos
 
 \keanu{Manish, I need your help here because you know best how to explain what you did. For example, I am not sure how/if you used these references \cite{survivalRpackage, stel2011cox, stel2011kaplan}}
 
+The Kaplan-Meier estimator is a non-parametric estimation technique that allows us to for estimating the survival function. 
+The survival function is the probability that the project will survive past a particular time \textit{t}.  
+At t = 0, the Kaplan-Meier estimator is 1 and with t going to infinity, the estimator goes to 0.
+More precisely, S(t) (survival probability at time t) is given by  \textit{S(t) = p.1 * p.2 * … * p.t} while \textit{p.1} is the proportion of all projects which survived at the first time point, similarly, \textit{p.2} is the proportion of all projects which survived at second time point. 
+The KM estimator produces the curves which approach to true survival function for the data. 
+Another useful function in the survival analyses context is the hazard function, which describe the probability of an event or its hazard (survival in this case) of the project surviving up to that particular time point. 
+We are using the Cox proportional-Hazards model that allows us to fit a regression model to analyze health projects and their association with the key attributes. 
+For the analysis in R notebook, we are using \textit{survival} package for KM estimation and Cox regression model and \textit{survminer} package which provides functions for facilitating survival analysis and visualization. 
+To begin our analysis we used the \textit{Surv()} to build the standard survival object and the \textit{survfit()} function to produce the Kaplan-Meier estimates of the probability of survival over time and generated the K-M curves, with confidence Interval for all the four factored attributes described in the original paper using the \textit{ggsurvplot } function which plots the p-value of a log rank test as well. 
+The next step is to build the Cox proportional hazards using \textit{coxph} function and visualize them using the \textit{ggforest}. 
+It results in the hazards ratio (HR) which is derived from the model for all covariates that we included in the formula. 
+Briefly, an HR > 1 indicates an increased risk of death, on the other hand, HR < 1, on the other hand, indicates a decreased risk. 
+HR represents a relative risk of death that compares one instance of a binary feature (eg. yes or no) to the other instance.
+
 % From proposal:
 % The K-M estimator is used to estimate the survival function. In our use case, the K-M estimator will estimate the probability that the duration of a project is longer than time $t$. The other analysis we will be performing is fitting a Cox Proportional-Hazards model. The Cox Proportional-Hazards model is a regression model that will allow us to investigate the association between the survival of a project and its key attributes.
 
