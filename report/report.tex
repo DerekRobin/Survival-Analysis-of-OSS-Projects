@@ -188,11 +188,9 @@ References to the repository can be found in appendix \ref{artifacts} and the ju
 
 Queries were created in order to join the necessary tables and extract the relevant values.
 The queries accomplish the following objectives: they group records by the \emph{url} field of the origin table (used to identify projects), filter records to be within the desired time frame, count distinct authors that have participated in a given project, record the host service (depicted by the \emph{type} field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
-\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}
-\derek{I think that condensing the queries is not required. If Neil decides to look at them he should be able to understand what is going on. If anything we should add explanatory markdown to the notebook.}
+\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}\derek{I think that condensing the queries is not required. If Neil decides to look at them he should be able to understand what is going on. If anything we should add explanatory markdown to the notebook.}
 
-The notebook uses popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results.
-\keanu{This section is getting long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
+The notebook uses popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results. \keanu{This section is getting long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
 
 % If we want filler we can add the schema diagram and talk about it.
 % \begin{figure}[h]
@@ -213,7 +211,7 @@ That is, if a project stops receiving revisions, it is considered abandoned.
 However, it is impossible to determine whether a project will receive revisions in the future, so a threshold of some kind is required to determine whether the project has indeed been abandoned for the purposes of the study.
 This is where censoring is used.
 Censoring involves using data from subjects of a study for which the time of interest is not observed.
-There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring \keanu{or right censoring, we should flesh out the terminology as I have seen some conflicting definitions}. \derek{I would say just go with that Ali et al. say (type III/random censoring)}
+There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring. \keanu{or right censoring, we should flesh out the terminology as I have seen some conflicting definitions} \derek{I would say just go with that Ali et al. say (type III/random censoring)}
 Random censoring involves removing subjects (in this case projects) from a study at varying times relative to when they began being observed \cite{renganathan2016overview}. \keanu{find another citation to support this, http://www.stat.columbia.edu/~madigan/W2025/notes/survival.pdf mentions it, but refer to it as random type 1 right censoring}
 
 Ali \emph{et al.} set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
@@ -229,30 +227,31 @@ The distribution of the project timeline can be seen in Figure \ref{fig:figure-1
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.5]{figure1.jpg}
-\caption{Graph of project timelines within the given time frame. The projects are ordered by duration and plotted from and to their respective beginning and ending dates.}
+\caption{Graph of project timelines within the given time frame. The projects are ordered by duration and plotted from and to their respective start and end dates. Month 0 begins on May 9, 2005, and Month 165 concludes on January 1, 2018.}
 \label{fig:figure-1}
 \end{figure}
 
 Using both the calculated duration associated with each project and censoring status of each project, the survival analysis can be performed.
-The analysis was carried out using an R notebook (this can be found in the repository under Analysis\&Data/KM-estimation.rmd \keanu{should probably change R notebook name to include Cox, maybe just frequentist-analysis.rmd?}).
+The analysis was carried out using an R notebook (this can be found in the project repository under Analysis\&Data/frequentist-analysis.rmd).
 
 \keanu{Manish, I need your help here because you know best how to explain what you did. For example, I am not sure how/if you used these references \cite{survivalRpackage, stel2011cox, stel2011kaplan}}
 
-The K-M estimator is a non-parametric estimation technique that allows us to estimate the survival function, $S(t)$. 
-The survival function is the probability that a given project will survive past a particular time $t$.  
+The K-M estimator is a non-parametric estimation technique that allows for estimating the survival function, $S(t)$. 
+The survival function gives the probability that a given project will survive past a particular time $t$.
 At $t = 0$, the K-M estimator is 1 and as $t$ approaches infinity, so does the K-M estimator.
-More precisely, $S(t)$ is given by  $S(t) = p_1 \times p_2 \times \dots \times p_t$, while $p_1$ is the proportion of all projects which survived at the first time point, similarly, $p_2$ is the proportion of all projects which survived at the second time point. 
+More precisely, $S(t)$ is given by  $S(t) = p_0 \times p_1 \times p_2 \times \dots \times p_t$, where $p_i$ is the proportion of all projects that survived at the $i^{th}$ time step.\keanu{citation?}
 The K-M estimator produces curves which approach the true survival function of the data.
 
-\derek{This next sentence reads really weird but I am unsure how to reword it}
-Another useful function in survival analyses is the hazard function, which describe the probability of an event or its hazard (survival in this case) of the project surviving up to that particular time point.
-We are using the Cox proportional-Hazards model which allows us to fit a regression model in order to better understand how the health of projects relates to their key attributes. 
-In the previously mentioned R notebook, we make use of the \lstinline[language=R]!survival! package for K-M estimation and Cox proportional-Hazards model. Additionally, we make use of the \lstinline[language=R]!survminer! package which provides functions for facilitating survival analysis and visualization. 
-The analysis begins by using the \lstinline[language=R]!Surv()! method to build the standard survival object and the \lstinline[language=R]!survfit()! method to produce the K-M estimates of the probability of survival over time. K-M curves with their associated confidence interval for all the four attributes described in the original paper are generated via the \lstinline[language=R]!ggsurvplot()! function which, in addition, plots the p-value of a log rank test. 
-The next step is to build the Cox proportional hazards using \lstinline[language=R]!coxph()! function and visualize them using the \lstinline[language=R]!ggforest!. 
-This analysis results in the hazards ratio (HR) which is derived from the model for all covariates that we included in the formula. 
-Briefly, a $HR > 1$ indicates an increased risk of death, on the other hand, $HR < 1$, indicates a decreased risk of death. 
-As such, the HR represents a relative risk of death that compares one instance of a binary feature (eg. yes or no) to the other instance.
+The hazard function is another useful function in survival analysis. It describes the probability of the event of interest or hazard (project abandonment in this case) occurring up to a given time point.
+The original paper uses the Cox Proportional-Hazards model which allows for fitting a regression model in order to better understand how the health of projects relates to their key attributes. 
+The previously mentioned R notebook makes use of the \lstinline[language=R]!survival! package for K-M estimation and Cox Proportional-Hazards model.
+It also utilizes the \lstinline[language=R]!survminer! package which provides functions for facilitating survival analysis and visualization. 
+The analysis begins by using the \lstinline[language=R]!Surv()! method to build the standard survival object and the \lstinline[language=R]!survfit()! method to produce the K-M estimates of the probability of survival over time.
+K-M curves with their associated confidence interval for all the four attributes described in the original paper are generated via the \lstinline[language=R]!ggsurvplot()! function which also plots the p-value of a log rank test. 
+The next step was to build the Cox proportional hazards using the \lstinline[language=R]!coxph()! function and visualize them using \lstinline[language=R]!ggforest()!. 
+This analysis results in the hazards ratio (HR) which is derived from the model for all covariates that are included in the formula. 
+Briefly, a $HR > 1$ indicates an increased risk of abandonment, on the other hand, $HR < 1$, indicates a decreased risk of abandonment. 
+As such, the HR represents a relative risk of abandonment that compares one instance of a binary feature (e.g. yes or no) to the other instance.
 
 % From proposal:
 % The K-M estimator is used to estimate the survival function. In our use case, the K-M estimator will estimate the probability that the duration of a project is longer than time $t$. The other analysis we will be performing is fitting a Cox Proportional-Hazards model. The Cox Proportional-Hazards model is a regression model that will allow us to investigate the association between the survival of a project and its key attributes.
