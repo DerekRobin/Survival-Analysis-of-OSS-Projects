@@ -12,10 +12,10 @@
 \usepackage{parskip}
 \setlength{\parskip}{1em}
 \usepackage[bottom]{footmisc}
-\usepackage{url}
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{totpages}
+\usepackage{subfigure}
 
 %% \BibTeX command to typeset BibTeX logo in the docs
 \AtBeginDocument{%
@@ -149,16 +149,15 @@ Understanding which attributes of an OSS project lead to its longevity is what m
 Ali \emph{et al.} specifically studied the effect of the following attributes on the survival of OSS Python projects: publishing major releases, the use of multiple hosting services, the type of version control system (VCS), and the size of the volunteer team.
 
 Survival analysis is a set of methods used to determine how long an entity will live (or the time to a given event) and is most often used in the medical field.
-\keanu{do we need to find a citation for this claim/definition?}
-For example, survival analysis techniques can determine the probability that a patient will survive when given a certain treatment. 
-Ali \emph{et al.} use a frequentist approach to survival analysis with methods including the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model.
+For example, survival analysis techniques can determine the probability that a patient will survive past a certain time when given a certain treatment. 
+Ali \emph{et al.} use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
 Though there are advantages to using such approaches \keanu{list some advantages and cite}, another approach to survival analysis, Bayesian analysis, has its own set of advantages, namely \keanu{find the advantages, list them, cite}.
 
 The authors of this paper resonate with Ali \emph{et al.'s} motivation. 
 This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on)  and seeks to determine if there are gaps or shortcomings in their analysis.
 This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease.
-For the sake of the authors' curiousity, an additional attribute of the data was analyzed: the commit frequency of the project.
-In addition to the replication, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of frequentist and Bayesian approaches in the same domain.
+For the sake of the authors' curiosity, an additional attribute of the data was analyzed: the commit frequency of the project.
+In addition to the replication, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of the frequentist and Bayesian approaches in the same domain.
 Thus, the research questions this paper answers are as follows:
 
 \begin{questions}
@@ -179,17 +178,17 @@ Performing survival analysis of OSS projects requires a data set that records th
 Revisions are used to assess the activity or health of a project.
 
 The \emph{popular-3k-python} subset of the Software Heritage graph data set \cite{pietri2019software} contains the necessary information and was used in both the original paper and this paper (a reference to the data set can be found in the \emph{Artifacts} appendix of this paper).
-This data set \keanu{Doing a little bit of searching, it appears that dataset is more of a jargon term, so maybe we should try to stick with data set.} contains information on roughly 3000 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI between 2005 and 2018.
+This data set contains information on roughly 3000 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI between 2005 and 2018.
 The Software Heritage organization offers a tutorial on how to import this data by creating a postgreSQL database \cite{SQLdataset} as well as an explanation of the structure of the database (a database schema can be seen in figure 2 of their document \cite{pietri2019software}) .
 
-Though the data contains all the necessary information to perform survival analysis on, it requires manipulation into a new format before the analysis can be carried out. 
+Though the data contains all the necessary information to perform survival analysis on, it requires additional manipulation into a new format before the analysis can be carried out. 
 For example, most of the analyzed features or attributes of the projects in the original paper are not present in the raw data set and need to be calculated.
 The work done in this study has been documented in a repository for the benefit of the reader.
-References to the repository can be found in appendix A below and the jupyter notebook used to perform the data manipulation can be found in Analysis\&Data/data-collection.ipynb. \keanu{Is there a more formal way to indicate this?}
+References to the repository can be found in appendix A below and the jupyter notebook used to perform the data manipulation can be found in Analysis\&Data/data-collection.ipynb. \keanu{Is there a more formal way to indicate this?}\derek{I think this is fine}
 
 Queries were created in order to join the necessary tables and extract the relevant values.
 The queries accomplish the following objectives: they group records by the url field of the origin table (used to identify projects), filter records to be within the desired time frame, count distinct authors that have participated in a given project, record the host service (depicted by the type field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
-\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}
+\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}\derek{I think that condensing the queries is not required. If Neil decides to look at them he should be able to understand what is going on. If anything we should add explanatory markdown to the notebook.}
 
 The notebook uses popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results. \keanu{This section is getting long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
 
@@ -212,12 +211,12 @@ That is, if a project stops receiving revisions, it is considered abandoned.
 However, it is impossible to determine whether a project will receive revisions in the future, so a threshold of some kind is required to determine whether the project has indeed been abandoned for the purposes of the study.
 This is where censoring is used.
 Censoring involves using data from subjects of a study for which the time of interest is not observed.
-There are multiple types of censoring in survival analysis, but this study uses random censoring \keanu{or right censoring, we should flesh out the terminology as I have seen some conflicting definitions}.
+There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring \keanu{or right censoring, we should flesh out the terminology as I have seen some conflicting definitions}. \derek{I would say just go with that Ali et al. say (type III/random censoring)}
 Random censoring involves removing subjects (in this case projects) from a study at varying times relative to when they began being observed \cite{renganathan2016overview}. \keanu{find another citation to support this, http://www.stat.columbia.edu/~madigan/W2025/notes/survival.pdf mentions it, but refer to it as random type 1 right censoring}
 
 Ali \emph{et al.} set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
-This paper uses the same time frame and determines exact beginning and ending dates.
-Using January 1, 2018 as a strict end date and maintaining the study duration as 4620 days (165 months as defined), the beginning date is found to be May 9, 2005.
+This paper uses the same time frame and determines exact start and end dates.
+Using January 1, 2018 as a strict end date and maintaining the study duration as 4620 days (165 months as defined), the start date is found to be May 9, 2005.
 
 Projects are censored if there is reason to believe that they would receive revisions after the end of the time frame (i.e. the last \emph{observed} revision is unlikely to be the last revision of the project).
 In this paper, any project with revisions on or after November 1, 2017 were censored. 
@@ -225,44 +224,42 @@ In this paper, any project with revisions on or after November 1, 2017 were cens
 The reason this is considered random censoring is because projects that are censored have varying start dates within the time frame of the study.
 The distribution of the project timeline can be seen in Figure \ref{fig:figure-1} which is a replication of Figure 1 in the original paper.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=0.5]{figure1.jpg}
-\Description{}
 \caption{Graph of project timelines within the given time frame. The projects are ordered by duration and plotted from and to their respective beginning and ending dates.}
 \label{fig:figure-1}
 \end{figure}
 
-With duration values associated with each project and information about whether each project is censored or not, the survival analysis can be performed.
+Using both the calculated duration associated with each project and censoring status of each project, the survival analysis can be performed.
 The analysis was carried out using an R notebook (this can be found in the repository under Analysis\&Data/KM-estimation.rmd \keanu{should probably change R notebook name to include Cox, maybe just frequentist-analysis.rmd?}).
 
 \keanu{Manish, I need your help here because you know best how to explain what you did. For example, I am not sure how/if you used these references \cite{survivalRpackage, stel2011cox, stel2011kaplan}}
 
-The Kaplan-Meier estimator is a non-parametric estimation technique that allows us to for estimating the survival function. 
-The survival function is the probability that the project will survive past a particular time \textit{t}.  
-At t = 0, the Kaplan-Meier estimator is 1 and with t going to infinity, the estimator goes to 0.
-More precisely, S(t) (survival probability at time t) is given by  \textit{S(t) = p.1 * p.2 * … * p.t} while \textit{p.1} is the proportion of all projects which survived at the first time point, similarly, \textit{p.2} is the proportion of all projects which survived at second time point. 
-The KM estimator produces the curves which approach to true survival function for the data. 
-Another useful function in the survival analyses context is the hazard function, which describe the probability of an event or its hazard (survival in this case) of the project surviving up to that particular time point. 
-We are using the Cox proportional-Hazards model that allows us to fit a regression model to analyze health projects and their association with the key attributes. 
-For the analysis in R notebook, we are using \textit{survival} package for KM estimation and Cox regression model and \textit{survminer} package which provides functions for facilitating survival analysis and visualization. 
-To begin our analysis we used the \textit{Surv()} to build the standard survival object and the \textit{survfit()} function to produce the Kaplan-Meier estimates of the probability of survival over time and generated the K-M curves, with confidence Interval for all the four factored attributes described in the original paper using the \textit{ggsurvplot } function which plots the p-value of a log rank test as well. 
-The next step is to build the Cox proportional hazards using \textit{coxph} function and visualize them using the \textit{ggforest}. 
-It results in the hazards ratio (HR) which is derived from the model for all covariates that we included in the formula. 
-Briefly, an HR > 1 indicates an increased risk of death, on the other hand, HR < 1, on the other hand, indicates a decreased risk. 
-HR represents a relative risk of death that compares one instance of a binary feature (eg. yes or no) to the other instance.
+The K-M estimator is a non-parametric estimation technique that allows us to estimate the survival function, $S(t)$. 
+The survival function is the probability that a given project will survive past a particular time $t$.  
+At $t = 0$, the K-M estimator is 1 and as $t$ approaches infinity, so does the K-M estimator.
+More precisely, $S(t)$ is given by  $S(t) = p_1 \times p_2 \times \dots \times p_t$, while $p_1$ is the proportion of all projects which survived at the first time point, similarly, $p_2$ is the proportion of all projects which survived at the second time point. 
+The K-M estimator produces curves which approach the true survival function of the data.
+
+\derek{This next sentence reads really weird but I am unsure how to reword it}
+Another useful function in survival analyses is the hazard function, which describe the probability of an event or its hazard (survival in this case) of the project surviving up to that particular time point.
+We are using the Cox proportional-Hazards model which allows us to fit a regression model in order to better understand how the health of projects relates to their key attributes. 
+In the previously mentioned R notebook, we make use of the \lstinline[language=R]!survival! package for K-M estimation and Cox proportional-Hazards model. Additionally, we make use of the \lstinline[language=R]!survminer! package which provides functions for facilitating survival analysis and visualization. 
+The analysis begins by using the \lstinline[language=R]!Surv()! method to build the standard survival object and the \lstinline[language=R]!survfit()! method to produce the K-M estimates of the probability of survival over time. K-M curves with their associated confidence interval for all the four attributes described in the original paper are generated via the \lstinline[language=R]!ggsurvplot()! function which, in addition, plots the p-value of a log rank test. 
+The next step is to build the Cox proportional hazards using \lstinline[language=R]!coxph()! function and visualize them using the \lstinline[language=R]!ggforest!. 
+This analysis results in the hazards ratio (HR) which is derived from the model for all covariates that we included in the formula. 
+Briefly, a $HR > 1$ indicates an increased risk of death, on the other hand, $HR < 1$, indicates a decreased risk of death. 
+As such, the HR represents a relative risk of death that compares one instance of a binary feature (eg. yes or no) to the other instance.
 
 % From proposal:
 % The K-M estimator is used to estimate the survival function. In our use case, the K-M estimator will estimate the probability that the duration of a project is longer than time $t$. The other analysis we will be performing is fitting a Cox Proportional-Hazards model. The Cox Proportional-Hazards model is a regression model that will allow us to investigate the association between the survival of a project and its key attributes.
-
 \subsection{Revision Frequency Analysis}
 
 The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'', but never addresses this measurement.
 This paper seeks to explore this method of assessment. 
 We dichotomized the commit frequency into two groups depending on the frequency above and below the median. 
 We apply both the K-M estimator to and the Cox Proportional-Hazards model on the data to stratify the effects of high commit frequency on the overall health of an open source project.
-\manish{Not sure what we can add more, the process of using KM is already described in the above section}
-
 
 \subsection{Bayesian Survival Analysis}
 
@@ -270,25 +267,21 @@ This section focuses on the Bayesian approach to survival analysis as outlined i
 Although applying the Bayesian approach to survival analysis is less common due to computational difficulties, it offers multiple advantages over the frequentist approach. 
 The Bayesian analysis uses posterior distributions of model parameters to conclude them. 
 These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) algorithms. 
-The statistical modelling language used for Bayesian analysis is Stan, specifically the rstan interface, and the R packages used are survival and tidybayes.
+The statistical modelling language used for Bayesian analysis is Stan, specifically the \lstinline!rstan! interface. In addition to \lstinline!rstan!, the R packages \lstinline[language=R]!tidybayes! and \lstinline[language=R]!tidyverse! were used to aid in visualization and data manipulation.
 
-We have used a parametric exponential model that assumes the survival times of a project y = (y1, y2, . . . , yn) is exponentially distributed with parameter \lambda.
-
+We have used a parametric exponential model that assumes the survival times of a project $y = (y1, y2, \dots , yn)$ are exponentially distributed with parameter $\lambda$.
 We have so far derived a posterior survival function for one of the project's attributes: the use of multiple VCSs. 
-We will be further deriving posterior survival functions for remaining attributes, namely major releases, VCS of the project, commit frequency and author count. 
-And then perform a comparison with Kaplan Meier results to draw answers to our research questions.
-
+We will be further deriving posterior survival functions for the remaining attributes, namely major releases, VCS of the project, commit frequency and author count. 
 
 % From proposal (slightly revised to make sense in this context):
 % [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, VCS of the project, use of multiple VCSs, team size, and revision frequency.
-
 \section{Results}
 
 \subsection{Replication}
 
 We found the results of our replication study to be extremely similar to those shown in the original paper.
 
-\begin{figure*}[h]
+\begin{figure*}[ht]
     \centering
     \begin{subfigure}
         \centering
@@ -316,10 +309,9 @@ We found the results of our replication study to be extremely similar to those s
     \label{fig:KM curves}
 \end{figure*}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
-\includegraphics[scale=0.75]{cox-ratios.png}
-\Description{}
+\includegraphics[scale=0.5]{cox-ratios.png}
 \caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
 \label{fig:Cox}
 \end{figure}
@@ -331,17 +323,24 @@ We found the results of our replication study to be extremely similar to those s
 
 \subsection{Revision Frequency Analysis}
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.75]{commit_freq.png}
-\Description{}
-\caption{KM curve for the data by revision frequency \keanu{need a better caption}}
-\label{fig:freq}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{commit_freq.png}
+    \caption{KM curve for the data by revision frequency \keanu{need a better caption}}
+    \label{fig:freq}
 \end{figure}
 
 \subsection{Bayesian Survival Analysis}
 
-\keanu{Nothing for this yet}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{multi_repo_bayes.png}
+    \caption{Posterior survival functions of projects hosted on multiple repositories and projects hosted on a single repository}
+    \label{fig:multi_repo_bayes}
+\end{figure}
+
+Shown in figure \ref{fig:multi_repo_bayes} are the posterior survival functions for projects host on multiple repositories versus those hosted on single repositories. The dotted lines represent the  2.5\% and 97.5\%
+quantiles while the middle solid line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). The remaining lines all represent valid posterior survival functions.
 
 \section{Discussion}
 
@@ -432,5 +431,3 @@ Data Set: \url{https://annex.softwareheritage.org/public/dataset/graph/latest/po
 
 \end{document}
 \endinput
-%%
-%% End of file `sample-manuscript.tex'.
