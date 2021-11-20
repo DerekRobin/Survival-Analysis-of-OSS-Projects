@@ -151,7 +151,9 @@ Ali \emph{et al.} specifically studied the effect of the following attributes on
 Survival analysis is a set of methods used to determine how long an entity will live (or the time to a given event) and is most often used in the medical field.
 For example, survival analysis techniques can determine the probability that a patient will survive past a certain time when given a certain treatment. 
 Ali \emph{et al.} use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
-Though there are advantages to using such approaches \keanu{list some advantages and cite}, another approach to survival analysis, Bayesian analysis, has its own set of advantages. \keanu{find the advantages, list them, cite}.
+Though frequentist approaches are considered to be unbiased, minimal in variance, efficient, and generally sufficient, some consider them to lack robustness \cite{renganathan2016overview}.
+Another approach to survival analysis, Bayesian analysis, is considered to generate more robust models that perform well under the presence of new data being introduced and are generally easier to interpret results from \cite{renganathan2016overview}.
+\keanu{We will flesh this discussion out a bit more and use more citations}
 
 The authors of this paper resonate with Ali \emph{et al.'s} motivation. 
 This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on)  and seeks to determine if there are gaps or shortcomings in their analysis.
@@ -270,7 +272,7 @@ The Bayesian analysis uses posterior distributions of model parameters to conclu
 These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) algorithms. 
 The statistical modelling language used for Bayesian analysis is Stan, specifically the \lstinline!rstan! interface. In addition to \lstinline!rstan!, the R packages \lstinline[language=R]!tidybayes! and \lstinline[language=R]!tidyverse! were used to aid in visualization and data manipulation.
 
-We have used a parametric exponential model that assumes the survival times of a project $y = (y1, y2, \dots , yn)$ are exponentially distributed with parameter $\lambda$.
+This study used a parametric exponential model that assumes the survival times of a project $y = (y1, y2, \dots , yn)$ are exponentially distributed with parameter $\lambda$.
 We have so far derived a posterior survival function for one of the project's attributes: the use of multiple VCSs. 
 We will be further deriving posterior survival functions for the remaining attributes, namely major releases, VCS of the project, commit frequency and author count. 
 
