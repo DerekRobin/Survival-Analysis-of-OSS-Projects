@@ -418,15 +418,17 @@ It is unclear how this happened.
 \subsection{Related Work} \label{related}
 
 Although the application of survival analysis is new to predicting the health of software repositories, several studies have attempted to analyze the health of open-source projects using different techniques. 
-Xia \emph{et al.} \cite{xia2020predicting} applied DECART hyperparameter optimization to predict health indicators of open-source projects and observed that DECART reduced prediction errors of estimation algorithms by 10\%. 
-Norick \emph{et al.} \cite{norick2010effects} analyzed open-source projects using code quality measures and observed no significant evidence that the number of committing developers affects software quality. 
-Another study by Caivano \emph{et al.} \cite{caivano2021exploratory} investigated the spread and evolution of dead code by analyzing commit histories of open-source Java applications. 
+Xia \emph{et al.} applied DECART hyperparameter optimization to predict health indicators of open-source projects and observed that DECART reduced prediction errors of certain estimation algorithms by 10\% \cite{xia2020predicting}. 
+Norick \emph{et al.} analyzed open-source projects using code quality measures and observed no significant evidence that the number of committing developers affects software quality \cite{norick2010effects}. 
+Another study by Caivano \emph{et al.} investigated the spread and evolution of dead code by analyzing commit histories of open-source Java applications \cite{caivano2021exploratory}. 
 They found that dead methods generally survive long, are rarely revived, and that a majority have been dead since their creation.
 
-An application of survival analysis to software was a study by Samoladas \emph{et al.} \cite{samoladas2010survival} which predicted future development of FLOSS projects using project duration, application domain and the number of committers as predictors. 
+An application of survival analysis to software was a study by Samoladas \emph{et al.} which predicted future development of FLOSS projects using project duration, application domain. and the number of committers as predictors \cite{samoladas2010survival}. 
 The study calculated the probability of termination or continuation for FLOSS projects and quantified the benefit of adding more committers.
 
 \subsection{Future Work} \label{future}
+
+\keanu{Just a couple of ideas so far}
 
 Increase the time frame of the study (the original paper could not do this because the paper was written in 2018).
 
