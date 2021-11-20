@@ -141,7 +141,7 @@
 %% information and builds the first part of the formatted document.
 \maketitle
 
-\section{Introduction}
+\section{Introduction} \label{intro}
 The developers of Open Source Software (OSS) projects are often part of decentralized and geographically distributed teams of volunteers.
 As these developers volunteer their free time to build such OSS projects, they likely want to be confident that the projects they work on will not become inactive.
 If OSS developers are aware of key attributes that are associated with long-lasting projects, they can make informed assessments of a given project before devoting their time to it or they can strive to make their own projects exhibit those attributes.
@@ -151,7 +151,7 @@ Ali \emph{et al.} specifically studied the effect of the following attributes on
 Survival analysis is a set of methods used to determine how long an entity will live (or the time to a given event) and is most often used in the medical field.
 For example, survival analysis techniques can determine the probability that a patient will survive past a certain time when given a certain treatment. 
 Ali \emph{et al.} use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
-Though there are advantages to using such approaches \keanu{list some advantages and cite}, another approach to survival analysis, Bayesian analysis, has its own set of advantages, namely \keanu{find the advantages, list them, cite}.
+Though there are advantages to using such approaches \keanu{list some advantages and cite}, another approach to survival analysis, Bayesian analysis, has its own set of advantages. \keanu{find the advantages, list them, cite}.
 
 The authors of this paper resonate with Ali \emph{et al.'s} motivation. 
 This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on)  and seeks to determine if there are gaps or shortcomings in their analysis.
@@ -167,30 +167,32 @@ Thus, the research questions this paper answers are as follows:
 \end{questions}
 
 The following section describes the data used for the studies in this paper as well as the process used for manipulating the data into a usable state.
-Section 3 covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis studies.
-Section 4 shows the results for each analysis.
-Section 5 is a discussion about the comparative differences between the analyses performed, the limitations of the study, related work, and suggestions for future work in the topic.
+Section \ref{methods} covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis.
+Section \ref{results} shows the results for each analysis.
+Section \ref{discussion} is a discussion about the comparative differences between the analyses performed, the limitations of the study, related work, and suggestions for future work in the topic.
 The final section concludes by summarizing the purpose and findings of this paper. 
 
-\section{Data}
+\section{Data} \label{data}
 
 Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}.
 Revisions are used to assess the activity or health of a project.
 
-The \emph{popular-3k-python} subset of the Software Heritage graph data set \cite{pietri2019software} contains the necessary information and was used in both the original paper and this paper (a reference to the data set can be found in the \emph{Artifacts} appendix of this paper).
+The \emph{popular-3k-python} subset of the Software Heritage graph data set \cite{pietri2019software} contains the necessary information and was used in both the original paper and this paper (a reference to the data set can be found in appendix \ref{artifacts} of this paper).
 This data set contains information on roughly 3000 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI between 2005 and 2018.
 The Software Heritage organization offers a tutorial on how to import this data by creating a postgreSQL database \cite{SQLdataset} as well as an explanation of the structure of the database (a database schema can be seen in figure 2 of their document \cite{pietri2019software}) .
 
 Though the data contains all the necessary information to perform survival analysis on, it requires additional manipulation into a new format before the analysis can be carried out. 
 For example, most of the analyzed features or attributes of the projects in the original paper are not present in the raw data set and need to be calculated.
 The work done in this study has been documented in a repository for the benefit of the reader.
-References to the repository can be found in appendix A below and the jupyter notebook used to perform the data manipulation can be found in Analysis\&Data/data-collection.ipynb. \keanu{Is there a more formal way to indicate this?}\derek{I think this is fine}
+References to the repository can be found in appendix \ref{artifacts} and the jupyter notebook used to perform the data manipulation can be found in Analysis\&Data/data-collection.ipynb.
 
 Queries were created in order to join the necessary tables and extract the relevant values.
-The queries accomplish the following objectives: they group records by the url field of the origin table (used to identify projects), filter records to be within the desired time frame, count distinct authors that have participated in a given project, record the host service (depicted by the type field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
-\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}\derek{I think that condensing the queries is not required. If Neil decides to look at them he should be able to understand what is going on. If anything we should add explanatory markdown to the notebook.}
+The queries accomplish the following objectives: they group records by the \emph{url} field of the origin table (used to identify projects), filter records to be within the desired time frame, count distinct authors that have participated in a given project, record the host service (depicted by the \emph{type} field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
+\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}
+\derek{I think that condensing the queries is not required. If Neil decides to look at them he should be able to understand what is going on. If anything we should add explanatory markdown to the notebook.}
 
-The notebook uses popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results. \keanu{This section is getting long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
+The notebook uses popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results.
+\keanu{This section is getting long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
 
 % If we want filler we can add the schema diagram and talk about it.
 % \begin{figure}[h]
@@ -201,7 +203,7 @@ The notebook uses popular python libraries such as psycopg2, pandas, numpy, and 
 % \label{fig:Schema}
 % \end{figure}
 
-\section{Methods}
+\section{Methods} \label{methods}
 
 \subsection{Replication}
 
@@ -275,7 +277,7 @@ We will be further deriving posterior survival functions for the remaining attri
 
 % From proposal (slightly revised to make sense in this context):
 % [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, VCS of the project, use of multiple VCSs, team size, and revision frequency.
-\section{Results}
+\section{Results} \label{results}
 
 \subsection{Replication}
 
@@ -342,15 +344,15 @@ We found the results of our replication study to be extremely similar to those s
 Shown in figure \ref{fig:multi_repo_bayes} are the posterior survival functions for projects host on multiple repositories versus those hosted on single repositories. The dotted lines represent the  2.5\% and 97.5\%
 quantiles while the middle solid line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). The remaining lines all represent valid posterior survival functions.
 
-\section{Discussion}
+\section{Discussion} \label{discussion}
 
-\subsection{Comparison of Analyses}
+\subsection{Comparison of Analyses} \label{compare}
 
-\keanu{We are not ready for a comparison yet}
+\keanu{We are not quite ready for a comparison yet}
 
-\subsection{Limitations}
+\subsection{Limitations} \label{limit}
 
-\subsubsection{Limitations of the Methods}
+\subsubsection{Limitations of the Methods} \label{limit-methods}
 
 The original paper \cite{ali2020cheating} and the MSR presentation given \cite{ali2020video} have contradicting methods of censoring.
 The method discussed in the original paper was deemed superior and used in this paper.
@@ -362,13 +364,19 @@ Hence, there are variations in the values retrieved compared to the original pap
 
 % This following section is from the proposal and should be
 % refined for the final report
-Survival analysis methods such as the K-M estimator and the Cox Proportional-Hazards model have limitations of their own. When applying the K-M estimator, it is common to use a log-rank test to test the significance between the two groups which are being compared. The log-rank test only tells you whether or not the probability of survival is statistically significant between the two groups and is not able to provide any information about the size of the difference between the two groups \cite{stel2011kaplan}. Additionally, the K-M estimator does not account for confounding factors \cite{stel2011kaplan}. In more traditional uses of the K-M estimator, an example of a confounding factor could be the age of the study participants.
-In our use case, we may have confounding factors such as the experience level of the developers or whether the developers received funding to work on the project.
-Neither of these factors are represented in the dataset.
+Survival analysis methods such as the K-M estimator and the Cox Proportional-Hazards model have limitations of their own.
+When applying the K-M estimator, it is common to use a log-rank test to test the significance between the two groups which are being compared.
+The log-rank test only indicates whether or not the probability of survival is statistically significant between the two groups and is not able to provide any information about the size of the difference between the two groups \cite{stel2011kaplan}.
+Additionally, the K-M estimator does not account for confounding factors \cite{stel2011kaplan}.
+In more traditional uses of the K-M estimator, an example of a confounding factor could be the age of the study participants.
+In the case of this study, there may be confounding factors such as the experience level of the developers or whether the developers received funding to work on the project.
+Neither of these factors are represented in the data set.
 The Cox Proportional-Hazards model is used with the assumption that, over the period of observation, the hazards within each group are proportional \cite{stel2011cox}.
-If the assumption that the hazards within each group are proportional is not true, then the Cox Proportional-Hazards model will lead to incorrect estimates of the survival probability \cite{stel2011cox}.
+If the assumption that the hazards within each group are proportional is not true, then the Cox Proportional-Hazards model will lead to incorrect estimates of the survival probability \cite{stel2011cox}. \keanu{we should assure the reader that it holds true in our case}
 
-The Bayesian approach to survival analysis comes with its own limitations as well. As pointed out by Renganathan, Bayesian survival analysis can be subjective as the analyst places their own bias into the model when selecting the prior distributions \cite{renganathan2016overview}. In order to mitigate this bias, prior selection requires both epistemological and ontological reasoning.
+The Bayesian approach to survival analysis comes with its own limitations as well.
+As pointed out by Renganathan, Bayesian survival analysis can be subjective as the analyst places their own bias into the model when selecting the prior distributions \cite{renganathan2016overview}.
+In order to mitigate this bias, prior selection requires both epistemological and ontological reasoning. \keanu{We need to flesh out our reasoning more, probably written in the methods, but then perhaps referred to here}
 
 \subsubsection{Limitations of the Data}
 
@@ -376,9 +384,12 @@ The data set in this study has been aggregated from multiple version control sys
 As such, the data set is not fully reproducible, as pointed out by the original authors of the Software Heritage organization \cite{pietri2019software}.
 Additionally, it cannot be ensured that the data contains a full history of the respective repositories.
 The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking.
-\keanu{add citation to perils of mining git?}
+\keanu{add citation to perils of mining git}
 
-There are inherent differences in the ways developers use the different hosting services \keanu{I have a strong intuition that this is the case, it looks like PyPi and debian don't have as much granularity compared to git and only show major releases, but I don't have anything to back this up, so maybe we can find something to cite for that}. This may skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product. This may hide information about the number of developers and the commit frequency.
+There are inherent differences in the ways developers use the different hosting services \keanu{I have a strong intuition that this is the case, it looks like PyPi and debian don't have as much granularity compared to git and only show major releases, but I don't have anything to back this up, so maybe we can find something to cite for that}.
+This could skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product.
+This may hide information about the number of developers and the commit frequency.
+Additionally, the potential confounding factors mentioned in section \ref{limit-methods} are not represented in this data set.
 
 It may also be worth noting that this data is only for Python projects and that it is possible that different behaviours are associated with development in different languages.
 Python is a relatively easy language to use, and can often be used for small tasks that are not maintained.
@@ -404,15 +415,15 @@ It is unclear how this happened.
 % Not sure we need this
 %\subsubsection{Replication Challenges}
 
-\subsection{Related Work}
+\subsection{Related Work} \label{related}
 
-\subsection{Future Work}
+\subsection{Future Work} \label{future}
 
 Increase the time frame of the study (the original paper could not do this because the paper was written in 2018).
 
 Perform separate studies on each hosting service to remove variability in the way the services are utilized.
 
-\section{Conclusion}
+\section{Conclusion} \label{conclusion}
 
 %%
 %% The next two lines define the bibliography style to be used, and
@@ -424,7 +435,7 @@ Perform separate studies on each hosting service to remove variability in the wa
 %% If your work has an appendix, this is the place to put it.
 \appendix
 
-\section{Artifacts}
+\section{Artifacts} \label{artifacts}
 Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}
 
 Data Set: \url{https://annex.softwareheritage.org/public/dataset/graph/latest/popular-3k-python/sql/}
