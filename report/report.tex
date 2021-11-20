@@ -234,8 +234,6 @@ The distribution of the project timeline can be seen in Figure \ref{fig:figure-1
 Using both the calculated duration associated with each project and censoring status of each project, the survival analysis can be performed.
 The analysis was carried out using an R notebook (this can be found in the project repository under Analysis\&Data/frequentist-analysis.rmd).
 
-\keanu{Manish, I need your help here because you know best how to explain what you did. For example, I am not sure how/if you used these references \cite{survivalRpackage, stel2011cox, stel2011kaplan}}
-
 The K-M estimator is a non-parametric estimation technique that allows for estimating the survival function, $S(t)$. 
 The survival function gives the probability that a given project will survive past a particular time $t$.
 At $t = 0$, the K-M estimator is 1 and as $t$ approaches infinity, so does the K-M estimator.
@@ -252,6 +250,7 @@ The next step was to build the Cox proportional hazards using the \lstinline[lan
 This analysis results in the hazards ratio (HR) which is derived from the model for all covariates that are included in the formula. 
 Briefly, a $HR > 1$ indicates an increased risk of abandonment, on the other hand, $HR < 1$, indicates a decreased risk of abandonment. 
 As such, the HR represents a relative risk of abandonment that compares one instance of a binary feature (e.g. yes or no) to the other instance.
+\keanu{need citations for this section}
 
 % From proposal:
 % The K-M estimator is used to estimate the survival function. In our use case, the K-M estimator will estimate the probability that the duration of a project is longer than time $t$. The other analysis we will be performing is fitting a Cox Proportional-Hazards model. The Cox Proportional-Hazards model is a regression model that will allow us to investigate the association between the survival of a project and its key attributes.
@@ -259,8 +258,9 @@ As such, the HR represents a relative risk of abandonment that compares one inst
 
 The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'', but never addresses this measurement.
 This paper seeks to explore this method of assessment. 
-We dichotomized the commit frequency into two groups depending on the frequency above and below the median. 
-We apply both the K-M estimator to and the Cox Proportional-Hazards model on the data to stratify the effects of high commit frequency on the overall health of an open source project.
+The commit frequency (defined as the number of commits divided by number of days in the observed project's duration) was dichotomized into two groups depending on the frequency above and below the median. 
+This study applies both the K-M estimator to and the Cox Proportional-Hazards model on the data to stratify the effects of high commit frequency on the overall health of an open source project.
+\keanu{more to come...}
 
 \subsection{Bayesian Survival Analysis}
 
@@ -280,7 +280,7 @@ We will be further deriving posterior survival functions for the remaining attri
 
 \subsection{Replication}
 
-We found the results of our replication study to be extremely similar to those shown in the original paper.
+The replication study performed in this paper yielded extremely similar results to those shown in the original paper.
 
 \begin{figure*}[ht]
     \centering
@@ -323,6 +323,7 @@ We found the results of our replication study to be extremely similar to those s
  we plan to look further into what has caused this difference in values}
 
 \subsection{Revision Frequency Analysis}
+\keanu{It is worth noting the difference between this graph and the other graphs. The other ones indicate a clear ''winner'' whereas this has an interesting point where the functions cross. More investigation is required, but my initial interpretation is that, while many projects with hight commit frequencies are abondoned shortly after, the ones that do end up maturing seem to have a higher probability of surviving even longer than the other projects. Maybe consistency is the key here, not so much the frequency. There may not be any statistical significance to this result though, so we will look into it.}
 
 \begin{figure}[H]
     \centering
@@ -340,8 +341,8 @@ We found the results of our replication study to be extremely similar to those s
     \label{fig:multi_repo_bayes}
 \end{figure}
 
-Shown in figure \ref{fig:multi_repo_bayes} are the posterior survival functions for projects host on multiple repositories versus those hosted on single repositories. The dotted lines represent the  2.5\% and 97.5\%
-quantiles while the middle solid line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). The remaining lines all represent valid posterior survival functions.
+Shown in figure \ref{fig:multi_repo_bayes} are the posterior survival functions for projects hosted on multiple repositories versus those hosted on single repositories.
+The dotted lines represent the  2.5\% and 97.5\% quantiles while the middle solid line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). The remaining lines all represent valid posterior survival functions.
 
 \section{Discussion} \label{discussion}
 
@@ -354,7 +355,7 @@ quantiles while the middle solid line represents the posterior mean of $\beta$ (
 \subsubsection{Limitations of the Methods} \label{limit-methods}
 
 The original paper \cite{ali2020cheating} and the MSR presentation given \cite{ali2020video} have contradicting methods of censoring.
-The method discussed in the original paper was deemed superior and used in this paper.
+The method discussed in the original paper was deemed superior and is used in this paper. \keanu{not used as of now, but will be}
 
 Many details of the original paper's methods are left out for the sake of brevity.
 This lead to assumptions being made when manipulating the data.
@@ -399,11 +400,11 @@ The only unique identifier for each project was a url, from which the project na
 This may have resulted in the extraction of inconsistent project names across host types.
 The assumption is that each project that was hosted on multiple repositories would be given the exact same name, and that projects of the same name hosted on different services were indeed the same project (which may not always be the case).
 Additionally, it is possible for users on Github to give their projects the exact same name as pre-existing projects created by other users.
-However, this issue was accounted for in our analysis, but it is unclear whether Ali \emph{et al.} accounted for this.
+This issue was accounted for in this paper's analysis, but it is unclear whether Ali \emph{et al.} accounted for this.
 
 The data contains a large portion of censored data.
-This means that we did not observe the abandonment of most of the projects.
-As data points are censored (denoted by the vertical tick marks in the KM curves), we have a smaller and smaller group of data points to study.
+This means the abandonment of most of the projects was not observed.
+As data points are censored (denoted by the vertical tick marks in the KM curves), there is a smaller and smaller group of data points to study.
 This means that the results towards the 165 month mark may be less representative.
 This is to be expected with any SE study, as recent years have lead to an exponential increase in the number of OSS projects \keanu{find citation?}.
 
