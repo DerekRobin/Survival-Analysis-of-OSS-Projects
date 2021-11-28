@@ -1,0 +1,162 @@
+---
+title: "Bayesian survival analysis using author count as a predictor"
+output: html_notebook
+---
+```{r}
+library(rstan)
+library(survival)
+library(tidyverse)
+library(tidybayes)
+```
+ 
+
+```{r}
+# data, parameters, model and generated quantities blocks
+Stan_exponential_survival_model <- "
+data{
+  int <lower=1> N_uncensored;
+  int <lower=1> N_censored;
+  int <lower=0> numCovariates;
+  matrix[N_censored, numCovariates] X_censored;
+  matrix[N_uncensored, numCovariates] X_uncensored;
+  vector <lower=0>[N_censored] times_censored;
+  vector <lower=0>[N_uncensored] times_uncensored;
+}
+
+parameters{
+  vector[numCovariates] beta; //regression coefficients
+  real alpha; //intercept
+}
+
+model{
+  beta ~ normal(0,10); //prior on regression coefficients
+  alpha ~ normal(0,10); //prior on intercept
+  target += exponential_lpdf(times_uncensored | exp(alpha+X_uncensored * beta)); //log-likelihood part for uncensored times
+  target += exponential_lccdf(times_censored | exp(alpha+X_censored * beta)); //log-likelihood for censored times
+}
+
+generated quantities{
+  vector[N_uncensored] times_uncensored_sampled; //prediction of death
+  for(i in 1:N_uncensored) {
+    times_uncensored_sampled[i] = exponential_rng(exp(alpha+X_uncensored[i,]* beta));
+  }
+}
+"
+```
+
+```{r}
+# prepare the data
+set.seed(42); 
+require (tidyverse);
+data <- read_csv('../data.csv')
+N <- nrow (data);
+data$developers_count <- car::recode(data$author_count, "0:20 = 0; 21:max(data$author_count) = 1")
+X <- as.matrix(pull(data, developers_count)); 
+is_censored <- pull(data, status)==0; 
+times <- pull(data, duration); 
+msk_censored <- is_censored == 1; 
+N_censored <- sum(msk_censored);
+```
+
+```{r}
+# put data into a list for Stan
+Stan_data <- list (N_uncensored = N - N_censored, 
+                    N_censored = N_censored,
+                    numCovariates = ncol(X), 
+                    X_censored = as.matrix(X[msk_censored,]),
+                    X_uncensored = as.matrix(X[!msk_censored ,]), 
+                    times_censored = times[msk_censored],
+                    times_uncensored = times[!msk_censored])
+```
+
+```{r}
+# fit Stan model
+require(rstan)
+exp_surv_model_fit <- suppressMessages(stan(model_code = Stan_exponential_survival_model, data = Stan_data))
+```
+
+```{r}
+# print model fit
+print(get_seed(exp_surv_model_fit))
+```
+
+```{r}
+# print fit summary
+fit_summary <- summary(exp_surv_model_fit)
+print(fit_summary$summary)
+```
+
+```{r}
+exp_surv_model_draws <- tidybayes::tidy_draws(exp_surv_model_fit)
+exp_surv_model_draws
+```
+ 
+```{r}
+## Constructor for treatment-specific survival function
+construct_survival_function <- function(alpha, beta, x) {
+    function(t) {
+        lambda <- exp(alpha + x*beta)
+        exp(-(lambda * t))
+    }
+}
+
+## Random functions
+exp_surv_model_surv_func <-
+    exp_surv_model_draws %>%
+    select(.chain, .iteration, .draw, alpha, `beta[1]`) %>%
+    ## Simplify name
+    rename(beta = `beta[1]`) %>%
+    ## Construct realization of random functions
+    mutate(`S(t|1)` = pmap(list(alpha, beta), function(a,b) {construct_survival_function(a,b,1)}),
+           `S(t|0)` = pmap(list(alpha, beta), function(a,b) {construct_survival_function(a,b,0)}))
+exp_surv_model_surv_func
+```
+
+```{r}
+times <- seq(from = 0, to = 165, by = 0.1)
+times_df <- data_frame(t = times)
+
+## Try first realizations
+exp_surv_model_surv_func$`S(t|1)`[[1]](times[1:10])
+```
+
+```{r}
+exp_surv_model_surv_func$`S(t|0)`[[1]](times[1:10])
+```
+```{r}
+## Apply all realizations
+exp_surv_model_survival <-
+    exp_surv_model_surv_func %>%
+    mutate(times_df = list(times_df)) %>%
+    mutate(times_df = pmap(list(times_df, `S(t|1)`, `S(t|0)`),
+                           function(df, s1, s0) {df %>% mutate(s1 = s1(t),
+                                                               s0 = s0(t))})) %>%
+    select(-`S(t|1)`, -`S(t|0)`) %>%
+    unnest(cols = c(times_df)) %>%
+    gather(key = treatment, value = survival, s1, s0) %>%
+    mutate(treatment = factor(treatment, # treatment is whether or not project has more than 20 developers working
+                              levels = c("s1","s0"),
+                              labels = c("developer count > 20","developer count =< 20")))
+
+## Average on survival scale
+exp_surv_model_survival_mean <-
+    exp_surv_model_survival %>%
+    group_by(treatment, t) %>%
+    summarize(survival_mean = mean(survival),
+              survival_95upper = quantile(survival, probs = 0.975),
+              survival_95lower = quantile(survival, probs = 0.025))
+
+exp_surv_model_survival
+```
+
+```{r}
+# plot the graphs
+(ggplot(data = exp_surv_model_survival, mapping = aes(x = t, y = survival, color = treatment, group = interaction(.chain,.draw,treatment))) 
+ + geom_line(size = 0.1, alpha = 0.02) 
+ + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_mean, group = treatment)) 
+ + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95upper, group = treatment), linetype = "dotted") 
+ + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95lower, group = treatment), linetype = "dotted")
+ + facet_grid(. ~ treatment)
+ + theme_bw()
+ + theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.key = element_blank(), plot.title = element_text(hjust = 0.5), strip.background = element_blank()))
+```
