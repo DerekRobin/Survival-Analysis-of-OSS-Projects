@@ -94,8 +94,21 @@ hazard function h(t). It describes the probability of an event or its hazard if 
 
 
 ```{r}
+a_data$major_releases <- factor(a_data$major_releases, levels = c("Yes","No"))
+a_data$multi_repo <- factor(a_data$multi_repo, levels = c("Yes","No"))
+a_data$developers_count <- factor(a_data$developers_count, levels = c("> 20","< 20"))
+a_data$host_type <- factor(a_data$host_type, levels = c("git","pypi", "deb"))
+a_data$high_freq <- factor(a_data$high_freq, levels = c("True","False"))
+
+a_data$major_releases = relevel(a_data$major_releases, ref = "Yes")
+a_data$multi_repo = relevel(a_data$multi_repo, ref = "Yes")
+a_data$developers_count = relevel(a_data$developers_count, ref = "> 20")
+a_data$host_type = relevel(a_data$host_type, ref = "git")
+a_data$high_freq = relevel(a_data$high_freq, ref = "True")
+
 fit.coxph <- coxph(surv_object ~ major_releases + multi_repo + developers_count + host_type + high_freq, 
                    data = a_data)
+
 ggforest(fit.coxph, data = a_data)
 ```
 
