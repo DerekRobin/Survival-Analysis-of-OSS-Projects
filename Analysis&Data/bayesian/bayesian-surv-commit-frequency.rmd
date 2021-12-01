@@ -157,7 +157,7 @@ exp_surv_model_survival
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_mean, group = treatment)) 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95upper, group = treatment), linetype = "dotted") 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95lower, group = treatment), linetype = "dotted")
- + facet_grid(. ~ treatment)
+ + scale_color_hue(direction = -1)
  + theme_bw()
  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.key = element_blank(), plot.title = element_text(hjust = 0.5), strip.background = element_blank()))
 ```
