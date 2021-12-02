@@ -61,7 +61,7 @@ Next, lets stratify the curve depending on thehost types
 ```{r, warning=FALSE, message=FALSE, results='hide'}
 fit3 <- survfit(surv_object ~ host_type, data = a_data)
 summary(fit3)
-ggsurvplot(fit3, data = a_data, pval = TRUE, conf.int = TRUE)
+ggsurvplot(fit3, data = a_data, pval = TRUE, conf.int = TRUE, palette=c("blue", "red","green"))
 ```
 
 
