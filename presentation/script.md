@@ -4,14 +4,28 @@
 
 *PSA music begins, fade into video*
 
-Derek:
+**Derek:**
 
 Are you a new developer trying to make a name for yourself in the open source community?
 
-Do the projects you work on end up getting abandoned in a matter of months?
+Do the projects you work on end up abandoned in a matter of months?
 
 What on Earth are you supposed to do about it?
 
-Fear not, this public service announcement is for you.
+Fear not, this public service announcement is for you!
 
 Today we will discuss how to recognize the signs of a healthy open source project, so you can choose where you spend your time wisely.
+
+...
+
+**Manish:**
+
+...
+
+**Neha:**
+
+...
+
+**Keanu:**
+
+...
