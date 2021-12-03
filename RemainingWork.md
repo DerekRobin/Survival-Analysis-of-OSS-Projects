@@ -26,7 +26,7 @@ Presentation concisely summarizes the approach and key results:
     - Survival analysis on subset of the software heritage graph using revision activity as a measure of health
     - Kaplan Meier Estimator
     - Cox proportional Hazards Model
-    - Bayesian Inference
+    - Bayesian Inference (mention reasoning for chosen distribution)
 - Manish will do results:
     - Explain KM curves, show Bayesian curves
     - Explain Cox results
@@ -34,11 +34,6 @@ Presentation concisely summarizes the approach and key results:
 ### Discusses implication (5 pts):
 Presentation clearly explains implications, including ethical, of the results on practice and research:
 
-- The pre-req for this is to better understand our results and previous work so we can better understand the implications on practice and research.
-
-- These results affirm the results of other studies that imply a healthy community of developers is among the most crucial indicators of whether a project will survive for an extended period of time.
-- These results may affect how developers choose which projects they work on. Perhaps there are more ethical projects that do not have a large number of developers or major releases, etc. The hope is that this study would not deter developers from helping good causes simply based on how well the project is already doing. Maybe that developer can make the difference between the survival of that project and its death.
-- Maybe the results should not be interpretted as "find projects that already have lots of support", but rather "give support to the projects that mean the most to you so you can prolong their life". Maybe the former is a valid reason too, but probably shouldn't be the only deciding factor.
-- Call for researchers to make their work more replicable
-
 ## Final Report
+
+We should address the seeming contradiction between KM results and Cox (namely the host-type, which is discussed by Ali et al. and the commit_freq), the Cox model gives more weight to the beginning section of the curve (where the majority of the projects are still in the study).
