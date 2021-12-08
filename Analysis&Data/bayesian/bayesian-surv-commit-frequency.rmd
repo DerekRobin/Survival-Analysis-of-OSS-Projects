@@ -93,7 +93,7 @@ exp_surv_model_draws
 ```
  
 ```{r}
-## Constructor for treatment-specific survival function
+## Constructor for Strata-specific survival function
 construct_survival_function <- function(alpha, beta, x) {
     function(t) {
         lambda <- exp(alpha + x*beta)
@@ -134,15 +134,15 @@ exp_surv_model_survival <-
                                                                s0 = s0(t))})) %>%
     select(-`S(t|1)`, -`S(t|0)`) %>%
     unnest(cols = c(times_df)) %>%
-    gather(key = treatment, value = survival, s1, s0) %>%
-    mutate(treatment = factor(treatment, # treatment is whether or not projects have high commit frequency
+    gather(key = Strata, value = survival, s1, s0) %>%
+    mutate(Strata = factor(Strata, # Strata is whether or not projects have high commit frequency
                               levels = c("s1","s0"),
-                              labels = c("high_commit_freq_true","high_commit_freq_false")))
+                              labels = c("high commit frequency=True","high commit frequency=False")))
 
 ## Average on survival scale
 exp_surv_model_survival_mean <-
     exp_surv_model_survival %>%
-    group_by(treatment, t) %>%
+    group_by(Strata, t) %>%
     summarize(survival_mean = mean(survival),
               survival_95upper = quantile(survival, probs = 0.975),
               survival_95lower = quantile(survival, probs = 0.025))
@@ -152,11 +152,11 @@ exp_surv_model_survival
 
 ```{r}
 # plot the graphs
-(ggplot(data = exp_surv_model_survival, mapping = aes(x = t, y = survival, color = treatment, group = interaction(.chain,.draw,treatment))) 
+(ggplot(data = exp_surv_model_survival, mapping = aes(x = t, y = survival, color = Strata, group = interaction(.chain,.draw,Strata))) 
  + geom_line(size = 0.1, alpha = 0.02) 
- + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_mean, group = treatment)) 
- + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95upper, group = treatment), linetype = "dotted") 
- + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95lower, group = treatment), linetype = "dotted")
+ + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_mean, group = Strata)) 
+ + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95upper, group = Strata), linetype = "dotted") 
+ + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95lower, group = Strata), linetype = "dotted")
  + scale_color_hue(direction = -1)
  + theme_bw()
  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.key = element_blank(), plot.title = element_text(hjust = 0.5), strip.background = element_blank()))
