@@ -39,8 +39,6 @@
 % \acmPrice{15.00}
 % \acmISBN{978-1-4503-XXXX-X/18/06}
 
-
-
 %%
 %% The majority of ACM publications use numbered citations and
 %% references.  The command \citestyle{authoryear} switches to the
@@ -186,36 +184,46 @@ The study calculated the probability of termination or continuation for FLOSS pr
 
 \section{Data} \label{data}
 
-Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common VCSs, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}.
-Revisions are used to assess the activity or health of a project.
+Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common hosting sites, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}. 
+The \emph{popular-3k-python} subset of the Software Heritage graph \cite{pietri2019software} contained the necessary information and was used in the original paper and also in this paper.
+This data set contains information on 3052 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI between 2005 and 2018.
+Following the tutorial provided by the Software Heritage organization \cite{SQLdataset}, a PostgreSQL database was hosted on the first author's local machine to facilitate data collection.
 
-The \emph{popular-3k-python} subset of the Software Heritage graph data set \cite{pietri2019software} contains the necessary information and was used in both the original paper and this paper (a reference to the data set can be found in appendix \ref{artifacts} of this paper).
-This data set contains information on roughly 3000 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI between 2005 and 2018.
-The Software Heritage organization offers a tutorial on how to import this data by creating a postgreSQL database \cite{SQLdataset} as well as an explanation of the structure of the database (a database schema can be seen in figure 2 of their document \cite{pietri2019software}) .
+Though the \emph{popular-3k-python} data set contains all the necessary information to perform survival analysis, it first must be manipulated into a more suitable format before the analysis can be carried out. 
+In this case, the collected data was manipulated such that our final data set contained the duration of the project, the censorship value, and the attributes of interest. 
+Descriptions of each column present in the dataset can be found in Table \ref{tab:data}. 
+Data collection and manipulation were performed in Jupyter Notebooks, which are available in this paper's repository, a link to which can be found in appendix \ref{artifacts}. 
 
-Though the data contains all the necessary information to perform survival analysis, it requires additional manipulation into a new format before the analysis can be carried out. 
-For example, most of the analyzed features or attributes of the projects in the original paper are not present in the raw data set and need to be calculated.
-The work done in this study has been documented in a repository for the benefit of the reader.
-References to the repository can be found in appendix \ref{artifacts}, and the jupyter notebook used to perform the data manipulation can be found in Analysis\&Data/data-collection.ipynb.
+\begin{table}[h!]
+    \caption{Data Set Column Descriptions}
+    \label{tab:data}
+    \begin{tabular}{ll}
+        \toprule
+        Column Name & Description \\
+        \midrule
+        Host Type            & Which hosting service the projects repository resides on \\
+        Major Releases       & Whether or not the project publishes major releases \\
+        Censored             & Whether or not the project death is observed (for more information see section \ref{replmethods}) \\
+        Duration\_months     & The duration of the project in months \\
+        High\_rev\_frequency & Whether or not the project has high revision frequency (greater than one revision a day) \\
+        Multi\_repo          & Whether or not the project is hosted on multiple \\
+        High\_author\_count  & Whether or not the project has a high author count (greater than twenty unique authors) \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-Queries were created in order to join the necessary tables and extract the relevant values.
-The queries accomplish the following objectives: they group records by the \emph{url} field of the origin table (used to identify projects), filter records to be within the desired time frame, count distinct authors that have participated in a given project, record the host service (depicted by the \emph{type} field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
-\keanu{should we show pseudocode of one of the queries? Also, I wonder if we can find a way to condense the queries into as few queries as possible for the final product}\derek{I think that condensing the queries is not required. If Neil decides to look at them he should be able to understand what is going on. If anything we should add explanatory markdown to the notebook.}
+%For example, most of the analyzed features or attributes of the projects in the original paper are not present in the raw data set and need to be calculated. 
+%The work done in this study has been documented in a repository for the benefit of the reader.
+%References to the repository can be found in appendix \ref{artifacts}, and the jupyter notebook used to perform the data manipulation can be found in Analysis\&Data/data-collection.ipynb.
 
-The notebook uses popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results. \keanu{This section is getting long, I was going to go into details about the new fields that were calculated (multi\_repo, commit\_freq, etc.), but maybe we should wait and see}
+%Queries were created in order to join the necessary tables and extract the relevant values.
+%The queries accomplish the following objectives: they group records by the \emph{url} field of the origin table (used to identify projects), filter records to be within the desired time frame, count distinct authors that have participated in a given project, record the host service (depicted by the \emph{type} field of the origin table), record the earliest and latest revisions associated with each project url, count the number of revisions made during each project's duration, and identify whether major releases were published.
 
-% If we want filler we can add the schema diagram and talk about it.
-% \begin{figure}[h]
-% \centering
-% \includegraphics[scale=0.25]{dataset-schema.png}
-% \Description{}
-% \caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images} \derek{I don't think that we really need the schema in the paper}}
-% \label{fig:Schema}
-% \end{figure}
+%The notebook uses popular python libraries such as psycopg2, pandas, numpy, and matplotlib to connect to the database, extract the results of the previously mentioned queries, manipulate and filter the data, calculate new fields, and plot results.
 
 \section{Methods} \label{methods}
 
-\subsection{Replication}
+\subsection{Replication} \label{replmethods}
 
 Two critical concepts in survival analysis are events of interest and censoring.
 In the case of this paper, as well as the original paper, the event of interest is the abandonment of a project.
@@ -264,13 +272,11 @@ Briefly, a $HR > 1$ indicates an increased risk of abandonment; on the other han
 As such, the HR represents a relative risk of abandonment that compares one instance of a binary feature (e.g. yes or no) to the other instance.
 \keanu{need citations for this section}
 
-% From proposal:
-% The K-M estimator is used to estimate the survival function. In our use case, the K-M estimator will estimate the probability that the duration of a project is longer than time $t$. The other analysis we will be performing is fitting a Cox Proportional-Hazards model. The Cox Proportional-Hazards model is a regression model that will allow us to investigate the association between the survival of a project and its key attributes.
-\subsection{Revision Frequency Analysis}
+\subsection{Revision Frequency Analysis} \label{revisionFreq}
 
 The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'' but never addresses this measurement.
 This paper seeks to explore this method of assessment. 
-The commit frequency (defined as the number of commits divided by the number of days in the observed project's duration) was dichotomized into two groups depending on the frequency above and below the median. 
+The commit frequency (defined as the number of commits divided by the number of days in the observed project's duration) was dichotomized into two groups depending on the frequency above and below the median.
 This study applies both the K-M estimator and the Cox Proportional-Hazards model to the data to stratify the effects of high commit frequency on the overall health of an open-source project.
 \keanu{more to come...}
 
@@ -446,11 +452,13 @@ Perform separate studies on each hosting service to remove variability in the wa
 %%
 %% If your work has an appendix, this is the place to put it.
 \appendix
-
+\section*{APPENDIX}
 \section{Artifacts} \label{artifacts}
-Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}
 
+Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}\\
 Data Set: \url{https://annex.softwareheritage.org/public/dataset/graph/latest/popular-3k-python/sql/}
+
+\section{Work Distribution}
 
 \end{document}
 \endinput
