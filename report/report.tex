@@ -144,23 +144,25 @@ The developers of Open Source Software (OSS) projects are often part of decentra
 As these developers volunteer their free time to build such OSS projects, they likely want to be confident that the projects they work on will not become inactive.
 Suppose OSS developers are aware of key attributes that are associated with long-lasting projects. In that case, they can make informed assessments of a given project before devoting their time to it, or they can strive to make their own projects exhibit those attributes.
 Understanding which attributes of an OSS project lead to its longevity motivated Ali \emph{et al.} to apply survival analysis techniques commonly found in biostatistics to study the probability of survival for popular OSS Python projects \cite{ali2020cheating}.
-Ali \emph{et al.} specifically studied the effect of the following attributes on the survival of OSS Python projects: publishing major releases, the use of multiple hosting services, the type of version control system (VCS), and the size of the volunteer team.
+They specifically studied the effect of the following attributes on the survival of OSS Python projects: publishing major releases, the use of multiple hosting services, the type of hosting service, and the size of the volunteer team.
 
 Survival analysis is a set of methods used to determine how long an entity will live (or the time to a given event) and is most often used in the medical field.
-For example, survival analysis techniques can determine the probability of a patient surviving past a certain time when given a certain treatment. 
-Ali \emph{et al.} use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
+For example, survival analysis techniques can determine the probability of a patient surviving past a certain time when given a certain treatment.
+However, survival is not as well defined for a software project as it is for a living organism.
+
+Ali \emph{et al.} (referred to as the original authors from here on) use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
 Though frequentist approaches are considered to be unbiased, minimal in variance, efficient, and generally sufficient, some consider them to lack robustness \cite{renganathan2016overview}. Another approach to survival analysis, Bayesian analysis, is considered to generate more robust models that perform well under the presence of new data being introduced and are generally easier to interpret results from \cite{renganathan2016overview}.
 \keanu{We will flesh this discussion out a bit more and use more citations}
 
-The authors of this paper resonate with Ali \emph{et al.'s} motivation. 
-This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on)  and seeks to determine gaps or shortcomings in their analysis.
+The authors of this paper resonate with the motivation of the original authors. 
+This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to assess the validity of their analysis.
 This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease.
 For the sake of the authors' curiosity, an additional attribute of the data was analyzed: the commit frequency of the project.
 In addition to the replication, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of the frequentist and Bayesian approaches in the same domain.
 Thus, the research questions this paper answers are as follows:
 
 \begin{questions}
-    \item How do major releases, the use of multiple hosting services, the type of VCS, and the size of the volunteer team affect the probability of survival of an OSS Python project?
+    \item How do major releases, the use of multiple hosting services, the type of hosting service, and the size of the volunteer team affect the probability of survival of an OSS Python project?
     \item How does the commit frequency of an OSS Python project affect the probability of its survival?
     \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
 \end{questions}
@@ -231,10 +233,10 @@ That is, if a project stops receiving revisions, it is considered abandoned.
 However, it is impossible to determine whether a project will receive revisions in the future, so a threshold of some kind is required to determine whether the project has indeed been abandoned for the purposes of the study.
 This is where censoring is used.
 Censoring involves using data from subjects of a study for which the time of interest is not observed.
-There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring. \keanu{or right censoring, we should flesh out the terminology as I have seen some conflicting definitions} \derek{I would say just go with that Ali et al. say (type III/random censoring)}
+There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring.
 Random censoring involves removing subjects (in this case, projects) from a study at varying times relative to when they began to be observed \cite{renganathan2016overview}. \keanu{find another citation to support this, http://www.stat.columbia.edu/~madigan/W2025/notes/survival.pdf mentions it, but refer to it as random type 1 right censoring}
 
-Ali \emph{et al.} set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
+The original authors set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
 This paper uses the same time frame and determines exact start and end dates.
 Using January 1, 2018, as a strict end date and maintaining the study duration as 4620 days (165 months as defined), the start date is found to be May 9, 2005.
 
@@ -289,11 +291,11 @@ These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) a
 The statistical modelling language used for Bayesian analysis is Stan, specifically the \lstinline!rstan! interface. In addition to \lstinline!rstan!, the R packages \lstinline[language=R]!tidybayes! and \lstinline[language=R]!tidyverse! were used to aid in visualization and data manipulation.
 
 This study used a parametric exponential model that assumes the survival times of a project $y = (y1, y2, \dots , yn)$ are exponentially distributed with parameter $\lambda$.
-We have so far derived a posterior survival function for one of the project's attributes: the use of multiple VCSs. 
-We will be further deriving posterior survival functions for the remaining attributes, namely major releases, VCS of the project, commit frequency and author count. 
+We have so far derived a posterior survival function for one of the project's attributes: the use of multiple hosting services. 
+We will be further deriving posterior survival functions for the remaining attributes, namely major releases, hosting service of the project, commit frequency and author count. 
 
 % From proposal (slightly revised to make sense in this context):
-% [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, VCS of the project, use of multiple VCSs, team size, and revision frequency.
+% [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, hosting service of the project, use of multiple hosting services, team size, and revision frequency.
 \section{Results} \label{results}
 
 \subsection{Replication}
@@ -418,7 +420,7 @@ The only unique identifier for each project was a url, from which the project na
 This may have resulted in the extraction of inconsistent project names across host types.
 The assumption is that each project that was hosted on multiple repositories would be given the exact same name, and that projects of the same name hosted on different services were indeed the same project (which may not always be the case).
 Additionally, it is possible for users on Github to give their projects the exact same name as pre-existing projects created by other users.
-This issue was accounted for in this paper's analysis, but it is unclear whether Ali \emph{et al.} accounted for this.
+This issue was accounted for in this paper's analysis, but it is unclear whether the original authors accounted for this.
 
 The data contains a large portion of censored data.
 This means the abandonment of most of the projects was not observed.
@@ -452,7 +454,7 @@ Perform separate studies on each hosting service to remove variability in the wa
 %%
 %% If your work has an appendix, this is the place to put it.
 \appendix
-\section*{APPENDIX}
+\section*{APPENDICES}
 \section{Artifacts} \label{artifacts}
 
 Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}\\
