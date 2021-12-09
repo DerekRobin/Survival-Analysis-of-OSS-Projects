@@ -7,6 +7,7 @@ library(rstan)
 library(survival)
 library(tidyverse)
 library(tidybayes)
+library(scales)
 ```
  
 
@@ -48,11 +49,13 @@ generated quantities{
 # prepare the data
 set.seed(42); 
 require (tidyverse);
-data <- read_csv('../data.csv')
-N <- nrow (data); 
+data <- read_csv('necessary_fields.csv')
+N <- nrow (data);
+data$multi_repo <- car::recode(data$multi_repo, "'TRUE' = 0; 'FALSE' = 1")
+data$censored <- car::recode(data$censored, "'TRUE' = 0; 'FALSE' = 1")
 X <- as.matrix(pull(data, multi_repo)); 
-is_censored <- pull(data, status)==0; 
-times <- pull(data, duration); 
+is_censored <- pull(data, censored)==0; 
+times <- pull(data, duration_months); 
 msk_censored <- is_censored == 1; 
 N_censored <- sum(msk_censored);
 ```
@@ -135,7 +138,7 @@ exp_surv_model_survival <-
     gather(key = Strata, value = survival, s1, s0) %>%
     mutate(Strata = factor(Strata, # Strata is whether or not something is hosted on multiple repos or not
                               levels = c("s1","s0"),
-                              labels = c("multi repositories=Yes","multi repositories=No")))
+                              labels = c("multi repositories=No","multi repositories=Yes")))
 
 ## Average on survival scale
 exp_surv_model_survival_mean <-
@@ -155,7 +158,8 @@ exp_surv_model_survival
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_mean, group = Strata)) 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95upper, group = Strata), linetype = "dotted") 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95lower, group = Strata), linetype = "dotted")
- + scale_color_hue(direction = -1)
+ + scale_y_continuous(labels = percent_format(), limits=c(0,1))
+ +labs(x = "Time (Months)", y = "Survival probability")
  + theme_bw()
  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.key = element_blank(), plot.title = element_text(hjust = 0.5), strip.background = element_blank()))
 ```
