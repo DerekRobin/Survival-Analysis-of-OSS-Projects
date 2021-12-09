@@ -153,6 +153,7 @@ However, survival is not as well defined for a software project as it is for a l
 Ali \emph{et al.} (referred to as the original authors from here on) use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
 Though frequentist approaches are considered to be unbiased, minimal in variance, efficient, and generally sufficient, some consider them to lack robustness \cite{renganathan2016overview}. Another approach to survival analysis, Bayesian analysis, is considered to generate more robust models that perform well under the presence of new data being introduced and are generally easier to interpret results from \cite{renganathan2016overview}.
 \keanu{We will flesh this discussion out a bit more and use more citations}
+\derek{idk if we need more citations, I think we just need to give a bit of backgroud into KM curves and Cox model}
 
 The authors of this paper resonate with the motivation of the original authors. 
 This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to assess the validity of their analysis.
@@ -168,12 +169,21 @@ Thus, the research questions this paper answers are as follows:
 \end{questions}
 
 The following section describes the data used for the studies in this paper and the process used for manipulating the data into a usable state.
+Section \ref{related} outlines other research which has utilized survival analysis to study OSS and other work which has studied attributes similar to those studied in this paper. 
+Section \ref{data} describes the source of the data set and the required preparation in order to perform survival analysis.
 Section \ref{methods} covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis.
 Section \ref{results} shows the results for each analysis.
 Section \ref{discussion} discusses the comparative differences between the analyses performed, the limitations of the study, related work, and suggestions for future work on the topic.
 The final section concludes by summarizing the purpose and findings of this paper. 
 
 \section{Related Work} \label{related}
+
+Several other researchers have employed survival analysis to study the health of OSS projects. 
+For example, Samoladas \emph{et al.} made use of K-M curves to study the affect of application domain and developer count on OSS health \cite{samoladas2010survival}. 
+They found that applications within the domain of \emph{games and entertainment} and \emph{security} had the lowest probability of survival. 
+Additionally, they found that for each new developer introduced to a project, the projects survivability increases by 15.8\%. 
+On the topic of developers, several studies have used survival analysis to study developer disengagement from OSS projects \cite{miller2019people,lin2017developer,ortega2009survival,sentas2008statistical}. 
+Miller \emph{et al.} made use of a survey and survival analysis, specifically K-M curves
 
 Although the application of survival analysis is new to predicting the health of software repositories, several studies have attempted to analyze the health of open-source projects using different techniques. 
 Xia \emph{et al.} applied DECART hyperparameter optimization to predict health indicators of open-source projects and observed that DECART reduced prediction errors of certain estimation algorithms by 10\% \cite{xia2020predicting}. 
