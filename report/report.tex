@@ -1,4 +1,3 @@
-%% The first command in your LaTeX source must be the \documentclass command.
 \documentclass[acmconf]{acmart}
 % % Packages
 %\usepackage{cite}
@@ -9,8 +8,8 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{booktabs}
-\usepackage{parskip}
-\setlength{\parskip}{1em}
+%\usepackage{parskip}
+%\setlength{\parskip}{1em}
 \usepackage[bottom]{footmisc}
 \usepackage{enumitem}
 \usepackage{hyperref}
@@ -65,7 +64,7 @@
 \input{commands}
 % set up commands to format RQ nicely
 \newlist{questions}{enumerate}{2}
-\setlist[questions,1]{label=RQ\arabic*.,ref=RQ\arabic*}
+\setlist[questions,1]{label=\textbf{RQ\arabic*.},ref=RQ\arabic*}
 \setlist[questions,2]{label=(\alph*),ref=\thequestionsi(\alph*)}
 
 %%
