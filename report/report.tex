@@ -144,28 +144,37 @@ The developers of Open Source Software (OSS) projects are often part of decentra
 As these developers volunteer their free time to build such OSS projects, they likely want to be confident that the projects they work on will not become inactive.
 Suppose OSS developers are aware of key attributes that are associated with long-lasting projects. In that case, they can make informed assessments of a given project before devoting their time to it, or they can strive to make their own projects exhibit those attributes.
 Understanding which attributes of an OSS project lead to its longevity motivated Ali \emph{et al.} to apply survival analysis techniques commonly found in biostatistics to study the probability of survival for popular OSS Python projects \cite{ali2020cheating}.
-Ali \emph{et al.} specifically studied the effect of the following attributes on the survival of OSS Python projects: publishing major releases, the use of multiple hosting services, the type of version control system (VCS), and the size of the volunteer team.
+Ali \emph{et al.} (referred to as the original authors from here on) specifically studied the effect of the following attributes on the survival of OSS Python projects: publishing major releases, the use of multiple hosting services, the type of hosting service, and the size of the volunteer team.
 
-Survival analysis is a set of methods used to determine how long an entity will live (or the time to a given event) and is most often used in the medical field.
-For example, survival analysis techniques can determine the probability of a patient surviving past a certain time when given a certain treatment. 
-Ali \emph{et al.} use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
+Survival analysis is a set of methods used to determine how long an entity will live (or the time to a given event of interest, such as death) and is often used in the medical field.
+For example, survival analysis can determine the probability of a patient surviving past a certain time when given a treatment.
+However, death is not as well defined for a software project as it is for a living organism.
+A project may not receive revisions for an extended period only to be returned to at a later date, or perhaps a project no longer receives revisions at all, but the community that uses it continues to be active.
+Samoladas \emph{et al.} considered a project inactive if it received less than two revisions a month; two months of inactivity led to it being considered abandoned or dead \cite{samoladas2010survival}.
+Evangelopoulos \emph{et al.} and the original authors considered a project dead once there were no revisions at all \cite{evangelopoulos, ali2020cheating}.
+The latter definition of project abandonment or death is used in this study to measure the duration of a project or its survival.
+
+The original authors use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
 Though frequentist approaches are considered to be unbiased, minimal in variance, efficient, and generally sufficient, some consider them to lack robustness \cite{renganathan2016overview}. Another approach to survival analysis, Bayesian analysis, is considered to generate more robust models that perform well under the presence of new data being introduced and are generally easier to interpret results from \cite{renganathan2016overview}.
 \keanu{We will flesh this discussion out a bit more and use more citations}
+\derek{idk if we need more citations, I think we just need to give a bit of backgroud into KM curves and Cox model}
 
-The authors of this paper resonate with Ali \emph{et al.'s} motivation. 
-This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on)  and seeks to determine gaps or shortcomings in their analysis.
+The authors of this paper resonate with the motivation of the original authors. 
+This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to assess the validity of their analysis.
 This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease.
-For the sake of the authors' curiosity, an additional attribute of the data was analyzed: the commit frequency of the project.
+For the sake of the authors' curiosity, an additional attribute of the data was analyzed: the revision frequency of the project.
 In addition to the replication, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of the frequentist and Bayesian approaches in the same domain.
 Thus, the research questions this paper answers are as follows:
 
 \begin{questions}
-    \item How do major releases, the use of multiple hosting services, the type of VCS, and the size of the volunteer team affect the probability of survival of an OSS Python project?
-    \item How does the commit frequency of an OSS Python project affect the probability of its survival?
+    \item How do major releases, the use of multiple hosting services, the type of hosting service, and the size of the volunteer team affect the probability of survival of an OSS Python project?
+    \item How does the revision frequency of an OSS Python project affect the probability of its survival?
     \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
 \end{questions}
 
 The following section describes the data used for the studies in this paper and the process used for manipulating the data into a usable state.
+Section \ref{related} outlines other research which has utilized survival analysis to study OSS and other work which has studied attributes similar to those studied in this paper. 
+Section \ref{data} describes the source of the data set and the required preparation in order to perform survival analysis.
 Section \ref{methods} covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis.
 Section \ref{results} shows the results for each analysis.
 Section \ref{discussion} discusses the comparative differences between the analyses performed, the limitations of the study, related work, and suggestions for future work on the topic.
@@ -173,14 +182,25 @@ The final section concludes by summarizing the purpose and findings of this pape
 
 \section{Related Work} \label{related}
 
-Although the application of survival analysis is new to predicting the health of software repositories, several studies have attempted to analyze the health of open-source projects using different techniques. 
-Xia \emph{et al.} applied DECART hyperparameter optimization to predict health indicators of open-source projects and observed that DECART reduced prediction errors of certain estimation algorithms by 10\% \cite{xia2020predicting}. 
-Norick \emph{et al.} analyzed open-source projects using code quality measures and observed no significant evidence that the number of committing developers affects software quality \cite{norick2010effects}. 
-Another study by Caivano \emph{et al.} investigated the spread and evolution of dead code by analyzing commit histories of open-source Java applications \cite{caivano2021exploratory}. 
-They found that dead methods generally survive long, are rarely revived, and that a majority have been dead since their creation.
+Several other researchers have employed survival analysis to study the health of OSS projects. 
+For example, Samoladas \emph{et al.} studied the affect of application domain and developer count on OSS project health \cite{samoladas2010survival}. 
+They found that applications within the domain of \emph{games and entertainment} and \emph{security} had the lowest probability of survival. 
+Additionally, they found that for each new developer introduced to a project, the projects survivability increased by 15.8\%. 
+On the topic of developers, several studies have used survival analysis to study developer disengagement from OSS projects \cite{miller2019people,lin2017developer,ortega2009survival}. 
+Miller \emph{et al.} made use of a survey and survival analyses, to determine the causes behind why a developer might stop contributing to an OSS project \cite{miller2019people}. 
+Their analysis revealed that developers have a higher probability of disengagement when going through job transitions and working longer hours. 
+Lin \emph{et al.} determined that developers who balance maintaining files they have created with maintaining files other have created have a higher survival probability than developers who only maintain their own files or only maintain others files \cite{lin2017developer}. Additionally, Lin \emph{et al.} found that developers who maintained files and developers who mainly wrote code have a higher survival probability than those who solely created files and those who main focus is writing documentation. 
+Ortega and Izquierdo-Cortazar analyzed the survival of FLOSS committers and Wikipedia editors and found that FLOSS committers have higher mean survival times than Wikipedia editors \cite{ortega2009survival}. 
+Survival analysis can also be applied to the software it self, this has been demonstrated by Aman \emph{et al.} and Caivano \emph{et al.} \cite{aman2017survival, caivano2021exploratory}. 
+In \cite{aman2017survival}, survival analysis was used to analyze time to bug-fix for files modified by developers of different experience levels. 
+This analysis determined that files which most recently modified by less experienced developers had an increased probability of needing a bug fix within a shorter time frame \cite{aman2017survival}. 
+Caivano \emph{et al.} explored the affect of dead code within OSS project using survival analysis \cite{caivano2021exploratory}. 
+They found that dead methods are present in Java code, persist for a long time (in terms of commits) before being buried or revived, are rarely revived, and that most dead methods have been dead since their inception. 
 
-An application of survival analysis to software was a study by Samoladas \emph{et al.} which predicted future development of FLOSS projects using project duration, application domain. and the number of committers as predictors \cite{samoladas2010survival}. 
-The study calculated the probability of termination or continuation for FLOSS projects and quantified the benefit of adding more committers.
+Several studies have examined the health of OSS projects using methods other than survival analysis. \derek{This transition sectence needs some work b\c i feel like 2 does not equal several.}
+Xia \emph{et al.} predicted a number of health attributes of OSS projects, such as, the number of developers and the number of revisions. 
+These predictions were made using regression trees that were optimized using differential evolution, leading to a 10\% increase in accuracy over the base line \cite{xia2020predicting}. 
+Norick \emph{et al.} analyzed OSS projects using code quality measures and observed no significant evidence that the number of committing developers affects software quality \cite{norick2010effects}. 
 
 \section{Data} \label{data}
 
@@ -231,10 +251,10 @@ That is, if a project stops receiving revisions, it is considered abandoned.
 However, it is impossible to determine whether a project will receive revisions in the future, so a threshold of some kind is required to determine whether the project has indeed been abandoned for the purposes of the study.
 This is where censoring is used.
 Censoring involves using data from subjects of a study for which the time of interest is not observed.
-There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring. \keanu{or right censoring, we should flesh out the terminology as I have seen some conflicting definitions} \derek{I would say just go with that Ali et al. say (type III/random censoring)}
+There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring.
 Random censoring involves removing subjects (in this case, projects) from a study at varying times relative to when they began to be observed \cite{renganathan2016overview}. \keanu{find another citation to support this, http://www.stat.columbia.edu/~madigan/W2025/notes/survival.pdf mentions it, but refer to it as random type 1 right censoring}
 
-Ali \emph{et al.} set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
+The original authors set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
 This paper uses the same time frame and determines exact start and end dates.
 Using January 1, 2018, as a strict end date and maintaining the study duration as 4620 days (165 months as defined), the start date is found to be May 9, 2005.
 
@@ -271,8 +291,8 @@ As such, the HR represents a relative risk of abandonment that compares one inst
 
 The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'' but never addresses this measurement.
 This paper seeks to explore this method of assessment. 
-The commit frequency (defined as the number of commits divided by the number of days in the observed project's duration) was dichotomized into two groups depending on the frequency above and below the median.
-This study applies both the K-M estimator and the Cox Proportional-Hazards model to the data to stratify the effects of high commit frequency on the overall health of an open-source project.
+The revision frequency, defined as the number of commits divided by the number of days in the project's observed lifetime, was dichotomized into two groups depending on whether the frequency was above one revision per day.
+This study applies both the K-M estimator and the Cox Proportional-Hazards model to the data to stratify the effects of high revision frequency on the overall health of an open-source project.
 \keanu{more to come...}
 
 \subsection{Bayesian Survival Analysis}
@@ -284,11 +304,11 @@ These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) a
 The statistical modelling language used for Bayesian analysis is Stan, specifically the \lstinline!rstan! interface. In addition to \lstinline!rstan!, the R packages \lstinline[language=R]!tidybayes! and \lstinline[language=R]!tidyverse! were used to aid in visualization and data manipulation.
 
 This study used a parametric exponential model that assumes the survival times of a project $y = (y1, y2, \dots , yn)$ are exponentially distributed with parameter $\lambda$.
-We have so far derived a posterior survival function for one of the project's attributes: the use of multiple VCSs. 
-We will be further deriving posterior survival functions for the remaining attributes, namely major releases, VCS of the project, commit frequency and author count. 
+We have so far derived a posterior survival function for one of the project's attributes: the use of multiple hosting services. 
+We will be further deriving posterior survival functions for the remaining attributes, namely major releases, hosting service of the project, revision frequency and author count. 
 
 % From proposal (slightly revised to make sense in this context):
-% [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, VCS of the project, use of multiple VCSs, team size, and revision frequency.
+% [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, hosting service of the project, use of multiple hosting services, team size, and revision frequency.
 \section{Results} \label{results}
 
 \subsection{Replication}
@@ -299,7 +319,7 @@ Fig. 2 represents K-M curves along with their confidence interval and p-value wh
 As seen in Fig. 2a, we found out that projects with at least one releases has higher chances of survival. 
 The curve for projects having major releases plateaus around 65\% survival probability during the 120 month mark whereas the survival probability of projects with no major releases end up to be less than 20\% by the end of study period. 
 Fig. 2b represents the significance of hosting the project on different hosting services, we found out that projects that are hosted on GitHub has a higher survival chances in the long run, as the curves suggest all three hosting services has similar trend for first 55 months which is within the average duration of projects hosted on these services.
-We observed that having multiple repositories hosted on multiple services has significantly increased the chances of a projectâ€™s survival.
+We observed that having multiple repositories hosted on multiple services has significantly increased the chances of a project’s survival.
 As seen in Fig. 2c, the survival rate for such projects is 75\%, whereas around 20\% for projects with only one package repository system. 
 The Curve in fig. 2d implies the significance of network of developers for survival of open source project, clearly the project having more than 20 different authors end up having around 60\% survival rate which are significantly different form projects with small team of developers with less than 20\% survival rate in the end of the study period.
 
@@ -423,7 +443,7 @@ The lack of certainty about the full history is because the repository admin can
 
 There are inherent differences in the ways developers use the different hosting services \keanu{I have a strong intuition that this is the case, it looks like PyPi and debian don't have as much granularity compared to git and only show major releases, but I don't have anything to back this up, so maybe we can find something to cite for that}.
 This could skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product.
-This may hide information about the number of developers and the commit frequency.
+This may hide information about the number of developers and the revision frequency.
 Additionally, the potential confounding factors mentioned in section \ref{limit-methods} are not represented in this data set.
 
 It may also be worth noting that this data is only for Python projects and that it is possible that different behaviours are associated with development in different languages.
@@ -435,7 +455,7 @@ The only unique identifier for each project was a url, from which the project na
 This may have resulted in the extraction of inconsistent project names across host types.
 The assumption is that each project that was hosted on multiple repositories would be given the exact same name, and that projects of the same name hosted on different services were indeed the same project (which may not always be the case).
 Additionally, it is possible for users on Github to give their projects the exact same name as pre-existing projects created by other users.
-This issue was accounted for in this paper's analysis, but it is unclear whether Ali \emph{et al.} accounted for this.
+This issue was accounted for in this paper's analysis, but it is unclear whether the original authors accounted for this.
 
 The data contains a large portion of censored data.
 This means the abandonment of most of the projects was not observed.
@@ -469,7 +489,7 @@ Perform separate studies on each hosting service to remove variability in the wa
 %%
 %% If your work has an appendix, this is the place to put it.
 \appendix
-\section*{APPENDIX}
+\section*{APPENDICES}
 \section{Artifacts} \label{artifacts}
 
 Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}\\
