@@ -391,6 +391,21 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
     \label{fig:KM curves}
 \end{figure*}
 
+\begin{figure*}[h]
+\centering
+\includegraphics[scale=0.5]{img/CoxHR-table.jpg}
+\caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
+\label{fig:Cox}
+\end{figure*}
+
+\subsection{Revision Frequency Analysis} \label{rev-freq-results}
+
+The K-M curves for revision frequency are little different from the graphs we generated for other attributes, as seen in Fig 4. 
+We observed curves drop for the projects with more than one revision per day in the starting of study period.
+In Addition, the projects with less revision frequency out performed projects with higher revision frequencies during the mean duration period of the studied projects. 
+As shown in the Fig. 3, results of our regression model also indicate that the projects with less revision frequency are less likely to be abandoned. 
+This may be due to cox proportional model gives more consideration to the portion where most of the projects were active.
+
 \begin{figure*}[!ht]
     \centering
     \begin{subfigure}
@@ -407,21 +422,6 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
     {\small Revision frequency} 
     \label{fig:Revision frequency} \keanu{need a better caption}
 \end{figure*}
-
-\subsection{Revision Frequency Analysis} \label{rev-freq-results}
-
-The K-M curves for revision frequency are little different from the graphs we generated for other attributes, as seen in Fig 4. 
-We observed curves drop for the projects with more than one revision per day in the starting of study period.
-In Addition, the projects with less revision frequency out performed projects with higher revision frequencies during the mean duration period of the studied projects. 
-As shown in the Fig. 3, results of our regression model also indicate that the projects with less revision frequency are less likely to be abandoned. 
-This may be due to cox proportional model gives more consideration to the portion where most of the projects were active.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.75]{img/KM-rev_freq.jpg}
-    \caption{KM curve for the data by revision frequency \keanu{need a better caption}}
-    \label{fig:freq}
-\end{figure}
 
 \subsection{Bayesian Survival Analysis}
 
