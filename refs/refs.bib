@@ -63,15 +63,38 @@
   publisher = {Taylor \& Francis}
 }
 
+@article{evangelopoulos,
+  author    = { Nicholas   Evangelopoulos  and  Anna   Sidorova  and  Stergios   Fotopoulos  and  Indushobha   Chengalur-Smith },
+  title     = {Determining Process Death Based on Censored Activity Data},
+  journal   = {Communications in Statistics - Simulation and Computation},
+  volume    = {37},
+  number    = {8},
+  pages     = {1647-1662},
+  year      = {2008},
+  publisher = {Taylor & Francis},
+  doi       = {10.1080/03610910802140224},
+  url       = {https://doi.org/10.1080/03610910802140224},
+  eprint    = {https://doi.org/10.1080/03610910802140224}
+}
+
 @article{kaplan1958nonparametric,
-  title     = {Nonparametric estimation from incomplete observations},
-  author    = {Kaplan, Edward L and Meier, Paul},
-  journal   = {Journal of the American statistical association},
+  author    = { E. L.   Kaplan  and  Paul   Meier },
+  title     = {Nonparametric Estimation from Incomplete Observations},
+  journal   = {Journal of the American Statistical Association},
   volume    = {53},
   number    = {282},
-  pages     = {457--481},
+  pages     = {457-481},
   year      = {1958},
-  publisher = {Taylor \& Francis}
+  publisher = {Taylor & Francis},
+  doi       = {10.1080/01621459.1958.10501452},
+  url       = { 
+               https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501452
+               
+               },
+  eprint    = { 
+               https://www.tandfonline.com/doi/pdf/10.1080/01621459.1958.10501452
+               
+               }
 }
 
 @article{kelter2020bayesian,
@@ -118,6 +141,25 @@
   pages        = {7--12},
   year         = {2009},
   organization = {IEEE}
+}
+
+@inproceedings{perils2009,
+  author    = {Bird,C. and Rigby,P. C. and Barr,E. T. and Hamilton,D. J. and German,D. M. and Devanbu,P.},
+  editor    = { },
+  year      = {2009},
+  title     = {The promises and perils of mining git},
+  publisher = {IEEE},
+  pages     = {1-10},
+  abstract  = {We are now witnessing the rapid growth of decentralized source code management (DSCM) systems, in which every developer has her own repository. DSCMs facilitate a style of collaboration in which work output can flow sideways (and privately) between collaborators, rather than always up and down (and publicly) via a central repository. Decentralization comes with both the promise of new data and the peril of its misinterpretation. We focus on git, a very popular DSCM used in high-profile projects. Decentralization, and other features of git, such as automatically recorded contributor attribution, lead to richer content histories, giving rise to new questions such as ldquoHow do contributions flow between developers to the official project repository?rdquo However, there are pitfalls. Commits may be reordered, deleted, or edited as they move between repositories. The semantics of terms common to SCMs and DSCMs sometimes differ markedly, potentially creating confusion. For example, a commit is immediately visible to all developers in centralized SCMs, but not in DSCMs. Our goal is to help researchers interested in DSCMs avoid these and other perils when mining and analyzing git data.},
+  keywords  = {Birds; Collaborative work; Data analysis; History; Kernel; Linux; Mercury (metals); Open source software; Packaging; Rails},
+  isbn      = {2160-1852},
+  language  = {English}
+}
+
+@inproceedings{persson2007ACO,
+  title  = {A Comparison of Graphical Methods for Assessing the Proportional Hazards Assumptions in the Cox Model},
+  author = {Inger Persson and Harry Khamis},
+  year   = {2007}
 }
 
 @inproceedings{pietri2019software,
@@ -218,6 +260,8 @@
   publisher = {Karger Publishers}
 }
 
+
+
 @misc{survivalRpackage,
   author       = {},
   title        = {CRAN - Package survival},
@@ -232,86 +276,4 @@
   author  = {Xia, Tianpei and Fu, Wei and Shu, Rui and Menzies, Tim},
   journal = {arXiv preprint arXiv:2006.07240},
   year    = {2020}
-}
-
-@article{efron1988logistic,
-  title     = {Logistic regression, survival analysis, and the Kaplan-Meier curve},
-  author    = {Efron, Bradley},
-  journal   = {Journal of the American statistical Association},
-  volume    = {83},
-  number    = {402},
-  pages     = {414--425},
-  year      = {1988},
-  publisher = {Taylor \& Francis}
-}
-
-@article{evangelopoulos,
-  author    = { Nicholas   Evangelopoulos  and  Anna   Sidorova  and  Stergios   Fotopoulos  and  Indushobha   Chengalur-Smith },
-  title     = {Determining Process Death Based on Censored Activity Data},
-  journal   = {Communications in Statistics - Simulation and Computation},
-  volume    = {37},
-  number    = {8},
-  pages     = {1647-1662},
-  year      = {2008},
-  publisher = {Taylor & Francis},
-  doi       = {10.1080/03610910802140224},
-  url       = {https://doi.org/10.1080/03610910802140224},
-  eprint    = {https://doi.org/10.1080/03610910802140224}
-}
-
-@article{kaplan1958nonparametric,
-author = { E. L.   Kaplan  and  Paul   Meier },
-title = {Nonparametric Estimation from Incomplete Observations},
-journal = {Journal of the American Statistical Association},
-volume = {53},
-number = {282},
-pages = {457-481},
-year  = {1958},
-publisher = {Taylor & Francis},
-doi = {10.1080/01621459.1958.10501452},
-
-URL = { 
-        https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501452
-    
-},
-eprint = { 
-        https://www.tandfonline.com/doi/pdf/10.1080/01621459.1958.10501452
-    
-}
-
-}
-
-@article{cox1972regression,
-author = {Cox, D. R.},
-title = {Regression Models and Life-Tables},
-journal = {Journal of the Royal Statistical Society: Series B (Methodological)},
-volume = {34},
-number = {2},
-pages = {187-202},
-keywords = {life table, hazard function, age-specific failure rate, product limit estimate, regression, conditional inference, asymptotic theory, censored data, two-sample rank tests, medical applications, reliability theory, accelerated life tests},
-doi = {https://doi.org/10.1111/j.2517-6161.1972.tb00899.x},
-url = {https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.2517-6161.1972.tb00899.x},
-eprint = {https://rss.onlinelibrary.wiley.com/doi/pdf/10.1111/j.2517-6161.1972.tb00899.x},
-abstract = {Summary The analysis of censored failure times is considered. It is assumed that on each individual are available values of one or more explanatory variables. The hazard function (age-specific failure rate) is taken to be a function of the explanatory variables and unknown regression coefficients multiplied by an arbitrary and unknown function of time. A conditional likelihood is obtained, leading to inferences about the unknown regression coefficients. Some generalizations are outlined.},
-year = {1972}
-}
-
-
-
-@inproceedings{perils2009,
-  author    = {Bird,C. and Rigby,P. C. and Barr,E. T. and Hamilton,D. J. and German,D. M. and Devanbu,P.},
-  editor    = { },
-  year      = {2009},
-  title     = {The promises and perils of mining git},
-  publisher = {IEEE},
-  pages     = {1-10},
-  abstract  = {We are now witnessing the rapid growth of decentralized source code management (DSCM) systems, in which every developer has her own repository. DSCMs facilitate a style of collaboration in which work output can flow sideways (and privately) between collaborators, rather than always up and down (and publicly) via a central repository. Decentralization comes with both the promise of new data and the peril of its misinterpretation. We focus on git, a very popular DSCM used in high-profile projects. Decentralization, and other features of git, such as automatically recorded contributor attribution, lead to richer content histories, giving rise to new questions such as ldquoHow do contributions flow between developers to the official project repository?rdquo However, there are pitfalls. Commits may be reordered, deleted, or edited as they move between repositories. The semantics of terms common to SCMs and DSCMs sometimes differ markedly, potentially creating confusion. For example, a commit is immediately visible to all developers in centralized SCMs, but not in DSCMs. Our goal is to help researchers interested in DSCMs avoid these and other perils when mining and analyzing git data.},
-  keywords  = {Birds; Collaborative work; Data analysis; History; Kernel; Linux; Mercury (metals); Open source software; Packaging; Rails},
-  isbn      = {2160-1852},
-  language  = {English}
-}
-
-@inproceedings{persson2007ACO,
-    title={A Comparison of Graphical Methods for Assessing the Proportional Hazards Assumptions in the Cox Model}, author={Inger Persson and Harry Khamis},
-    year={2007}
 }
