@@ -204,13 +204,13 @@ Norick \emph{et al.} analyzed OSS projects using code quality measures and obser
 \section{Data} \label{data}
 
 Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common hosting sites, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}. 
-The \emph{popular-3k-python} subset of the Software Heritage graph \cite{pietri2019software} contained the necessary information and was used in the original paper and also in this paper.
-This data set contains information on 3052 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI between 2005 and 2018.
-Following the tutorial provided by the Software Heritage organization \cite{SQLdataset}, a PostgreSQL database was hosted on the first author's local machine to facilitate data collection.
+The \emph{popular-3k-python} subset of the Software Heritage graph \cite{pietri2019software} contains the necessary information and was used in the original paper and also in this paper.
+This data set contains information on 3052 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI, and records revisions between 1980 and 2019 at the time of writing (the Software Heritage graph is subject to updates, which makes it a non-reproducible data set).
+Following the tutorial provided by the Software Heritage organization \cite{SQLdataset}, a PostgreSQL database was hosted on the authors' local machines to facilitate data collection.
 
 Though the \emph{popular-3k-python} data set contains all the necessary information to perform survival analysis, it first must be manipulated into a more suitable format before the analysis can be carried out. 
-In this case, the collected data was manipulated such that our final data set contained the duration of the project, the censorship value, and the attributes of interest. 
-Descriptions of each column present in the dataset can be found in Table \ref{tab:data}. 
+In this case, the collected data was manipulated such that the final data set contained the duration of the project, the censorship value, and the attributes of interest. 
+Descriptions of each column present in the data set can be found in Table \ref{tab:data}. 
 Data collection and manipulation were performed in Jupyter Notebooks, which are available in this paper's repository, a link to which can be found in appendix \ref{artifacts}. 
 
 \begin{table}[h!]
@@ -220,16 +220,21 @@ Data collection and manipulation were performed in Jupyter Notebooks, which are 
         \toprule
         Column Name & Description \\
         \midrule
-        Host Type            & Which hosting service the projects repository resides on \\
+        Host Type            & Which hosting service the project's repository resides on \\
         Major Releases       & Whether or not the project publishes major releases \\
-        Censored             & Whether or not the project death is observed (for more information see section \ref{replmethods}) \\
+        Censored             & True if the project's death is not observed (for more information see section \ref{death_censoring}) \\
         Duration\_months     & The duration of the project in months \\
-        High\_rev\_frequency & Whether or not the project has high revision frequency (greater than one revision a day) \\
-        Multi\_repo          & Whether or not the project is hosted on multiple \\
+        High\_rev\_frequency & Whether or not the project has high revision frequency (greater than one revision per day) \\
+        Multi\_repo          & Whether or not the project is hosted on multiple hosting services\\
         High\_author\_count  & Whether or not the project has a high author count (greater than twenty unique authors) \\
         \bottomrule
     \end{tabular}
 \end{table}
+
+For their study, the original authors set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
+This paper uses the same time frame and determines exact start and end dates.
+Using January 1, 2018, as a strict end date and maintaining the study duration as 4620 days (165 months as defined), the start date is found to be May 9, 2005.
+After following the same procedures described in the original paper, a list of 2066 projects and their associated information was obtained.
 
 %For example, most of the analyzed features or attributes of the projects in the original paper are not present in the raw data set and need to be calculated. 
 %The work done in this study has been documented in a repository for the benefit of the reader.
@@ -243,48 +248,53 @@ Data collection and manipulation were performed in Jupyter Notebooks, which are 
 \section{Methods} \label{methods}
 
 \subsection{Replication} \label{replmethods}
+\subsubsection{Death and Censoring} \label{death_censoring}
 
 Two critical concepts in survival analysis are events of interest and censoring.
-In the case of this paper, as well as the original paper, the event of interest is the abandonment of a project.
-That is, if a project stops receiving revisions, it is considered abandoned.
-However, it is impossible to determine whether a project will receive revisions in the future, so a threshold of some kind is required to determine whether the project has indeed been abandoned for the purposes of the study.
-This is where censoring is used.
-Censoring involves using data from subjects of a study for which the time of interest is not observed.
-There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring.
-Random censoring involves removing subjects (in this case, projects) from a study at varying times relative to when they began to be observed \cite{renganathan2016overview}. \keanu{find another citation to support this, http://www.stat.columbia.edu/~madigan/W2025/notes/survival.pdf mentions it, but refer to it as random type 1 right censoring}
-
-The original authors set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
-This paper uses the same time frame and determines exact start and end dates.
-Using January 1, 2018, as a strict end date and maintaining the study duration as 4620 days (165 months as defined), the start date is found to be May 9, 2005.
-
-Projects are censored if there is reason to believe that they would receive revisions after the end of the time frame (i.e. the last \emph{observed} revision is unlikely to be the last revision of the project).
-In this paper, any project with revisions on or after November 1, 2017, was censored. 
-\keanu{NOTE: Our censoring method may change. This is because the paper \cite{ali2020cheating} conflicted with the video presentation \cite{ali2020video} with respect to the censoring method. After further inspection, it appears the method in the paper is superior, as we only censor data that truly had revisions after the time frame (though this probably will not affect many of the data points)}
-The reason this is considered random censoring is that projects that are censored have varying start dates within the time frame of the study.
-The distribution of the project timeline can be seen in Figure \ref{fig:figure-1}, which is a replication of Figure 1 in the original paper.
+As previously discussed, the event of interest for this study is project abandonment or death.
+As defined in the introduction, a project is considered dead when it no longer receives any revisions.
+With this definition, it is impossible to know whether any project is truly dead, because, unlike a living organism, any project may receive revisions at any point in the future, making it "not dead" by the working definition.
+However, there are multiple practical ways of determining whether a project is dead, all of which rely on the scope of the studied data set.
+For this study, the death of a project is determined in the following way:
+\begin{itemize}
+    \item Two special revisions are defined for each project
+    \begin{itemize}
+        \item Last revision: The last recorded revision of a project within the scope of the data set (i.e. 1980 - 2019).
+        \item Last observed revision: The last recorded revision of a project within the studied time frame (i.e. 2005 - 2018).
+    \end{itemize}
+    \item If, and only if, the last revision is also the last observed revision, the project death is said to be observed.
+\end{itemize}
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=0.5]{figure1.jpg}
+\includegraphics[scale=0.4]{figure1.jpg}
 \caption{Graph of project timelines within the given time frame. The projects are ordered by duration and plotted from and to their respective start and end dates. Month 0 begins on May 9, 2005, and Month 165 concludes on January 1, 2018.}
 \label{fig:figure-1}
 \end{figure}
 
+What happens if a project's death is not observed?
+This is where censoring is used.
+Suppose a project has its first revision one month before the end of the studied time frame, and continues to be revised daily past the studied time frame.
+It would be incorrect to indicate that this project survived for only one month, but it is also impossible to include the project's future activity in the study.
+Rather than discarding such projects, censoring causes them to be considered by the study for the observed duration, but without considering them as dead projects (i.e. they are removed from the calculations after they stop being observed).
+There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring, which involves removing subjects from a study at varying times relative to when they began to be observed (as is the case here) \cite{renganathan2016overview}. If a project's death is not observed, it is considered censored.
+
+The distribution of the project timeline can be seen in Fig. \ref{fig:figure-1}, which is a replication of Figure 1 in the original paper.
+
+\subsubsection{Survival Analysis}
 Using both the calculated duration associated with each project and the censoring status of each project, the survival analysis can be performed.
 The analysis was carried out using an R notebook (this can be found in the project repository under Analysis\&Data/frequentist-analysis.rmd).
 
 The K-M estimator is a non-parametric estimation technique that estimates the survival function, $S(t)$.
 The survival function gives the probability that a given project will survive past a particular time $t$.
 At $t = 0$, the K-M estimator is 1 and as $t$ approaches infinity, so does the K-M estimator.
-More precisely, $S(t)$ is given by  $S(t) = p_0 \times p_1 \times p_2 \times \dots \times p_t$, where $p_i$ is the proportion of all projects that survived at the $i^{th}$ time step \cite{kaplan1958nonparametric}.\keanu{citation?}
+More precisely, $S(t)$ is given by  $S(t) = p_0 \times p_1 \times p_2 \times \dots \times p_t$, where $p_i$ is the proportion of all projects that survived at the $i^{th}$ time step \cite{kaplan1958nonparametric}.
 The K-M estimator produces curves that approach the true survival function of the data.
 The hazard function is another useful function in survival analysis. It describes the probability of the event of interest or hazard (project abandonment in this case) occurring up to a given time point.
 The original paper uses the Cox Proportional-Hazards model which allows for fitting a regression model in order to better understand how the health of projects relate to their key attributes. 
 This analysis results in the hazards ratio (HR), which is derived from the model for all covariates that are included in the formula. 
 Briefly, a $HR > 1$ indicates an increased risk of abandonment; on the other hand, $HR < 1$, indicates a decreased risk of abandonment \cite{cox1972regression}. 
 As such, the HR represents a relative risk of abandonment that compares one instance of a binary feature (e.g. yes or no) to the other instance.
-\keanu{need citations for this section}
-\manish{added citations}
 
 \subsection{Revision Frequency Analysis} \label{revisionFreq}
 
