@@ -391,11 +391,21 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
     \label{fig:KM curves}
 \end{figure*}
 
-\begin{figure*}[h]
-\centering
-\includegraphics[scale=0.5]{img/CoxHR-table.jpg}
-\caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
-\label{fig:Cox}
+\begin{figure*}[!ht]
+    \centering
+    \begin{subfigure}
+        \centering
+        \includegraphics[width=0.45\textwidth]{img/KM-rev_freq.jpg}   
+        \label{fig:KM curve for revision frequency}
+    \end{subfigure}
+    \begin{subfigure}
+        \centering 
+        \includegraphics[width=0.45\textwidth]{img/commit_freq_bayes.png}
+        \label{fig:Bayesian curve for revision frequency}
+    \end{subfigure}
+    \caption
+    {\small Revision frequency} 
+    \label{fig:Revision frequency} \keanu{need a better caption}
 \end{figure*}
 
 \subsection{Revision Frequency Analysis} \label{rev-freq-results}
@@ -430,23 +440,23 @@ Additionally, for all project attributes, the beta value for the 97.5\% quantile
     \centering
     \begin{subfigure}
         \centering
-        \includegraphics[width=0.45\textwidth]{major_releases_bayes.png}   
+        \includegraphics[width=0.45\textwidth]{img/major_releases_bayes.png}   
         \label{fig:bayes major releases}
     \end{subfigure}
     \begin{subfigure}
         \centering 
-        \includegraphics[width=0.45\textwidth]{host_type_bayes.png}
+        \includegraphics[width=0.45\textwidth]{img/host_type_bayes.png}
         \label{fig:bayes host type}
     \end{subfigure}
     \vskip\baselineskip
     \begin{subfigure} 
         \centering 
-        \includegraphics[width=0.45\textwidth]{multi_repo_bayes.png}
+        \includegraphics[width=0.45\textwidth]{img/multi_repo_bayes.png}
         \label{fig:bayes multi repo}
     \end{subfigure}
     \begin{subfigure}   
         \centering 
-        \includegraphics[width=0.45\textwidth]{author_count_bayes.png} 
+        \includegraphics[width=0.45\textwidth]{img/author_count_bayes.png} 
         \label{fig:bayes author count}
     \end{subfigure}
     \caption
