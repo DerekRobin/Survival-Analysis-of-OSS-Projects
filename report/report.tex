@@ -386,7 +386,8 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
         \includegraphics[width=0.45\textwidth]{img/KM-author_count.jpg} 
         \label{fig:author count}
     \end{subfigure}
-    \caption{\small KM curves of the python project data analyzed by major releases, host type, multiple repository hosting, and number of authors} 
+    \caption{\small KM curves of the python project data analyzed by major releases, host type, use of multiple repository hosting services, and number of authors.
+    Note that vertical tick marks indicate the censoring of a project, and observed deaths contribute to the decline of the curve.} 
     \label{fig:KM curves}
 \end{figure*}
 
@@ -397,7 +398,7 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
 \label{fig:Cox}
 \end{figure*}
 
-\subsection{Revision Frequency Analysis}
+\subsection{Revision Frequency Analysis} \label{rev-freq-results}
 
 The K-M curves for revision frequency are little different from the graphs we generated for other attributes, as seen in Fig 4. 
 We observed curves drop for the projects with more than one revision per day in the starting of study period.
@@ -490,7 +491,8 @@ Future studies should perform tests to determine whether the assumptions for the
 
 The Bayesian approach to survival analysis comes with its own limitations as well.
 As pointed out by Renganathan, Bayesian survival analysis can be subjective as the analyst places their own bias into the model when selecting the prior distributions \cite{renganathan2016overview}.
-In order to mitigate this bias, prior selection requires both epistemological and ontological reasoning. Prior distributions were chosen based on survival analysis done in other domains \cite{kelter2020bayesian, rethinking}, but more investigation should be done as to whether these priors are appropriate for this domain and whether the models from this study accurately predict durations of different data sets.
+In order to mitigate this bias, prior selection requires both epistemological and ontological reasoning.
+Prior distributions were chosen based on survival analysis done in other domains \cite{kelter2020bayesian, rethinking}, but more investigation should be done as to whether these priors are appropriate for this domain and whether the models from this study accurately predict durations of different data sets.
 
 \subsubsection{Limitations of the Data}
 
@@ -500,30 +502,21 @@ Additionally, it cannot be ensured that the data contains a full history of the 
 The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking \cite{perils2009}.
 
 There are inherent differences in the ways developers use the different hosting services.
-This could skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product.
+Traditionally, services such as PyPi and Debian are used to host major releases of a product.
 This may hide information about the number of developers and the revision frequency.
 Additionally, the potential confounding factors mentioned in section \ref{limit-methods} are not represented in this data set.
 
-It may also be worth noting that this data is only for Python projects and that it is possible that different behaviours are associated with development in different languages.
+It may also be worth noting that this data is only for Python projects and it is possible that different behaviours are associated with development in different languages.
 Python is a relatively easy language to use, and can often be used for small tasks that are not maintained.
-However, because this data set comprises popular projects, it is unlikely to contain projects that were used for a small task and discarded.
+The results of the revision frequency analysis in section \ref{rev-freq-results} seem to indicate a large number of short lived projects.
 
-There was no clear method for determining whether a project was hosted in multiple repositories.
-The only unique identifier for each project was a url, from which the project name was extracted using regular expressions.
-This may have resulted in the extraction of inconsistent project names across host types.
-The assumption is that each project that was hosted on multiple repositories would be given the exact same name, and that projects of the same name hosted on different services were indeed the same project (which may not always be the case).
-Additionally, it is possible for users on Github to give their projects the exact same name as pre-existing projects created by other users.
-This issue was accounted for in this paper's analysis, but it is unclear whether the original authors accounted for this.
-
-The data contains a large portion of censored data.
+The data set contains a large portion of censored data.
 This means the abandonment of most of the projects was not observed.
 As data points are censored (denoted by the vertical tick marks in the KM curves), there is a smaller and smaller group of data points to study.
 This means that the results towards the 165 month mark may be less representative.
-This is to be expected with any SE study, as recent years have lead to an exponential increase in the number of OSS projects \keanu{find citation?}.
-
 
 The data set contained many revisions (over 4 million) that were not associated with project URLs.
-It is unclear how this happened.
+The cause of this is unclear.
 
 % Not sure we need this
 %\subsubsection{Replication Challenges}
@@ -536,6 +529,10 @@ Increase the time frame of the study (the original paper could not do this becau
 Perform separate studies on each hosting service to remove variability in the way the services are utilized.
 
 \derek{Future work should include a more in depth analysis of whether or not the assumption of the cox proportional hazards model holds}
+
+\keanu{Remove short lived projects, e.g. a day long}
+
+\keanu{this study considered the first observed revision to be the first revision of a project (similar definitions when compared to those in section \ref{death_censoring}), but this may not always be the case. Future studies should acknowledge the true beginning revision for projects in order to obtain a more accurate duration value as in \cite{samoladas2010survival}.}
 
 \section{Conclusion} \label{conclusion}
 
