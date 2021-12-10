@@ -297,15 +297,32 @@ This study applies both the K-M estimator and the Cox Proportional-Hazards model
 
 \subsection{Bayesian Survival Analysis}
 
-This section focuses on the Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian}. 
-Although applying the Bayesian approach to survival analysis is less common due to computational difficulties, it offers multiple advantages over the frequentist approach. 
-The Bayesian analysis uses posterior distributions of model parameters to conclude them. 
+The Bayesian approach to survival analysis is less common due to computational difficulties. However, it offers multiple advantages over the frequentist approach \cite{kelter2020bayesian}. 
+We replicate the methods outlined in \cite{kelter2020bayesian} to apply Bayesian survival analysis to our study. 
+The Bayesian analysis uses posterior distributions of model parameters to draw inferences about them. 
 These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) algorithms. 
-The statistical modelling language used for Bayesian analysis is Stan, specifically the \lstinline!rstan! interface. In addition to \lstinline!rstan!, the R packages \lstinline[language=R]!tidybayes! and \lstinline[language=R]!tidyverse! were used to aid in visualization and data manipulation.
+The statistical modelling language used was Stan.
 
-This study used a parametric exponential model that assumes the survival times of a project $y = (y1, y2, \dots , yn)$ are exponentially distributed with parameter $\lambda$.
-We have so far derived a posterior survival function for one of the project's attributes: the use of multiple hosting services. 
-We will be further deriving posterior survival functions for the remaining attributes, namely major releases, hosting service of the project, revision frequency and author count. 
+Our study applies the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. 
+The censoring indicators as $v = (v_1, v_2,\dots, v_n)$ where vi = 0 if yi is right censored (lost to follow-up) and vi = 1 if yi is a failure time (project abandonment), the survival function which is the probability of surviving past the time point yi is given by
+
+\begin{equation}
+S(y_i|\lambda) = P(T\geqyi|T\geq0) = 1 - [1 - \exp(-  \lambda y_i)] = \exp(- \lambda y_i)
+\end{equation}
+
+and the survival model is denoted as
+
+\begin{equation}
+y_i|v_i \sim f(y_i| \lambda)^{v_i} + S(y_i| \lambda)^{1-v_i} = [\lambda exp(-  \lambda y_i)]^{v_i} + [exp(-  \lambda y_i)]^{1-v_i}
+\end{equation}
+\begin{equation}
+\lambda \sim p(\lambda)
+\end{equation}
+\begin{equation}
+\lambda = exp(x_i^T \beta)
+\end{equation}
+
+This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, hosting service of the project, use of multiple hosting services, team size, and revision frequency. 
 
 % From proposal (slightly revised to make sense in this context):
 % [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, hosting service of the project, use of multiple hosting services, team size, and revision frequency.
@@ -319,7 +336,7 @@ Fig. 2 represents K-M curves along with their confidence interval and p-value wh
 As seen in Fig. 2a, we found out that projects with at least one releases has higher chances of survival. 
 The curve for projects having major releases plateaus around 65\% survival probability during the 120 month mark whereas the survival probability of projects with no major releases end up to be less than 20\% by the end of study period. 
 Fig. 2b represents the significance of hosting the project on different hosting services, we found out that projects that are hosted on GitHub has a higher survival chances in the long run, as the curves suggest all three hosting services has similar trend for first 55 months which is within the average duration of projects hosted on these services.
-We observed that having multiple repositories hosted on multiple services has significantly increased the chances of a project’s survival.
+We observed that having multiple repositories hosted on multiple services has significantly increased the chances of a projectÂ’s survival.
 As seen in Fig. 2c, the survival rate for such projects is 75\%, whereas around 20\% for projects with only one package repository system. 
 The Curve in fig. 2d implies the significance of network of developers for survival of open source project, clearly the project having more than 20 different authors end up having around 60\% survival rate which are significantly different form projects with small team of developers with less than 20\% survival rate in the end of the study period.
 
