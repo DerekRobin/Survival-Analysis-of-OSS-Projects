@@ -415,15 +415,44 @@ This may be due to cox proportional model gives more consideration to the portio
 
 \subsection{Bayesian Survival Analysis}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{multi_repo_bayes.png}
-    \caption{Posterior survival functions of projects hosted on multiple repositories and projects hosted on a single repository}
-    \label{fig:multi_repo_bayes}
-\end{figure}
+Shown in figure \ref{fig:Bayesian posterior survival functions} are the posterior survival functions for variations of the selected project attributes. The dotted lines represent the  2.5\% and 97.5\% quantiles, while the solid middle line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). The remaining lines all represent valid posterior survival functions. 
+Fig. 5a clearly indicates that the survival function of the projects with no major releases decreases much faster than projects with releases. 
+Survival probability for projects with no releases was lower than 25\% after 150 months compared to 55\% for projects with releases.
+Fig. 5b illustrates that projects hosted on Github have the highest survival chances compared to those hosted on Pypi and Debian. 
+At 150 months, the predicted survival probabilities for Github, Pypi and Debian were 87, 65 and 25, respectively.
+Fig. 5c shows that projects hosted on more than 1 version control system had significantly higher survival chances than projects hosted on a single hosting service. 
+Above 65\% survival probability for multiple repositories compared to slightly over 25\% for single repository projects at the end of 150 months.
+Fig. 5d demonstrates the importance of the number of contributing developers on the survival chances of open-source python projects. 
+For projects with more than 20 authors, the predicted survival probability was around 55\%, while less than 25\% for projects with less than 20 authors at the 150-month mark.
+Additionally, for all project attributes, the beta value for the 97.5\% quantile was found smaller than zero, which ensures that estimates are highly certain \cite{kelter2020bayesian}.
 
-Shown in figure \ref{fig:multi_repo_bayes} are the posterior survival functions for projects hosted on multiple repositories versus those hosted on single repositories.
-The dotted lines represent the  2.5\% and 97.5\% quantiles while the middle solid line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). The remaining lines all represent valid posterior survival functions.
+\begin{figure*}[ht]
+    \centering
+    \begin{subfigure}
+        \centering
+        \includegraphics[width=0.45\textwidth]{major_releases_bayes.png}   
+        \label{fig:major releases}
+    \end{subfigure}
+    \begin{subfigure}
+        \centering 
+        \includegraphics[width=0.45\textwidth]{host_type_bayes.png}
+        \label{fig:host type}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure} 
+        \centering 
+        \includegraphics[width=0.45\textwidth]{multi_repo_bayes.png}
+        \label{fig:multi repo}
+    \end{subfigure}
+    \begin{subfigure}   
+        \centering 
+        \includegraphics[width=0.45\textwidth]{author_count_bayes.png} 
+        \label{fig:author count}
+    \end{subfigure}
+    \caption
+    {\small Bayesian posterior survival functions of the python projects analyzed by major releases, host type, multiple repository hosting, and number of authors} 
+    \label{fig:Bayesian posterior survival functions}
+\end{figure*}
 
 \section{Discussion} \label{discussion}
 
