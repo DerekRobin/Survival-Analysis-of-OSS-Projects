@@ -1,6 +1,7 @@
 \documentclass[acmconf]{acmart}
 % % Packages
 %\usepackage{cite}
+\usepackage{balance} % For balanced columns on the last page
 \usepackage{listings}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
@@ -10,11 +11,12 @@
 \usepackage{booktabs}
 %\usepackage{parskip}
 %\setlength{\parskip}{1em}
-\usepackage[bottom]{footmisc}
+%\usepackage[bottom]{footmisc}
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{totpages}
-\usepackage{subfigure}
+%\usepackage{subfigure}
+\usepackage{subcaption}
 
 %% \BibTeX command to typeset BibTeX logo in the docs
 \AtBeginDocument{%
@@ -363,34 +365,40 @@ Similarly, projects having only one repository system are 3.3 times more likely 
 The third row highlights that the projects with less developers count are 19.3 times more likely be inactive.
 For the type of hosting used, we see that ratio implies that projects hosted on PyPi or Debian are less likely to be abandon compared to projects that are hosted on GitHub. This could be because Debian and PyPi-based projects have a higher survival rate during the first 55 months, the cox model considers this portion where most of the projects were participating heavily.
 
-\begin{figure*}[!ht]
+\begin{figure}[!ht]
     \centering
-    \begin{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=0.45\textwidth]{img/KM-major_release.jpg}   
-        \label{fig:major releases}
+        \includegraphics[width=\textwidth]{img/KM-major_release.jpg}   
+        \label{fig:major_releases}
+        \caption{\small K-M curves for projects which publish major releases and those which do not} 
     \end{subfigure}
-    \begin{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering 
-        \includegraphics[width=0.45\textwidth]{img/KM-host_type.jpg}
-        \label{fig:host type}
+        \includegraphics[width=\textwidth]{img/KM-host_type.jpg}
+        \label{fig:host_type}
+        \caption{\small K-M curves for projects with different hosting services} 
     \end{subfigure}
     \vskip\baselineskip
-    \begin{subfigure} 
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering 
-        \includegraphics[width=0.45\textwidth]{img/KM-multi_repo.jpg}
-        \label{fig:multi repo}
+        \includegraphics[width=\textwidth]{img/KM-multi_repo.jpg}
+        \label{fig:multi_repo}
+        \caption{\small K-M curves for projects with repositories on multiple hosting services} 
     \end{subfigure}
-    \begin{subfigure}   
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth} 
         \centering 
-        \includegraphics[width=0.45\textwidth]{img/KM-author_count.jpg} 
-        \label{fig:author count}
+        \includegraphics[width=\textwidth]{img/KM-author_count.jpg} 
+        \label{fig:author_count}
+        \caption{\small K-M curves for projects with high and low author count} 
     \end{subfigure}
-    \caption{\small KM curves of the python project data analyzed by major releases, host type, multiple repository hosting, and number of authors} 
+    \caption{\small K-M curves for each project attribute} 
     \label{fig:KM curves}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[h]
+\begin{figure*}[!ht]
 \centering
 \includegraphics[scale=0.5]{img/CoxHR-table.jpg}
 \caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
@@ -405,7 +413,7 @@ In Addition, the projects with less revision frequency out performed projects wi
 As shown in the Fig. 3, results of our regression model also indicate that the projects with less revision frequency are less likely to be abandoned. 
 This may be due to cox proportional model gives more consideration to the portion where most of the projects were active.
 
-\begin{figure}[H]
+\begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.75]{img/KM-rev_freq.jpg}
     \caption{KM curve for the data by revision frequency \keanu{need a better caption}}
@@ -414,44 +422,52 @@ This may be due to cox proportional model gives more consideration to the portio
 
 \subsection{Bayesian Survival Analysis}
 
-Shown in figure \ref{fig:Bayesian posterior survival functions} are the posterior survival functions for variations of the selected project attributes. The dotted lines represent the  2.5\% and 97.5\% quantiles, while the solid middle line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). The remaining lines all represent valid posterior survival functions. 
-Fig. 5a clearly indicates that the survival function of the projects with no major releases decreases much faster than projects with releases. 
-Survival probability for projects with no releases was lower than 25\% after 150 months compared to 55\% for projects with releases.
-Fig. 5b illustrates that projects hosted on Github have the highest survival chances compared to those hosted on Pypi and Debian. 
-At 150 months, the predicted survival probabilities for Github, Pypi and Debian were 87, 65 and 25, respectively.
-Fig. 5c shows that projects hosted on more than 1 version control system had significantly higher survival chances than projects hosted on a single hosting service. 
+Shown in Fig. \ref{fig:Bayesian posterior survival functions} are the posterior survival functions for variations of the selected project attributes. 
+The dotted lines represent the  2.5\% and 97.5\% quantiles, while the solid middle line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). 
+The remaining lines all represent all valid posterior survival functions. 
+Fig. \ref{fig:bayes_major_releases} clearly indicates that the survival function of the projects with no major releases decreases much faster than projects with releases. 
+Survival probability for projects with no major releases was lower than 25\% after 150 months compared to 55\% for projects with major releases.
+Fig. \ref{fig:bayes_host_type} illustrates that projects hosted on Github have the highest survival chances compared to those hosted on PyPi and Debian. 
+At 150 months, the predicted survival probabilities for Github, Pypi and Debian were 87\%, 65\% and 25\%, respectively.
+Fig. \ref{fig:bayes_multi_repo} shows that projects with repositories on more than 1 hosting service had significantly higher survival chances than projects with repositories on a single hosting service. 
 Above 65\% survival probability for multiple repositories compared to slightly over 25\% for single repository projects at the end of 150 months.
-Fig. 5d demonstrates the importance of the number of contributing developers on the survival chances of open-source python projects. 
+Fig. \ref{fig:bayes_author_count} demonstrates the importance of the number of contributing developers on the survival chances of open-source python projects. 
 For projects with more than 20 authors, the predicted survival probability was around 55\%, while less than 25\% for projects with less than 20 authors at the 150-month mark.
-Additionally, for all project attributes, the beta value for the 97.5\% quantile was found smaller than zero, which ensures that estimates are highly certain \cite{kelter2020bayesian}.
+\fix{Additionally, for all project attributes, the beta value for the 97.5\% quantile was found smaller than zero, which ensures that estimates are highly certain \cite{kelter2020bayesian}.}
+\derek{This last sentence needs a litte work. Some elaboration on what is meant by highly certain should suffice.}
 
-\begin{figure*}[!ht]
+\begin{figure}[!ht]
     \centering
-    \begin{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=0.45\textwidth]{major_releases_bayes.png}   
-        \label{fig:bayes major releases}
+        \includegraphics[width=\textwidth]{major_releases_bayes.png}   
+        \caption{\small Posterior survival functions for projects which publish major releases and those which do not}
+        \label{fig:bayes_major_releases}
     \end{subfigure}
-    \begin{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering 
-        \includegraphics[width=0.45\textwidth]{host_type_bayes.png}
-        \label{fig:bayes host type}
+        \includegraphics[width=\textwidth]{host_type_bayes.png}
+        \caption{\small Posterior survival functions for projects with different hosting services}
+        \label{fig:bayes_host_type}
     \end{subfigure}
     \vskip\baselineskip
-    \begin{subfigure} 
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering 
-        \includegraphics[width=0.45\textwidth]{multi_repo_bayes.png}
-        \label{fig:bayes multi repo}
+        \includegraphics[width=\textwidth]{multi_repo_bayes.png}
+        \caption{\small Posterior survival functions for projects with repositories on multiple hosting services}
+        \label{fig:bayes_multi_repo}
     \end{subfigure}
-    \begin{subfigure}   
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering 
-        \includegraphics[width=0.45\textwidth]{author_count_bayes.png} 
-        \label{fig:bayes author count}
+        \includegraphics[width=\textwidth]{author_count_bayes.png} 
+        \caption{\small Posterior survival functions for projects with high and low author count}
+        \label{fig:bayes_author_count}
     \end{subfigure}
-    \caption
-    {\small Bayesian posterior survival functions of the python projects analyzed by major releases, host type, multiple repository hosting, and number of authors} 
+    \caption{\small Bayesian posterior survival functions of the python projects analyzed by major releases, host type, multiple repository hosting, and number of authors} 
     \label{fig:Bayesian posterior survival functions}
-\end{figure*}
+\end{figure}
 
 \section{Discussion} \label{discussion}
 \subsection{Implications} \label{implications}
