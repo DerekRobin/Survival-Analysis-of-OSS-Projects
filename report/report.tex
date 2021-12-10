@@ -174,9 +174,9 @@ Thus, the research questions this paper answers are as follows:
 
 Section \ref{related} outlines other research which has utilized survival analysis to study OSS and other work which has studied attributes similar to those studied in this paper.
 Section \ref{data} describes the source of the data set, the data set itself, and the required preparation in order to perform survival analysis.
-Section \ref{methods} covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis.
+Section \ref{methods} covers the methods used for the replication, Bayesian analysis, and the additional attribute analysis.
 Section \ref{results} shows the results for each analysis.
-Section \ref{discussion} discusses the comparative differences between the analyses performed, the limitations of the study, implications, and suggestions for future work on the topic.
+Section \ref{discussion} discusses the results, implications, and limitations, and gives suggestions for future work.
 The final section concludes by summarizing the purpose and findings of this paper.
 
 \section{Related Work} \label{related}
@@ -300,14 +300,6 @@ This analysis results in the hazards ratio (HR), which is derived from the model
 Briefly, a $HR > 1$ indicates an increased risk of abandonment; on the other hand, $HR < 1$, indicates a decreased risk of abandonment \cite{cox1972regression}. 
 As such, the HR represents a relative risk of abandonment that compares one instance of a binary feature (e.g. yes or no) to the other instance.
 
-\subsection{Revision Frequency Analysis} \label{revisionFreq}
-
-The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'' but never addresses this measurement.
-This paper seeks to explore the frequency of contributions as a method of assessment (simply analyzing the number of contributions would not yield useful results given the varying nature of the project durations in the studied time frame). 
-The revision frequency, defined as the number of commits divided by the number of days in the project's observed lifetime, was dichotomized into two groups depending on whether the frequency was above one revision per day.
-Although the median revision frequency was approximately 0.68 revisions per day, the threshold value of one was chosen because it is easier to remember when keeping these attributes in mind and, similar to the other dichotomizing attributes, it provides a threshold that fewer projects attain to, which sets them apart.
-This study applies both the K-M estimator and the Cox Proportional-Hazards model to the data to stratify the effects of high revision frequency on the overall health of an open-source project.
-
 \subsection{Bayesian Survival Analysis}
 
 The Bayesian approach to survival analysis is less common due to computational difficulties. 
@@ -349,6 +341,15 @@ This model was then used to visualize the posterior survival functions for the f
 
 % From proposal (slightly revised to make sense in this context):
 % [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, hosting service of the project, use of multiple hosting services, team size, and revision frequency.
+
+\subsection{Revision Frequency Analysis} \label{revisionFreq}
+
+The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'' but never addresses this measurement.
+This paper seeks to explore the frequency of contributions as a method of assessment (simply analyzing the number of contributions would not yield useful results given the varying nature of the project durations in the studied time frame). 
+The revision frequency, defined as the number of commits divided by the number of days in the project's observed lifetime, was dichotomized into two groups depending on whether the frequency was above one revision per day.
+Although the median revision frequency was approximately 0.68 revisions per day, the threshold value of one was chosen because it is easier to remember when keeping these attributes in mind and, similar to the other dichotomizing attributes, it provides a threshold that fewer projects attain to, which sets them apart.
+This study applies both the K-M estimator and the Cox Proportional-Hazards model to the data to stratify the effects of high revision frequency on the overall health of an open-source project.
+
 \section{Results} \label{results}
 
 \subsection{Replication}
@@ -411,31 +412,6 @@ This appears to contradict the results of the K-M curve and will be further disc
 \label{fig:Cox}
 \end{figure*}
 
-\subsection{Revision Frequency Analysis} \label{rev-freq-results}
-
-The K-M curves for revision frequency are little different from the graphs we generated for other attributes, as seen in Fig 4. 
-We observed curves drop for the projects with more than one revision per day in the starting of study period.
-In Addition, the projects with less revision frequency out performed projects with higher revision frequencies during the mean duration period of the studied projects.
-Fig. 4 also shows Bayesian survival functions for projects with more than one revision per day and those with revision per day less than or equal to one. Although a significant difference was not observed in predicted survival probabilities, projects with more than one revision per day had a slightly higher chance of survival by the study period's end.
-As shown in the Fig. 3, results of our regression model also indicate that the projects with less revision frequency are less likely to be abandoned. 
-
-\begin{figure}[!ht]
-    \centering
-    \begin{subfigure}[b]{0.45\columnwidth}
-        \centering
-        \includegraphics[width=\textwidth]{img/KM-rev_freq.jpg}   
-        \label{fig:KM_curve_for_revision_frequency}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\columnwidth}
-        \centering 
-        \includegraphics[width=\textwidth]{img/commit_freq_bayes.png}
-        \label{fig:Bayesian_curve_for_revision_frequency}
-    \end{subfigure}
-    \caption{\small K-M (left) and Bayesian posterior survival function (right) curves for revision frequency} 
-    \label{fig:Revision frequency}
-\end{figure}
-
 \subsection{Bayesian Survival Analysis}
 
 Shown in Fig. \ref{fig:Bayesian posterior survival functions} are the posterior survival functions for variations of the selected project attributes. 
@@ -484,12 +460,65 @@ Additionally, for all project attributes, the beta value for the 97.5\% quantile
     \label{fig:Bayesian posterior survival functions}
 \end{figure}
 
+\subsection{Revision Frequency Analysis} \label{rev-freq-results}
+
+The K-M curves for revision frequency are little different from the graphs we generated for other attributes, as seen in Fig 4. 
+We observed curves drop for the projects with more than one revision per day in the starting of study period.
+In Addition, the projects with less revision frequency out performed projects with higher revision frequencies during the mean duration period of the studied projects.
+Fig. 4 also shows Bayesian survival functions for projects with more than one revision per day and those with revision per day less than or equal to one. Although a significant difference was not observed in predicted survival probabilities, projects with more than one revision per day had a slightly higher chance of survival by the study period's end.
+As shown in the Fig. 3, results of our regression model also indicate that the projects with less revision frequency are less likely to be abandoned. 
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}[b]{0.45\columnwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/KM-rev_freq.jpg}   
+        \label{fig:KM_curve_for_revision_frequency}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\columnwidth}
+        \centering 
+        \includegraphics[width=\textwidth]{img/commit_freq_bayes.png}
+        \label{fig:Bayesian_curve_for_revision_frequency}
+    \end{subfigure}
+    \caption{\small K-M (left) and Bayesian posterior survival function (right) curves for revision frequency} 
+    \label{fig:Revision frequency}
+\end{figure}
+
 \section{Discussion} \label{discussion}
+As in other works, the author count was found to be the most significant indicator of a project's health.
+Interestingly, Norick et al. observed no significant evidence that software quality is affected by the number of developers.
+This suggests that a higher number of developers has some other affect on the longevity of a project that is unrelated to the quality of the software.
+
+The cox proportional hazards assumption does not hold.
+This means the hazard ratios are not applicable to the entire studied time frame.
+It is assumed that the calculations in the cox model give more weight to the portion of the study containing a larger number of subjects (i.e. the left most portion of the KM curves).
+
+The bayesian model forces the data to conform to the chosen distribution and cannot reflect more complex detail.
+
+Talk about the drop in the revision frequency KM curve (short lived projects with rapid development).
+Talk about crossing over point.
+It appears that having a higher revision frequency benefits a project in the long run.
+Maybe this indicates that consistency is more important.
+Discuss difference between bayesian and KM for this attribute.
+However, the bayesian analysis agrees with the KM curve in that projects with a higher revision frequency outlast the other projects despite having the sudden drop.
+
+
+Mention 80 month critical point hypothesis, this could be future work
+
 \subsection{Implications} \label{implications}
 
-\subsection{Comparison of Analyses} \label{compare}
+The results of this study, and the studies it is based on, have practical applications.
+They give developers of open source software insights into which projects are likely to receive long term attention from other developers.
+They help project coordinators understand the attributes that their projects should possess if they want a long-lasting project.
+They give companies and organizations looking to invest in or utilize or rely on open source projects confidence that such projects will remain active.
 
-\keanu{We are not quite ready for a comparison yet}
+Though our results were qualitatively similar to those of the original authors, it is suspected that a variation in approaches for data retrieval and the analysis tools used caused quantitative discrepancies (refer to 19.3 HR for author count vs 5.95).
+We therefore call for researchers to improve the reproducibility of their studies by providing artifacts.
+
+
+The application of Bayesian survival analysis presented in this paper is meant to surve as a preliminary investigation of the method in the domain of software.
+It is suggested that researchers looking to use this method in the future take a deeper look into priors, likelihoods, and covariates.
 
 \subsection{Limitations} \label{limit}
 
