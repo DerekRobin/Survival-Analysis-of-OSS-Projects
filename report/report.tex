@@ -386,8 +386,7 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
         \includegraphics[width=0.45\textwidth]{img/KM-author_count.jpg} 
         \label{fig:author count}
     \end{subfigure}
-    \caption
-    {\small KM curves of the python project data analyzed by major releases, host type, multiple repository hosting, and number of authors} 
+    \caption{\small KM curves of the python project data analyzed by major releases, host type, multiple repository hosting, and number of authors} 
     \label{fig:KM curves}
 \end{figure*}
 
@@ -431,23 +430,23 @@ Additionally, for all project attributes, the beta value for the 97.5\% quantile
     \begin{subfigure}
         \centering
         \includegraphics[width=0.45\textwidth]{major_releases_bayes.png}   
-        \label{fig:major releases}
+        \label{fig:bayes major releases}
     \end{subfigure}
     \begin{subfigure}
         \centering 
         \includegraphics[width=0.45\textwidth]{host_type_bayes.png}
-        \label{fig:host type}
+        \label{fig:bayes host type}
     \end{subfigure}
     \vskip\baselineskip
     \begin{subfigure} 
         \centering 
         \includegraphics[width=0.45\textwidth]{multi_repo_bayes.png}
-        \label{fig:multi repo}
+        \label{fig:bayes multi repo}
     \end{subfigure}
     \begin{subfigure}   
         \centering 
         \includegraphics[width=0.45\textwidth]{author_count_bayes.png} 
-        \label{fig:author count}
+        \label{fig:bayes author count}
     \end{subfigure}
     \caption
     {\small Bayesian posterior survival functions of the python projects analyzed by major releases, host type, multiple repository hosting, and number of authors} 
@@ -500,7 +499,7 @@ As such, the data set is not fully reproducible, as pointed out by the original 
 Additionally, it cannot be ensured that the data contains a full history of the respective repositories.
 The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking \cite{perils2009}.
 
-There are inherent differences in the ways developers use the different hosting services \keanu{I have a strong intuition that this is the case, it looks like PyPi and debian don't have as much granularity compared to git and only show major releases, but I don't have anything to back this up, so maybe we can find something to cite for that}.
+There are inherent differences in the ways developers use the different hosting services.
 This could skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product.
 This may hide information about the number of developers and the revision frequency.
 Additionally, the potential confounding factors mentioned in section \ref{limit-methods} are not represented in this data set.
@@ -544,7 +543,7 @@ Perform separate studies on each hosting service to remove variability in the wa
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{../refs/refs}
+\bibliography{../refs/refs.bib}
 
 %%
 %% If your work has an appendix, this is the place to put it.
