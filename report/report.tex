@@ -401,9 +401,6 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
 
 \keanu{talk about significance and meaning of the KM and Cox results}
 
-\keanu{As you can see in the Cox table summary, the numbers in each category are slightly different than the original study,
- we plan to look further into what has caused this difference in values}
-
 \subsection{Revision Frequency Analysis}
 
 The K-M curves for revision frequency are little different from the graphs we generated for other attributes, as seen in Fig 4. 
@@ -473,24 +470,28 @@ Additionally, for all project attributes, the beta value for the 97.5\% quantile
 \subsubsection{Limitations of the Methods} \label{limit-methods}
 
 The original paper \cite{ali2020cheating} and the MSR presentation given \cite{ali2020video} have contradicting methods of censoring.
-The method discussed in the original paper was deemed superior and is used in this paper. \keanu{not used as of now, but will be}
+The method discussed in the original paper was deemed superior and is used in this paper.
 
-Many details of the original paper's methods are left out for the sake of brevity.
-This lead to assumptions being made when manipulating the data.
-Hence, there are variations in the values retrieved compared to the original paper.
-\keanu{NOTE: We are continuing to look into the possible causes of these inconsistencies. We will analyze our data-collection jupyter notebook and compare it with the end result of the R notebook to verify consistency between them before concluding it is an issue with the methods used}
+The original authors left out many details regarding the methods they used for data extraction, manipulation, and analysis.
+This led to assumptions being made when replicating their study.
+Hence, there are discrepancies in the values obtained compared to the original paper.
 
-% This following section is from the proposal and should be
-% refined for the final report
-Survival analysis methods such as the K-M estimator and the Cox Proportional-Hazards model have limitations of their own.
+Being a replication, this study was limited to choosing the methods used by the original paper.
+These methods are also unanimous in the area of survival analysis, and there are few alternatives to them.
+This study attempts to address these limitations by providing an alternative analysis method, namely Bayesian analysis.
+
 When applying the K-M estimator, it is common to use a log-rank test to test the significance between the two groups which are being compared.
 The log-rank test only indicates whether or not the probability of survival is statistically significant between the two groups and is not able to provide any information about the size of the difference between the two groups \cite{stel2011kaplan}.
 Additionally, the K-M estimator does not account for confounding factors \cite{stel2011kaplan}.
 In more traditional uses of the K-M estimator, an example of a confounding factor could be the age of the study participants.
 In the case of this study, there may be confounding factors such as the experience level of the developers or whether the developers received funding to work on the project.
 Neither of these factors are represented in the data set.
+
 The Cox Proportional-Hazards model is used with the assumption that, over the period of observation, the hazards within each group are proportional \cite{stel2011cox}.
-If the assumption that the hazards within each group are proportional is not true, then the Cox Proportional-Hazards model will lead to incorrect estimates of the survival probability \cite{stel2011cox}. \keanu{we should assure the reader that it holds true in our case}
+If the assumption that the hazards within each group are proportional is not true, then the Cox Proportional-Hazards model will lead to incorrect estimates of the hazard ratio between two groups \cite{stel2011cox}.
+Looking at the K-M curves for this study, it can be concluded that the proportional hazards assumption does not hold as the survival functions diverge over time and cross over each other rather than running in parallel \cite{persson2007ACO}.
+This explains the discrepancies between the results of the cox regression model and the K-M curves.
+Future studies should perform tests to determine whether the assumptions for their models hold and should seek methods for mitigating such errors through identifying time-dependant covariates.
 
 The Bayesian approach to survival analysis comes with its own limitations as well.
 As pointed out by Renganathan, Bayesian survival analysis can be subjective as the analyst places their own bias into the model when selecting the prior distributions \cite{renganathan2016overview}.
