@@ -256,16 +256,10 @@ As previously discussed, the event of interest for this study is project abandon
 As defined in the introduction, a project is considered dead when it no longer receives any revisions.
 With this definition, it is impossible to know whether any project is truly dead, because, unlike a living organism, any project may receive revisions at any point in the future, making it "not dead" by the working definition.
 However, there are multiple practical ways of determining whether a project is dead, all of which rely on the scope of the studied data set.
-For this study, the death of a project is determined in the following way:
-
-\begin{itemize}
-    \item Two special revisions are defined for each project
-    \begin{itemize}
-        \item Last revision: The last recorded revision of a project within the scope of the data set (i.e. 1980 - 2019).
-        \item Last observed revision: The last recorded revision of a project within the studied time frame (i.e. 2005 - 2018).
-    \end{itemize}
-    \item If, and only if, the last revision is also the last observed revision, the project death is said to be observed.
-\end{itemize}
+For this study, the death of a project is determined by first defining two special cases of a revision: \emph{last revision} and \emph{last observed revision}. 
+\emph{Last revision} is defined as the last recorded revision of a project within the scope of the data set (i.e. 1980 - 2019). 
+\emph{Last observed revision} is defined as the last recorded revision of a project within the studied time frame (i.e. 2005 - 2018). 
+If, and only if, the \emph{last revision} is also the \emph{last observed revision}, the project death is said to be observed. 
 
 \begin{figure}[!ht]
 \centering
@@ -429,21 +423,6 @@ This may be due to cox proportional model gives more consideration to the portio
     \end{subfigure}
     \caption{\small K-M (left) and Bayesian posterior survival function (right) curves for revision frequency} 
     \label{fig:Revision frequency}
-\end{figure}
-
-\subsection{Revision Frequency Analysis} \label{rev-freq-results}
-
-The K-M curves for revision frequency are a little different from the graphs we generated for other attributes, as seen in Fig 4. 
-It was observed that the curve for the projects with more than one revision per day drops significantly at the starting of the study period drops.
-In Addition, the projects with less revision frequency outperformed projects with higher revision frequencies during the mean duration period of the studied projects. 
-As shown in Fig. 3, results of our regression model also indicate that the projects with less revision frequency are less likely to be abandoned. 
-This may be due to cox proportional model giving more consideration to the portion where most of the projects were active.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.75]{img/KM-rev_freq.jpg}
-    \caption{KM curve for the data by revision frequency \keanu{need a better caption}}
-    \label{fig:freq}
 \end{figure}
 
 \subsection{Bayesian Survival Analysis}
