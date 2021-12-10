@@ -496,15 +496,14 @@ Future studies should perform tests to determine whether the assumptions for the
 
 The Bayesian approach to survival analysis comes with its own limitations as well.
 As pointed out by Renganathan, Bayesian survival analysis can be subjective as the analyst places their own bias into the model when selecting the prior distributions \cite{renganathan2016overview}.
-In order to mitigate this bias, prior selection requires both epistemological and ontological reasoning. \keanu{We need to flesh out our reasoning more, probably written in the methods, but then perhaps referred to here}
+In order to mitigate this bias, prior selection requires both epistemological and ontological reasoning. Prior distributions were chosen based on survival analysis done in other domains \cite{kelter2020bayesian, rethinking}, but more investigation should be done as to whether these priors are appropriate for this domain and whether the models from this study accurately predict durations of different data sets.
 
 \subsubsection{Limitations of the Data}
 
 The data set in this study has been aggregated from multiple version control systems across the web over a large period of time.
 As such, the data set is not fully reproducible, as pointed out by the original authors of the Software Heritage organization \cite{pietri2019software}.
 Additionally, it cannot be ensured that the data contains a full history of the respective repositories.
-The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking.
-\keanu{add citation to perils of mining git}
+The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking \cite{perils2009}.
 
 There are inherent differences in the ways developers use the different hosting services \keanu{I have a strong intuition that this is the case, it looks like PyPi and debian don't have as much granularity compared to git and only show major releases, but I don't have anything to back this up, so maybe we can find something to cite for that}.
 This could skew the results because it may be the case that services such as PyPi and Debian are primarily used to host major releases of a product.
