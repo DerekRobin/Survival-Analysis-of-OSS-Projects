@@ -156,8 +156,6 @@ The latter definition of project abandonment or death is used in this study to m
 
 The original authors use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
 Though frequentist approaches are considered to be unbiased, minimal in variance, efficient, and generally sufficient, some consider them to lack robustness \cite{renganathan2016overview}. Another approach to survival analysis, Bayesian analysis, is considered to generate more robust models that perform well under the presence of new data being introduced and are generally easier to interpret results from \cite{renganathan2016overview}.
-\keanu{We will flesh this discussion out a bit more and use more citations}
-\derek{idk if we need more citations, I think we just need to give a bit of backgroud into KM curves and Cox model}
 
 The authors of this paper resonate with the motivation of the original authors. 
 This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to assess the validity of their analysis.
@@ -214,7 +212,7 @@ In this case, the collected data was manipulated such that the final data set co
 Descriptions of each column present in the data set can be found in Table \ref{tab:data}. 
 Data collection and manipulation were performed in Jupyter Notebooks, which are available in this paper's repository, a link to which can be found in appendix \ref{artifacts}. 
 
-\begin{table}[h!]
+\begin{table}[!ht]
     \caption{Data Set Column Descriptions}
     \label{tab:data}
     \begin{tabular}{ll}
@@ -257,6 +255,7 @@ As defined in the introduction, a project is considered dead when it no longer r
 With this definition, it is impossible to know whether any project is truly dead, because, unlike a living organism, any project may receive revisions at any point in the future, making it "not dead" by the working definition.
 However, there are multiple practical ways of determining whether a project is dead, all of which rely on the scope of the studied data set.
 For this study, the death of a project is determined in the following way:
+
 \begin{itemize}
     \item Two special revisions are defined for each project
     \begin{itemize}
@@ -266,7 +265,7 @@ For this study, the death of a project is determined in the following way:
     \item If, and only if, the last revision is also the last observed revision, the project death is said to be observed.
 \end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[scale=0.4]{figure1.jpg}
 \caption{
@@ -364,7 +363,7 @@ Similarly, projects having only one repository system are 3.3 times more likely 
 The third row highlights that the projects with less developers count are 19.3 times more likely be inactive.
 For the type of hosting used, we see that ratio implies that projects hosted on PyPi or Debian are less likely to be abandon compared to projects that are hosted on GitHub. This could be because Debian and PyPi-based projects have a higher survival rate during the first 55 months, the cox model considers this portion where most of the projects were participating heavily.
 
-\begin{figure*}[ht]
+\begin{figure*}[!ht]
     \centering
     \begin{subfigure}
         \centering
@@ -392,14 +391,12 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
     \label{fig:KM curves}
 \end{figure*}
 
-\begin{figure}[ht]
+\begin{figure*}[h]
 \centering
 \includegraphics[scale=0.5]{img/CoxHR-table.jpg}
 \caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
 \label{fig:Cox}
-\end{figure}
-
-\keanu{talk about significance and meaning of the KM and Cox results}
+\end{figure*}
 
 \subsection{Revision Frequency Analysis}
 
@@ -408,8 +405,6 @@ We observed curves drop for the projects with more than one revision per day in 
 In Addition, the projects with less revision frequency out performed projects with higher revision frequencies during the mean duration period of the studied projects. 
 As shown in the Fig. 3, results of our regression model also indicate that the projects with less revision frequency are less likely to be abandoned. 
 This may be due to cox proportional model gives more consideration to the portion where most of the projects were active.
-
-\keanu{It is worth noting the difference between this graph and the other graphs. The other ones indicate a clear ''winner'' whereas this has an interesting point where the functions cross. More investigation is required, but my initial interpretation is that, while many projects with hight commit frequencies are abondoned shortly after, the ones that do end up maturing seem to have a higher probability of surviving even longer than the other projects. Maybe consistency is the key here, not so much the frequency. There may not be any statistical significance to this result though, so we will look into it.}
 
 \begin{figure}[H]
     \centering
@@ -431,7 +426,7 @@ Fig. 5d demonstrates the importance of the number of contributing developers on 
 For projects with more than 20 authors, the predicted survival probability was around 55\%, while less than 25\% for projects with less than 20 authors at the 150-month mark.
 Additionally, for all project attributes, the beta value for the 97.5\% quantile was found smaller than zero, which ensures that estimates are highly certain \cite{kelter2020bayesian}.
 
-\begin{figure*}[ht]
+\begin{figure*}[!ht]
     \centering
     \begin{subfigure}
         \centering
@@ -541,6 +536,8 @@ It is unclear how this happened.
 Increase the time frame of the study (the original paper could not do this because the paper was written in 2018).
 
 Perform separate studies on each hosting service to remove variability in the way the services are utilized.
+
+\derek{Future work should include a more in depth analysis of whether or not the assumption of the cox proportional hazards model holds}
 
 \section{Conclusion} \label{conclusion}
 
