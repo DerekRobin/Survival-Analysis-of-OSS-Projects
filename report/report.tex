@@ -284,7 +284,9 @@ It would be incorrect to indicate that this project survived for only one month,
 Rather than discarding such projects, censoring causes them to be considered by the study for the observed duration, but without considering them as dead projects (i.e. they are removed from the calculations after they stop being observed).
 There are multiple types of censoring in survival analysis, but this study uses random censoring or type III censoring, which involves removing subjects from a study at varying times relative to when they began to be observed (as is the case here) \cite{renganathan2016overview}. If a project's death is not observed, it is considered censored.
 
-The distribution of the project timeline can be seen in Fig. \ref{fig:figure-1}, which is a replication of Figure 1 in the original paper.
+The distribution of the project durations over the studied time frame can be seen in Fig. \ref{fig:figure-1}, which is a more detailed rendition of Figure 1 in the original paper.
+Note that when the black lines extend to the end of the time frame, this likely indicates the project was censored.
+About 62\% of the studied projects were censored.
 
 \subsubsection{Survival Analysis}
 Using both the calculated duration associated with each project and the censoring status of each project, the survival analysis can be performed.
@@ -295,6 +297,7 @@ The survival function gives the probability that a given project will survive pa
 At $t = 0$, the K-M estimator is 1 and as $t$ approaches infinity, so does the K-M estimator.
 More precisely, $S(t)$ is given by  $S(t) = p_0 \times p_1 \times p_2 \times \dots \times p_t$, where $p_i$ is the proportion of all projects that survived at the $i^{th}$ time step \cite{kaplan1958nonparametric}.
 The K-M estimator produces curves that approach the true survival function of the data.
+
 The hazard function is another useful function in survival analysis. It describes the probability of the event of interest or hazard (project abandonment in this case) occurring up to a given time point.
 The original paper uses the Cox Proportional-Hazards model which allows for fitting a regression model in order to better understand how the health of projects relate to their key attributes. 
 This analysis results in the hazards ratio (HR), which is derived from the model for all covariates that are included in the formula. 
@@ -304,10 +307,10 @@ As such, the HR represents a relative risk of abandonment that compares one inst
 \subsection{Revision Frequency Analysis} \label{revisionFreq}
 
 The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'' but never addresses this measurement.
-This paper seeks to explore this method of assessment. 
+This paper seeks to explore the frequency of contributions as a method of assessment (simply analyzing the number of contributions would not yield useful results given the varying nature of the project durations in the studied time frame). 
 The revision frequency, defined as the number of commits divided by the number of days in the project's observed lifetime, was dichotomized into two groups depending on whether the frequency was above one revision per day.
+Although the median revision frequency was approximately 0.68 revisions per day, the threshold value of one was chosen because it is easier to remember when keeping these attributes in mind and, similar to the other dichotomizing attributes, it provides a threshold that fewer projects attain to, which sets them apart.
 This study applies both the K-M estimator and the Cox Proportional-Hazards model to the data to stratify the effects of high revision frequency on the overall health of an open-source project.
-\keanu{more to come...}
 
 \subsection{Bayesian Survival Analysis}
 
