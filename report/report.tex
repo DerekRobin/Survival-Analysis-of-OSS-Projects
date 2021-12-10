@@ -256,7 +256,7 @@ As previously discussed, the event of interest for this study is project abandon
 As defined in the introduction, a project is considered dead when it no longer receives any revisions.
 With this definition, it is impossible to know whether any project is truly dead, because, unlike a living organism, any project may receive revisions at any point in the future, making it "not dead" by the working definition.
 However, there are multiple practical ways of determining whether a project is dead, all of which rely on the scope of the studied data set.
-For this study, the death of a project is determined by first defining two special cases of a revision: \emph{last revision} and \emph{last observed revision}. 
+For this study, the death of a project is determined by defining two special cases of a revision: \emph{last revision} and \emph{last observed revision}. 
 \emph{Last revision} is defined as the last recorded revision of a project within the scope of the data set (i.e. 1980 - 2019). 
 \emph{Last observed revision} is defined as the last recorded revision of a project within the studied time frame (i.e. 2005 - 2018). 
 If, and only if, the \emph{last revision} is also the \emph{last observed revision}, the project death is said to be observed. 
@@ -316,8 +316,9 @@ The Bayesian analysis uses posterior distributions of model parameters to draw i
 These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) algorithms. 
 The statistical modelling language used was Stan.
 
-Our study applies the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. 
-The censoring indicators as $v = (v_1, v_2,\dots, v_n)$ where $v_i = 0$ if $y_i$ is right censored (lost to follow-up) and $v_i = 1$ if $y_i$ is a failure time (project abandonment), the survival function which is the probability of surviving past the time point $y_i$ is given by
+Our study applies the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. 
+A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. 
+The censoring indicators as $v = (v_1, v_2,\dots, v_n)$ where $v_i = 0$ if $y_i$ is right censored (project death is not observed) and $v_i = 1$ if $y_i$ is a failure time (project death is observed), the survival function which is the probability of surviving past the time point $y_i$ is given by
 
 \begin{equation}
 S(y_i|\lambda) = P(T \geq yi|T \geq 0) = 1 - [1 - \exp(-  \lambda y_i)] = \exp(- \lambda y_i)
