@@ -187,18 +187,19 @@ They found that applications within the domain of \emph{games and entertainment}
 Additionally, they found that for each new developer introduced to a project, the projects survivability increased by 15.8\%. 
 On the topic of developers, several studies have used survival analysis to study developer disengagement from OSS projects \cite{miller2019people,lin2017developer,ortega2009survival}. 
 Miller \emph{et al.} made use of a survey and survival analyses, to determine the causes behind why a developer might stop contributing to an OSS project \cite{miller2019people}. 
-Their analysis revealed that developers have a higher probability of disengagement when going through job transitions and working longer hours. 
-Lin \emph{et al.} determined that developers who balance maintaining files they have created with maintaining files other have created have a higher survival probability than developers who only maintain their own files or only maintain others files \cite{lin2017developer}. Additionally, Lin \emph{et al.} found that developers who maintained files and developers who mainly wrote code have a higher survival probability than those who solely created files and those who main focus is writing documentation. 
+Their analysis revealed that developers have a higher probability of project disengagement when going through job transitions and when working longer hours. 
+Lin \emph{et al.} determined that developers who balance maintaining files they have created with maintaining files others have created have a higher survival probability than developers who only maintain their own files or only maintain others files \cite{lin2017developer}. 
+Additionally, Lin \emph{et al.} found that developers who maintained files and developers who mainly wrote code had a higher survival probability than those who solely created files and those whose main focus was writing documentation. 
 Ortega and Izquierdo-Cortazar analyzed the survival of FLOSS committers and Wikipedia editors and found that FLOSS committers have higher mean survival times than Wikipedia editors \cite{ortega2009survival}. 
 Survival analysis can also be applied to the software it self, this has been demonstrated by Aman \emph{et al.} and Caivano \emph{et al.} \cite{aman2017survival, caivano2021exploratory}. 
 In \cite{aman2017survival}, survival analysis was used to analyze time to bug-fix for files modified by developers of different experience levels. 
 This analysis determined that files which most recently modified by less experienced developers had an increased probability of needing a bug fix within a shorter time frame \cite{aman2017survival}. 
-Caivano \emph{et al.} explored the affect of dead code within OSS project using survival analysis \cite{caivano2021exploratory}. 
+Caivano \emph{et al.} explored the affect of dead code within OSS projects using survival analysis \cite{caivano2021exploratory}. 
 They found that dead methods are present in Java code, persist for a long time (in terms of commits) before being buried or revived, are rarely revived, and that most dead methods have been dead since their inception. 
 
-Several studies have examined the health of OSS projects using methods other than survival analysis. \derek{This transition sectence needs some work b\c i feel like 2 does not equal several.}
-Xia \emph{et al.} predicted a number of health attributes of OSS projects, such as, the number of developers and the number of revisions. 
-These predictions were made using regression trees that were optimized using differential evolution, leading to a 10\% increase in accuracy over the base line \cite{xia2020predicting}. 
+Other studies have examined the health of OSS projects using methods other than survival analysis. 
+Xia \emph{et al.} predicted a number of health indicators of OSS projects, such as, the number of developers and the number of revisions. 
+These predictions were made using regression trees that were optimized using differential evolution, leading to a 10\% increase in prediction accuracy over the base line \cite{xia2020predicting}. 
 Norick \emph{et al.} analyzed OSS projects using code quality measures and observed no significant evidence that the number of committing developers affects software quality \cite{norick2010effects}. 
 
 \section{Data} \label{data}
@@ -321,10 +322,10 @@ These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) a
 The statistical modelling language used was Stan.
 
 Our study applies the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. 
-The censoring indicators as $v = (v_1, v_2,\dots, v_n)$ where vi = 0 if yi is right censored (lost to follow-up) and vi = 1 if yi is a failure time (project abandonment), the survival function which is the probability of surviving past the time point yi is given by
+The censoring indicators as $v = (v_1, v_2,\dots, v_n)$ where $v_i = 0$ if $y_i$ is right censored (lost to follow-up) and $v_i = 1$ if $y_i$ is a failure time (project abandonment), the survival function which is the probability of surviving past the time point $y_i$ is given by
 
 \begin{equation}
-S(y_i|\lambda) = P(T\geqyi|T\geq0) = 1 - [1 - \exp(-  \lambda y_i)] = \exp(- \lambda y_i)
+S(y_i|\lambda) = P(T \geq yi|T \geq 0) = 1 - [1 - \exp(-  \lambda y_i)] = \exp(- \lambda y_i)
 \end{equation}
 
 and the survival model is denoted as
@@ -346,7 +347,6 @@ This model was then used to visualize the posterior survival functions for the f
 \section{Results} \label{results}
 
 \subsection{Replication}
-
 
 The replication study performed in this paper yielded extremely similar results to those shown in the original paper. 
 Fig. 2 represents K-M curves along with their confidence interval and p-value which implies the survival probability of projects when grouped on the categorical value of each attribute. 
@@ -460,6 +460,7 @@ Additionally, for all project attributes, the beta value for the 97.5\% quantile
 \end{figure*}
 
 \section{Discussion} \label{discussion}
+\subsection{Implications} \label{implications}
 
 \subsection{Comparison of Analyses} \label{compare}
 
@@ -533,7 +534,6 @@ It is unclear how this happened.
 
 % Not sure we need this
 %\subsubsection{Replication Challenges}
-\subsection{Implications} \label{implications}
 \subsection{Future Work} \label{future}
 
 \keanu{Just a couple of ideas so far}
@@ -548,7 +548,7 @@ Perform separate studies on each hosting service to remove variability in the wa
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{../refs/refs.bib}
+\bibliography{../refs/refs}
 
 %%
 %% If your work has an appendix, this is the place to put it.
