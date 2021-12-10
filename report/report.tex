@@ -183,20 +183,24 @@ The final section concludes by summarizing the purpose and findings of this pape
 \section{Related Work} \label{related}
 
 Several other researchers have employed survival analysis to study the health of OSS projects. 
-For example, Samoladas \emph{et al.} made use of K-M curves to study the affect of application domain and developer count on OSS health \cite{samoladas2010survival}. 
+For example, Samoladas \emph{et al.} studied the affect of application domain and developer count on OSS project health \cite{samoladas2010survival}. 
 They found that applications within the domain of \emph{games and entertainment} and \emph{security} had the lowest probability of survival. 
-Additionally, they found that for each new developer introduced to a project, the projects survivability increases by 15.8\%. 
-On the topic of developers, several studies have used survival analysis to study developer disengagement from OSS projects \cite{miller2019people,lin2017developer,ortega2009survival,sentas2008statistical}. 
-Miller \emph{et al.} made use of a survey and survival analysis, specifically K-M curves
+Additionally, they found that for each new developer introduced to a project, the projects survivability increased by 15.8\%. 
+On the topic of developers, several studies have used survival analysis to study developer disengagement from OSS projects \cite{miller2019people,lin2017developer,ortega2009survival}. 
+Miller \emph{et al.} made use of a survey and survival analyses, to determine the causes behind why a developer might stop contributing to an OSS project \cite{miller2019people}. 
+Their analysis revealed that developers have a higher probability of disengagement when going through job transitions and working longer hours. 
+Lin \emph{et al.} determined that developers who balance maintaining files they have created with maintaining files other have created have a higher survival probability than developers who only maintain their own files or only maintain others files \cite{lin2017developer}. Additionally, Lin \emph{et al.} found that developers who maintained files and developers who mainly wrote code have a higher survival probability than those who solely created files and those who main focus is writing documentation. 
+Ortega and Izquierdo-Cortazar analyzed the survival of FLOSS committers and Wikipedia editors and found that FLOSS committers have higher mean survival times than Wikipedia editors \cite{ortega2009survival}. 
+Survival analysis can also be applied to the software it self, this has been demonstrated by Aman \emph{et al.} and Caivano \emph{et al.} \cite{aman2017survival, caivano2021exploratory}. 
+In \cite{aman2017survival}, survival analysis was used to analyze time to bug-fix for files modified by developers of different experience levels. 
+This analysis determined that files which most recently modified by less experienced developers had an increased probability of needing a bug fix within a shorter time frame \cite{aman2017survival}. 
+Caivano \emph{et al.} explored the affect of dead code within OSS project using survival analysis \cite{caivano2021exploratory}. 
+They found that dead methods are present in Java code, persist for a long time (in terms of commits) before being buried or revived, are rarely revived, and that most dead methods have been dead since their inception. 
 
-Although the application of survival analysis is new to predicting the health of software repositories, several studies have attempted to analyze the health of open-source projects using different techniques. 
-Xia \emph{et al.} applied DECART hyperparameter optimization to predict health indicators of open-source projects and observed that DECART reduced prediction errors of certain estimation algorithms by 10\% \cite{xia2020predicting}. 
-Norick \emph{et al.} analyzed open-source projects using code quality measures and observed no significant evidence that the number of committing developers affects software quality \cite{norick2010effects}. 
-Another study by Caivano \emph{et al.} investigated the spread and evolution of dead code by analyzing commit histories of open-source Java applications \cite{caivano2021exploratory}. 
-They found that dead methods generally survive long, are rarely revived, and that a majority have been dead since their creation.
-
-An application of survival analysis to software was a study by Samoladas \emph{et al.} which predicted future development of FLOSS projects using project duration, application domain. and the number of committers as predictors \cite{samoladas2010survival}. 
-The study calculated the probability of termination or continuation for FLOSS projects and quantified the benefit of adding more committers.
+Several studies have examined the health of OSS projects using methods other than survival analysis. \derek{This transition sectence needs some work b\c i feel like 2 does not equal several.}
+Xia \emph{et al.} predicted a number of health attributes of OSS projects, such as, the number of developers and the number of revisions. 
+These predictions were made using regression trees that were optimized using differential evolution, leading to a 10\% increase in accuracy over the base line \cite{xia2020predicting}. 
+Norick \emph{et al.} analyzed OSS projects using code quality measures and observed no significant evidence that the number of committing developers affects software quality \cite{norick2010effects}. 
 
 \section{Data} \label{data}
 
@@ -463,7 +467,7 @@ Perform separate studies on each hosting service to remove variability in the wa
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{refs.bib}
+\bibliography{../refs/refs.bib}
 
 %%
 %% If your work has an appendix, this is the place to put it.
