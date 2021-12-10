@@ -176,7 +176,7 @@ Section \ref{related} outlines other research which has utilized survival analys
 Section \ref{data} describes the source of the data set, the data set itself, and the required preparation in order to perform survival analysis.
 Section \ref{methods} covers the methods used for the replication, additional frequentist analysis, and Bayesian analysis.
 Section \ref{results} shows the results for each analysis.
-Section \ref{discussion} discusses the comparative differences between the analyses performed, the limitations of the study, and suggestions for future work on the topic.
+Section \ref{discussion} discusses the comparative differences between the analyses performed, the limitations of the study, implications, and suggestions for future work on the topic.
 The final section concludes by summarizing the purpose and findings of this paper.
 
 \section{Related Work} \label{related}
@@ -268,7 +268,12 @@ For this study, the death of a project is determined in the following way:
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.4]{figure1.jpg}
-\caption{Graph of project timelines within the given time frame. The projects are ordered by duration and plotted from and to their respective start and end dates. Month 0 begins on May 9, 2005, and Month 165 concludes on January 1, 2018.}
+\caption{
+    Graph of project durations within the studied time frame.
+    The projects are ordered by duration and plotted from and to their respective start and end dates.
+    Month 0 begins on May 9, 2005, and Month 165 concludes on January 1, 2018.
+    The black portion of the horizontal lines indicates the active period of a given project
+    }
 \label{fig:figure-1}
 \end{figure}
 
@@ -360,23 +365,23 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
     \centering
     \begin{subfigure}
         \centering
-        \includegraphics[width=0.45\textwidth]{major-releases.png}   
+        \includegraphics[width=0.45\textwidth]{img/KM-major_release.jpg}   
         \label{fig:major releases}
     \end{subfigure}
     \begin{subfigure}
         \centering 
-        \includegraphics[width=0.45\textwidth]{host_type.png}
+        \includegraphics[width=0.45\textwidth]{img/KM-host_type.jpg}
         \label{fig:host type}
     \end{subfigure}
     \vskip\baselineskip
     \begin{subfigure} 
         \centering 
-        \includegraphics[width=0.45\textwidth]{multi_repo.png}
+        \includegraphics[width=0.45\textwidth]{img/KM-multi_repo.jpg}
         \label{fig:multi repo}
     \end{subfigure}
     \begin{subfigure}   
         \centering 
-        \includegraphics[width=0.45\textwidth]{img/author_count.png} 
+        \includegraphics[width=0.45\textwidth]{img/KM-author_count.jpg} 
         \label{fig:author count}
     \end{subfigure}
     \caption
@@ -386,7 +391,7 @@ For the type of hosting used, we see that ratio implies that projects hosted on 
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=0.5]{cox-ratios.png}
+\includegraphics[scale=0.5]{img/CoxHR-table.jpg}
 \caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
 \label{fig:Cox}
 \end{figure}
@@ -408,7 +413,7 @@ This may be due to cox proportional model gives more consideration to the portio
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.75]{commit_freq.png}
+    \includegraphics[scale=0.75]{img/KM-rev_freq.jpg}
     \caption{KM curve for the data by revision frequency \keanu{need a better caption}}
     \label{fig:freq}
 \end{figure}
@@ -524,7 +529,7 @@ It is unclear how this happened.
 
 % Not sure we need this
 %\subsubsection{Replication Challenges}
-
+\subsection{Implications} \label{implications}
 \subsection{Future Work} \label{future}
 
 \keanu{Just a couple of ideas so far}
