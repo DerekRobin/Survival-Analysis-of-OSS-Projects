@@ -256,11 +256,7 @@ As previously discussed, the event of interest for this study is project abandon
 As defined in the introduction, a project is considered dead when it no longer receives any revisions.
 With this definition, it is impossible to know whether any project is truly dead, because, unlike a living organism, any project may receive revisions at any point in the future, making it "not dead" by the working definition.
 However, there are multiple practical ways of determining whether a project is dead, all of which rely on the scope of the studied data set.
-<<<<<<< HEAD
-For this study, the death of a project is determined by defining two special cases of a revision: \emph{last revision} and \emph{last observed revision}. 
-=======
 For this study, the death of a project is determined by first defining two special revisions for each project: \emph{last revision} and \emph{last observed revision}. 
->>>>>>> f5ebeeffda73131ac371e82b203693bffb87f551
 \emph{Last revision} is defined as the last recorded revision of a project within the scope of the data set (i.e. 1980 - 2019). 
 \emph{Last observed revision} is defined as the last recorded revision of a project within the studied time frame (i.e. 2005 - 2018). 
 If, and only if, the \emph{last revision} is also the \emph{last observed revision}, the project death is said to be observed. 
@@ -349,50 +345,51 @@ This model was then used to visualize the posterior survival functions for the f
 \subsection{Replication}
 
 The replication study performed in this paper yielded extremely similar results to those shown in the original paper. 
-Fig. 2 represents K-M curves along with their confidence interval and p-value which implies the survival probability of projects when grouped on the categorical value of each attribute. 
-As seen in Fig. 2a, this study found out that projects with at least one release have higher chances of survival. 
-The curve for projects having major releases plateaus around 65\% survival probability during the 120-month mark whereas the survival probability of projects with no major releases ends up to be less than 20\% by the end of the study period. 
-Fig. 2b represents the significance of hosting the project on different hosting services, it was observed that projects that are hosted on GitHub have higher survival chances in the long run, as the curves suggest all three hosting services have a similar trend for the first 55 months which is within the average duration of projects hosted on these services.
+Fig. \ref{fig:KM curves} depicts K-M curves along with their confidence intervals and p-values. 
+The p-values imply that the difference in survival probability for projects within each group is statistically significant.
+As seen in Fig. \ref{fig:major_releases}, this study found out that projects with at least one major release have higher chances of survival. 
+The curve for projects with at least one major releases plateaus around 65\% survival probability around the 120-month mark whereas the survival probability of projects with no major releases ends up to be less than 20\% by the end of the study period. 
+Fig. \ref{fig:host_type} represents the significance of hosting the project on different hosting services, it was observed that projects that are hosted on GitHub have higher survival chances in the long run, as the curves suggest all three hosting services have a similar trend for the first 55 months which is within the average duration of projects hosted on these services.
 In addition, having multiple repositories hosted on multiple services has significantly increased the chances of a project's survival.
-As seen in Fig. 2c, the survival rate for such projects is 75\%, whereas around 20\% for projects with only one package repository system. 
-The Curve in fig. 2d implies the significance of network of developers for the survival of open source project, the project having more than 20 different authors end up having around 60\% survival rate which is significantly different from projects with a small team of developers with less than 20\% survival rate at the end of the study period.
+As seen in Fig. \ref{fig:multi_repo}, the survival rate for such projects is 75\%, whereas around 20\% for projects with only one package repository system. 
+The Curve in fig. \ref{fig:author_count} implies the significance of network of developers for the survival of open source project, the project having more than 20 different authors end up having around 60\% survival rate which is significantly different from projects with a small team of developers with less than 20\% survival rate at the end of the study period.
 
-The Table in figure 3 quantify estimates of these attributes' effect on the survival probability using the Cox Proportional-hazards model. 
+Figure \ref{fig:Cox} quantify estimates of these attributes' effect on the survival probability using the Cox Proportional-hazards model. 
 The third column shows the hazards ratio which indicates the probability of abandonment with respect to the reference feature.
 In the first row, the hazard ratio for projects not having a major release with respect to projects having major releases is nearly 3, it implies that the projects without major releases are three times more likely to become inactive compared to projects with at least one major release. 
 Similarly, projects having only one repository system are 3.3 times more likely to be abandoned.
 The third row highlights that the projects with fewer developers count are 19.3 times more likely to be inactive.
 For the type of hosting used, the ratio implies that projects hosted on PyPi or Debian are less likely to be abandoned compared to projects that are hosted on GitHub. 
-This could be because Debian and PyPi-based projects have a higher survival rate during the first 55 months, the cox model considers this portion where most of the projects were participating heavily.
+This appears to contradict the results of the K-M curve and will be further discussed in Section \ref{implications}.
 
 \begin{figure}[!ht]
     \centering
     \begin{subfigure}[b]{0.45\columnwidth}
         \centering
-        \includegraphics[width=\textwidth]{img/KM-major_release.jpg}   
-        \label{fig:major_releases}
+        \includegraphics[width=\textwidth]{img/KM-major_release.jpg}
         \caption{\small K-M curves for projects which publish major releases and those which do not} 
+        \label{fig:major_releases}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\columnwidth}
         \centering 
         \includegraphics[width=\textwidth]{img/KM-host_type.jpg}
-        \label{fig:host_type}
         \caption{\small K-M curves for projects with different hosting services} 
+        \label{fig:host_type}
     \end{subfigure}
     \vskip\baselineskip
     \begin{subfigure}[b]{0.45\columnwidth}
         \centering 
         \includegraphics[width=\textwidth]{img/KM-multi_repo.jpg}
-        \label{fig:multi_repo}
         \caption{\small K-M curves for projects with repositories on multiple hosting services} 
+        \label{fig:multi_repo}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\columnwidth} 
         \centering 
-        \includegraphics[width=\textwidth]{img/KM-author_count.jpg} 
-        \label{fig:author_count}
+        \includegraphics[width=\textwidth]{img/KM-author_count.jpg}
         \caption{\small K-M curves for projects with high and low author count} 
+        \label{fig:author_count}
     \end{subfigure}
     \caption{\small K-M curves for each project attribute} 
     \label{fig:KM curves}
@@ -401,7 +398,7 @@ This could be because Debian and PyPi-based projects have a higher survival rate
 \begin{figure*}[!ht]
 \centering
 \includegraphics[scale=0.5]{img/CoxHR-table.jpg}
-\caption{The results of running the Cox Proportional hazards tool on the data. \keanu{we definitely want better descriptions for the images}}
+\caption{The Cox Proportional Hazards model. From left to right: project attribute, attribute value with counts, hazard ratio, box plot of hazard ratio, and p-value of log rank test.}
 \label{fig:Cox}
 \end{figure*}
 
@@ -411,7 +408,6 @@ The K-M curves for revision frequency are little different from the graphs we ge
 We observed curves drop for the projects with more than one revision per day in the starting of study period.
 In Addition, the projects with less revision frequency out performed projects with higher revision frequencies during the mean duration period of the studied projects. 
 As shown in the Fig. 3, results of our regression model also indicate that the projects with less revision frequency are less likely to be abandoned. 
-This may be due to cox proportional model gives more consideration to the portion where most of the projects were active.
 
 \begin{figure}[!ht]
     \centering
@@ -438,7 +434,7 @@ The remaining lines all represent all valid posterior survival functions.
 Fig. \ref{fig:bayes_major_releases} clearly indicates that the survival function of the projects with no major releases decreases much faster than projects with releases. 
 Survival probability for projects with no major releases was lower than 25\% after 150 months compared to 55\% for projects with major releases.
 Fig. \ref{fig:bayes_host_type} illustrates that projects hosted on Github have the highest survival chances compared to those hosted on PyPi and Debian. 
-At 150 months, the predicted survival probabilities for Github, Pypi and Debian were 87\%, 65\% and 25\%, respectively.
+At 150 months, the predicted survival probabilities for Github, PyPi and Debian were 87\%, 65\% and 25\%, respectively.
 Fig. \ref{fig:bayes_multi_repo} shows that projects with repositories on more than 1 hosting service had significantly higher survival chances than projects with repositories on a single hosting service. 
 Above 65\% survival probability for multiple repositories compared to slightly over 25\% for single repository projects at the end of 150 months.
 Fig. \ref{fig:bayes_author_count} demonstrates the importance of the number of contributing developers on the survival chances of open-source python projects. 
