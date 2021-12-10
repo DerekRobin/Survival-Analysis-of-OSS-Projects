@@ -310,30 +310,39 @@ This study applies both the K-M estimator and the Cox Proportional-Hazards model
 
 \subsection{Bayesian Survival Analysis}
 
-The Bayesian approach to survival analysis is less common due to computational difficulties. However, it offers multiple advantages over the frequentist approach \cite{kelter2020bayesian}. 
+The Bayesian approach to survival analysis is less common due to computational difficulties. 
+However, it offers multiple advantages over the frequentist approach \cite{kelter2020bayesian}. 
 We replicate the methods outlined in \cite{kelter2020bayesian} to apply Bayesian survival analysis to our study. 
 The Bayesian analysis uses posterior distributions of model parameters to draw inferences about them. 
 These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) algorithms. 
 The statistical modelling language used was Stan.
 
 Our study applies the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. 
-A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. 
-The censoring indicators as $v = (v_1, v_2,\dots, v_n)$ where $v_i = 0$ if $y_i$ is right censored (project death is not observed) and $v_i = 1$ if $y_i$ is a failure time (project death is observed), the survival function which is the probability of surviving past the time point $y_i$ is given by
+A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created as shown in Equation \ref{eq:surv_times}.
 
-\begin{equation}
-S(y_i|\lambda) = P(T \geq yi|T \geq 0) = 1 - [1 - \exp(-  \lambda y_i)] = \exp(- \lambda y_i)
+\begin{equation} \label{eq:surv_times}
+    f(y_i|\lambda) = \lambda\exp(- \lambda y_i) \mbox{ for } i=1,\dots,n
 \end{equation}
 
-and the survival model is denoted as
+The censoring indicators are denoted as $v = (v_1, v_2,\dots, v_n)$ where $v_i = 0$ if $y_i$ is right censored (project death is not observed) and $v_i = 1$ if $y_i$ is a failure time (project death is observed) and the survival function which is the probability of surviving past the time point $y_i$ is given by Equation \ref{eq:surv_func}.
 
-\begin{equation}
-y_i|v_i \sim f(y_i| \lambda)^{v_i} + S(y_i| \lambda)^{1-v_i} = [\lambda exp(-  \lambda y_i)]^{v_i} + [exp(-  \lambda y_i)]^{1-v_i}
+\begin{equation} \label{eq:surv_func}
+    S(y_i|\lambda) = P(T \geq yi|T \geq 0) = 1 - [1 - \exp(-  \lambda y_i)] = \exp(- \lambda y_i)
+\end{equation}
+
+Finally, the survival model is given by Equation \ref{eq:model}.
+
+\begin{equation} \label{eq:model}
+    y_i|v_i \sim f(y_i| \lambda)^{v_i} + S(y_i| \lambda)^{1-v_i} = [\lambda exp(-  \lambda y_i)]^{v_i} + [exp(-  \lambda y_i)]^{1-v_i}
 \end{equation}
 \begin{equation}
-\lambda \sim p(\lambda)
+    \lambda \sim p(\lambda)
 \end{equation}
 \begin{equation}
-\lambda = exp(x_i^T \beta)
+    \lambda = exp(x_i^T \beta)
+\end{equation}
+\begin{equation}
+    \beta = normal(0, 10)
 \end{equation}
 
 This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, hosting service of the project, use of multiple hosting services, team size, and revision frequency. 
@@ -440,8 +449,7 @@ Fig. \ref{fig:bayes_multi_repo} shows that projects with repositories on more th
 Above 65\% survival probability for multiple repositories compared to slightly over 25\% for single repository projects at the end of 150 months.
 Fig. \ref{fig:bayes_author_count} demonstrates the importance of the number of contributing developers on the survival chances of open-source python projects. 
 For projects with more than 20 authors, the predicted survival probability was around 55\%, while less than 25\% for projects with less than 20 authors at the 150-month mark.
-\fix{Additionally, for all project attributes, the beta value for the 97.5\% quantile was found smaller than zero, which ensures that estimates are highly certain \cite{kelter2020bayesian}.}
-\derek{This last sentence needs a litte work. Some elaboration on what is meant by highly certain should suffice.}
+Additionally, for all project attributes, the beta value for the 97.5\% quantile was smaller than zero, which ensures that the estimates for $\lambda$ have low uncertainty \cite{kelter2020bayesian}.
 
 \begin{figure}[!ht]
     \centering
