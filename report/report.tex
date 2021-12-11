@@ -339,9 +339,6 @@ Finally, the survival model is given by Equation \ref{eq:model}.
 
 This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, hosting service of the project, use of multiple hosting services, team size, and revision frequency. 
 
-% From proposal (slightly revised to make sense in this context):
-% [This paper applies] the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. A parametric exponential model that assumes the survival times of a project $y = (y_1, y_2, \dots, y_n)$ are exponentially distributed with parameter $\lambda$ was created. This model was then used to visualize the posterior survival functions for the following five project attributes: major releases, hosting service of the project, use of multiple hosting services, team size, and revision frequency.
-
 \subsection{Revision Frequency Analysis} \label{revisionFreq}
 
 The original paper mentions that ''The health of a project could be computed by the number and frequency of contributions...'' but never addresses this measurement.
@@ -581,13 +578,18 @@ The cause of this is unclear.
 %\subsubsection{Replication Challenges}
 \subsection{Future Work} \label{future}
 
-\keanu{Just a couple of ideas so far}
+It can be said with high confidence that the this is the first application of Bayesian survival analysis in the context of OSS. 
+As such, prior distributions were uninformative and priors and likelihoods alike were chosen based on the application of Bayesian survival analysis done in other domains. 
+More investigation should be conducted to determine if the priors and likelihoods applied in this paper are suitable for OSS. 
+Further more, future work should investigate the predictive power of the Bayesian survival model presented here to determine its performance on other data sets. 
+Similarly, an evaluation of the assumptions present in the Cox Proportional Hazards model should performed to determine if these assumptions are reasonable for the domain of OSS.
 
-Increase the time frame of the study (the original paper could not do this because the paper was written in 2018).
+In regards to study design, future work should increase the time frame of the study to determine the how the attributes analyzed in this paper play out over a longer time period. 
+Similarly, as only OSS written in Python was studied here, future work should evaluate the survival of OSS written in other popular languages such as Java. 
 
-Perform separate studies on each hosting service to remove variability in the way the services are utilized.
-
-\derek{Future work should include a more in depth analysis of whether or not the assumption of the cox proportional hazards model holds}
+As noted in the discussion, a higher number of developers has some effect on the longevity of a project that is not related to the quality of the software being developed. 
+Future works should investigate the reason behind this increased longevity and attempt to determine a reason for it. 
+In line with Samoladas \emph{et al.}, distinguishing between core developers and sporadic ones could lead to an increased understanding of the aforementioned phenomena. 
 
 \keanu{Remove short lived projects, e.g. a day long}
 
