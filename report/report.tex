@@ -182,7 +182,7 @@ The final section concludes by summarizing the purpose and findings of this pape
 \section{Related Work} \label{related}
 
 Several other researchers have employed survival analysis to study the health of OSS projects. 
-For example, Samoladas \emph{et al.} studied the affect of application domain and developer count on OSS project health \cite{samoladas2010survival}. 
+For example, Samoladas \emph{et al.} studied the effect of application domain and developer count on OSS project health, which was measured using duration \cite{samoladas2010survival}. 
 They found that applications within the domain of \emph{games and entertainment} and \emph{security} had the lowest probability of survival. 
 Additionally, they found that for each new developer introduced to a project, the projects survivability increased by 15.8\%. 
 On the topic of developers, several studies have used survival analysis to study developer disengagement from OSS projects \cite{miller2019people,lin2017developer,ortega2009survival}. 
@@ -191,14 +191,14 @@ Their analysis revealed that developers have a higher probability of project dis
 Lin \emph{et al.} determined that developers who balance maintaining files they have created with maintaining files others have created have a higher survival probability than developers who only maintain their own files or only maintain others files \cite{lin2017developer}. 
 Additionally, Lin \emph{et al.} found that developers who maintained files and developers who mainly wrote code had a higher survival probability than those who solely created files and those whose main focus was writing documentation. 
 Ortega and Izquierdo-Cortazar analyzed the survival of FLOSS committers and Wikipedia editors and found that FLOSS committers have higher mean survival times than Wikipedia editors \cite{ortega2009survival}. 
-Survival analysis can also be applied to the software it self, this has been demonstrated by Aman \emph{et al.} and Caivano \emph{et al.} \cite{aman2017survival, caivano2021exploratory}. 
+Survival analysis can also be applied to the software itself, this has been demonstrated by Aman \emph{et al.} and Caivano \emph{et al.} \cite{aman2017survival, caivano2021exploratory}. 
 In \cite{aman2017survival}, survival analysis was used to analyze time to bug-fix for files modified by developers of different experience levels. 
 This analysis determined that files which most recently modified by less experienced developers had an increased probability of needing a bug fix within a shorter time frame \cite{aman2017survival}. 
-Caivano \emph{et al.} explored the affect of dead code within OSS projects using survival analysis \cite{caivano2021exploratory}. 
+Caivano \emph{et al.} explored the effect of dead code within OSS projects using survival analysis \cite{caivano2021exploratory}. 
 They found that dead methods are present in Java code, persist for a long time (in terms of commits) before being buried or revived, are rarely revived, and that most dead methods have been dead since their inception. 
 
 Other studies have examined the health of OSS projects using methods other than survival analysis. 
-Xia \emph{et al.} predicted a number of health indicators of OSS projects, such as, the number of developers and the number of revisions. 
+Xia \emph{et al.} predicted a number of health indicators of OSS projects, such as, the number of developers and the number of revisions.
 These predictions were made using regression trees that were optimized using differential evolution, leading to a 10\% increase in prediction accuracy over the base line \cite{xia2020predicting}. 
 Norick \emph{et al.} analyzed OSS projects using code quality measures and observed no significant evidence that the number of committing developers affects software quality \cite{norick2010effects}. 
 
@@ -293,8 +293,9 @@ The survival function gives the probability that a given project will survive pa
 At $t = 0$, the K-M estimator is 1 and as $t$ approaches infinity, so does the K-M estimator.
 More precisely, $S(t)$ is given by  $S(t) = p_0 \times p_1 \times p_2 \times \dots \times p_t$, where $p_i$ is the proportion of all projects that survived at the $i^{th}$ time step \cite{kaplan1958nonparametric}.
 The K-M estimator produces curves that approach the true survival function of the data.
-
-The hazard function is another useful function in survival analysis. It describes the probability of the event of interest or hazard (project abandonment in this case) occurring up to a given time point.
+In other words, K-M curves plot the K-M survival probability against time.
+The curve always goes in ‘steps’, as the cumulative survival remains the same until the time of another event (in this case prject abandonment). Furthermore, the censored observations are indicated by a vertical dash.
+The hazard function is another useful function in survival analysis. It describes the probability of the event of interest or hazard (project abandonment in this case) occurring at a certain point in time given that the subject has survived to that time \cite{clark2003go}.
 The original paper uses the Cox Proportional-Hazards model which allows for fitting a regression model in order to better understand how the health of projects relate to their key attributes. 
 This analysis results in the hazards ratio (HR), which is derived from the model for all covariates that are included in the formula. 
 Briefly, a $HR > 1$ indicates an increased risk of abandonment; on the other hand, $HR < 1$, indicates a decreased risk of abandonment \cite{cox1972regression}. 
@@ -483,13 +484,17 @@ As shown in the Fig. 3, results of our regression model also indicate that the p
 \end{figure}
 
 \section{Discussion} \label{discussion}
-As in other works, the author count was found to be the most significant indicator of a project's health.
-Interestingly, Norick et al. observed no significant evidence that software quality is affected by the number of developers.
-This suggests that a higher number of developers has some other affect on the longevity of a project that is unrelated to the quality of the software.
 
-The cox proportional hazards assumption does not hold.
+The replication was deemed successful in that the results were consistent with the qualitative findings of the original authors.
+As in other works \cite{samoladas2010survival}, the number of developers was found to be a significant indicator of a project's health in terms of duration, and lends some validity to "Linus's Law", which claims that a larger number of developers will make bug detection and resolution simpler \cite{raymond2001LinusLaw}, though this study does not make claims about a project's quality.
+Interestingly, Norick \emph{et al.} observed no significant evidence that software quality is affected by the number of developers \cite{norick2010effects}.
+This suggests a higher number of developers has an effect on the longevity of a project that is unrelated to the quality of the software.
+
+The Cox Proportional Hazards model operates under the assumption that the hazard ratio between the hazard functions of each group remains the same throughout the period of the study \cite{stel2011cox}.
+Looking at the K-M curves for this study, it can be concluded that the proportional hazards assumption does not hold as the survival functions diverge over time and cross over each other rather than running in parallel \cite{persson2007ACO}.
 This means the hazard ratios are not applicable to the entire studied time frame.
-It is assumed that the calculations in the cox model give more weight to the portion of the study containing a larger number of subjects (i.e. the left most portion of the KM curves).
+After inspecting the hazard ratios in Fig. \ref{fig:Cox}, it is assumed the calculations in the Cox model give more weight to the portion of the study containing a larger number of subjects (i.e. the left most portion of the KM curves).
+This also explains why there is such a large discrepancy between the hazard ratio for the author count attribute found in this paper and the one found in the original paper.
 
 The bayesian model forces the data to conform to the chosen distribution and cannot reflect more complex detail.
 
@@ -539,10 +544,10 @@ In more traditional uses of the K-M estimator, an example of a confounding facto
 In the case of this study, there may be confounding factors such as the experience level of the developers or whether the developers received funding to work on the project.
 Neither of these factors are represented in the data set.
 
-The Cox Proportional-Hazards model is used with the assumption that, over the period of observation, the hazards within each group are proportional \cite{stel2011cox}.
-If the assumption that the hazards within each group are proportional is not true, then the Cox Proportional-Hazards model will lead to incorrect estimates of the hazard ratio between two groups \cite{stel2011cox}.
-Looking at the K-M curves for this study, it can be concluded that the proportional hazards assumption does not hold as the survival functions diverge over time and cross over each other rather than running in parallel \cite{persson2007ACO}.
-This explains the discrepancies between the results of the cox regression model and the K-M curves.
+As discussed in \ref{discussion}, the Cox Proportional-Hazards model is used with the assumption that, over the period of observation, the hazards within each group are proportional.
+If the assumption is not true, then the Cox Proportional-Hazards model will lead to incorrect estimates of the hazard ratio between two groups \cite{stel2011cox}.
+The assumption does not hold in this study, which explains the discrepancies between the results of the cox regression model and the K-M curves.
+It is unclear whether these assumptions are reasonable in the context of software duration.
 Future studies should perform tests to determine whether the assumptions for their models hold and should seek methods for mitigating such errors through identifying time-dependant covariates.
 
 The Bayesian approach to survival analysis comes with its own limitations as well.
