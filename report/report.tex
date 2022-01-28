@@ -1,4 +1,5 @@
-\documentclass[sigconf]{acmart}
+\documentclass[sigconf,review]{acmart}
+\acmConference[ICPC 2022]{The 30th International Conference on Program Comprehension}{May 21-22, 2022}{Pittsburgh, PA, USA}
 % % Packages
 %\usepackage{cite}
 \usepackage{balance} % For balanced columns on the last page
@@ -28,29 +29,11 @@
 %% values in them; it is your responsibility as an author to replace
 %% the commands and values with those provided to you when you
 %% complete the rights form.
-% \setcopyright{acmcopyright}
-% \copyrightyear{2018}
-% \acmYear{2018}
-% \acmDOI{10.1145/1122445.1122456}
+%\setcopyright{acmcopyright}
+%\copyrightyear{2022}
+%\acmYear{2022}
+%\acmDOI{10.1145/1122445.1122456}
 
-% %% These commands are for a PROCEEDINGS abstract or paper.
- \acmConference[CSC 578B '21]{CSC 578B '21: Data Science for Software Engineering}{December 10, 2021}{Victoria, BC}
-% \acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
-%   June 03--05, 2018, Woodstock, NY}
-% \acmPrice{15.00}
-% \acmISBN{978-1-4503-XXXX-X/18/06}
-
-%%
-%% The majority of ACM publications use numbered citations and
-%% references.  The command \citestyle{authoryear} switches to the
-%% "author year" style.
-%%
-%% If you are preparing content for an event
-%% sponsored by ACM SIGGRAPH, you must use the "author year" style of
-%% citations and references.
-%% Uncommenting
-%% the next command will enable that style.
-%%\citestyle{acmauthoryear}
 
 %%
 %% end of the preamble, start of the body of the document source.
@@ -78,7 +61,7 @@
 \author{Derek Robinson}
 \email{drobinson@uvic.ca}
 \affiliation{%
-  \institution{\\University of Victoria}
+  \institution{University of Victoria}
   \department{Computer Science}
   \streetaddress{PO Box 1700 STN CSC}
   \city{Victoria}
@@ -90,7 +73,7 @@
 \author{Keanelek Enns}
 \email{keanelekenns@uvic.ca}
 \affiliation{%
-  \institution{\\University of Victoria}
+  \institution{University of Victoria}
   \department{Computer Science}
   \streetaddress{PO Box 1700 STN CSC}
   \city{Victoria}
@@ -102,7 +85,7 @@
 \author{Neha Koulecar}
 \email{nehakoulecar@uvic.ca}
 \affiliation{%
-  \institution{\\University of Victoria}
+  \institution{University of Victoria}
   \department{Computer Science}
   \streetaddress{PO Box 1700 STN CSC}
   \city{Victoria}
@@ -114,7 +97,7 @@
 \author{Manish Sihag}
 \email{manishsihag@uvic.ca}
 \affiliation{%
-  \institution{\\University of Victoria}
+  \institution{University of Victoria}
   \department{Computer Science}
   \streetaddress{PO Box 1700 STN CSC}
   \city{Victoria}
@@ -645,7 +628,7 @@ However, it should be noted that the results obtained from the Bayesian approach
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{refs.bib}
+\bibliography{../refs/refs}
 
 %%
 %% If your work has an appendix, this is the place to put it.
@@ -655,63 +638,6 @@ However, it should be noted that the results obtained from the Bayesian approach
 
 Project Repository: \url{https://github.com/DerekRobin/CSC578B-Project}\\
 Data Set: \url{https://annex.softwareheritage.org/public/dataset/graph/latest/popular-3k-python/sql/}
-
-\section{Work Distribution}
-A note about the presentation: 
-Initially, we had all worked on the presentation including what each of us would say and each slide we spoke over. 
-The original presentation we had recorded was nearly 10 minutes long, after realizing this was much too long the team discussed exploring other options such as each of us individually recording our parts and merging them together in a video editing software. We deemed that this could have made the presentation of a lesser quality. As such, Keanu volunteered to reduce the content of the slides and record the presentation himself.\\
-
-Below are the definitions for each part of the project:\\
-(Report) denotes sections of the report which were written by the respective author.\\ 
-(Artifact) denotes creation of a research artifact, such as a computational notebook.\\
-(Edits) denotes editing the given entity
-
-The work distribution was as follows:
-
-\begin{itemize}
-    \item Derek
-    \begin{itemize}
-        \item Proposal
-        \item Abstract (Report)
-        \item Related Work (Report)
-        \item Data (Report)
-        \item Replication Methods (Report, Edits)
-        \item Bayesian Survival Analysis Methods (Report, Edits)
-        \item Bayesian Survival Analysis Results (Report, Edits)
-        \item Future Work (Report)
-        \item Conclusion (Report)
-        \item Reformatting (Report)
-        \item General Editing (Report)
-        \item data collection and manipulation jupyter notebooks (Artifact)
-        \item Bayesian survival analysis notebooks (Artifact)
-    \end{itemize}
-    \item Keanelek
-    \begin{itemize}
-        \item Proposal (Edits)
-        \item Interim Report
-        \item Abstract (Report)
-        \item Introduction (Report)
-        \item Data (Report, Edits)
-        \item Death and Censoring (Report)
-        \item Discussion (Report)
-        \item Implications (Report)
-        \item Limitations (Report)
-        \item Conclusion (Report)
-        \item General Editing (Report)
-        \item Refactoring of data collection and manipulation jupyter notebooks (Artifact, Edits)
-        \item Programming for Multi Repository (Artifact)
-    \end{itemize}
-    \item Neha
-    \begin{itemize}
-        \item 
-    \end{itemize}
-    \item Manish
-    \begin{itemize}
-        \item 
-    \end{itemize}
-\end{itemize}
-
-A full history of commits is available in the project repository.
 
 \end{document}
 \endinput
