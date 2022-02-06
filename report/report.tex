@@ -118,11 +118,11 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-In this paper, both frequentist and Bayesian survival analysis methods were applied to a subset of the Software Heritage Graph. 
-The analysis focuses on the effects of certain attributes on the survival of open-source software (OSS) projects as measured by their revision activity. 
-Methods such as the Kaplan-Meier estimator, Cox Proportional-Hazards model, and the visualization of posterior survival functions were used for each of the project attributes. 
-The results show that projects which publish major releases, have repositories on multiple hosting services, contain a large team of developers, and make frequent revisions have a higher likelihood of survival in the long run. 
-The findings were similar to previous work, however, a deeper look revealed quantitative inconsistencies. 
+In this paper, both frequentist and Bayesian survival analysis methods were applied to a subset of the Software Heritage Graph \cite{pietri2019software}.
+The analysis focuses on the effects of certain attributes on the survival of open-source software (OSS) projects as measured by their revision activity.
+Methods such as the Kaplan-Meier estimator, Cox Proportional-Hazards model, and the visualization of posterior survival functions were used for each of the project attributes.
+The results show that projects which publish major releases, have repositories on multiple hosting services, possess a large team of developers, and make frequent revisions have a higher likelihood of survival in the long run.
+The findings were similar to those of previous work; however, a deeper look revealed quantitative inconsistencies.
 \end{abstract}
 
 %%
@@ -149,7 +149,7 @@ The findings were similar to previous work, however, a deeper look revealed quan
 %%
 %% Keywords. The author(s) should pick words that accurately describe
 %% the work being presented. Separate the keywords with commas.
-\keywords{data science, survival analysis, open source, python, Kaplan Meier, Cox proportional hazards model, Bayesian analysis}
+\keywords{data science, survival analysis, open source, python, Kaplan Meier, Cox Proportional-Hazards model, Bayesian analysis, frequentist}
 
 \settopmatter{printfolios=true} % for page numbering
 
@@ -188,7 +188,7 @@ Thus, the research questions this paper answers are as follows:
 \begin{questions}
     \item How do major releases, the use of multiple hosting services, the type of hosting service, and the size of the volunteer team affect the probability of survival of an OSS Python project?
     \item How does the revision frequency of an OSS Python project affect the probability of its survival?
-    \item How do the findings of frequentist survival analysis differ from Bayesian survival analysis?
+    \item How do the findings of frequentist survival analysis differ from those of Bayesian survival analysis?
 \end{questions}
 
 The remainder of the paper is structured as follows. 
@@ -227,8 +227,8 @@ Norick \emph{et al.} analyzed OSS projects using code quality measures and obser
 \section{Data} \label{data}
 
 Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common hosting sites, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}. 
-The \emph{popular-3k-python} subset of the Software Heritage graph \cite{pietri2019software} contains the necessary information and was used in the original paper and also in this paper.
-This data set contains information on 3052 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI, and records revisions between 1980 and 2019 at the time of writing (the Software Heritage graph is subject to updates, which makes it a non-reproducible data set).
+The \emph{popular-3k-python} subset of the Software Heritage Graph \cite{pietri2019software} contains the necessary information and was used in the original paper and also in this paper.
+This data set contains information on 3052 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI, and records revisions between 1980 and 2019 at the time of writing (the Software Heritage Graph is subject to updates, which makes it a non-reproducible data set).
 Following the tutorial provided by the Software Heritage organization \cite{SQLdataset}, a PostgreSQL database was hosted on the authors' local machines to facilitate data collection.
 
 Though the \emph{popular-3k-python} data set contains all the necessary information to perform survival analysis, it first must be manipulated into a more suitable format before the analysis can be carried out. 
@@ -243,13 +243,13 @@ Data collection and manipulation were performed in Jupyter Notebooks, which are 
         \toprule
         Column Name & Description \\
         \midrule
-        Host Type            & Which hosting service the project's repository resides on \\
-        Major Releases       & Whether or not the project publishes major releases \\
-        Censored             & True if the project's death is not observed (for more information see section \ref{death_censoring}) \\
         Duration\_months     & The duration of the project in months \\
-        High\_rev\_frequency & Whether or not the project has high revision frequency (greater than one revision per day) \\
-        Multi\_repo          & Whether or not the project is hosted on multiple hosting services\\
-        High\_author\_count  & Whether or not the project has a high author count (greater than twenty unique authors) \\
+        Censored             & True if the project's death is not observed (for more information see section \ref{death_censoring}) \\
+        Host Type            & Which hosting service the project's repository resides on \\
+        Major Releases       & True if the project publishes major releases \\
+        High\_rev\_frequency & True if the project has a high revision frequency (greater than one revision per day) \\
+        Multi\_repo          & True if the project is hosted on multiple hosting services\\
+        High\_author\_count  & True if the project has a high author count (greater than twenty unique authors) \\
         \bottomrule
     \end{tabular}
 \end{table*}
@@ -307,12 +307,12 @@ At $t = 0$, the K-M estimator is 1 and as $t$ approaches infinity, the K-M estim
 More precisely, $S(t)$ is given by  $S(t) = p_0 \times p_1 \times p_2 \times \dots \times p_t$, where $p_i$ is the proportion of all projects that survived at the $i^{th}$ time step \cite{kaplan1958nonparametric}.
 The K-M estimator produces curves that approach the true survival function of the data.
 In other words, K-M curves plot the K-M survival probability against time.
-The curve always goes in ``steps'', as the cumulative survival remains the same until the time of another event (in this case project abandonment). Furthermore, the censored observations are indicated by a vertical dash.
+The curve always goes in ``steps'' as the cumulative survival remains the same until the time of another event (in this case project abandonment). Furthermore, the censored observations are indicated by a vertical dash.
 
 The hazard function is another useful function in survival analysis. It describes the probability of the event of interest or hazard (project abandonment in this case) occurring at a certain point in time given that the subject has survived to that time \cite{clark2003go}.
 The original paper uses the Cox Proportional-Hazards model which allows for fitting a regression model in order to better understand how the health of projects relate to their key attributes. 
 This analysis results in the hazards ratio (HR), which is derived from the model for all covariates that are included in the formula. 
-Briefly, a $HR > 1$ indicates an increased risk of abandonment; on the other hand, $HR < 1$, indicates a decreased risk of abandonment \cite{cox1972regression}. 
+Briefly, a $HR > 1$ indicates an increased risk of abandonment; on the other hand, $HR < 1$ indicates a decreased risk of abandonment \cite{cox1972regression}. 
 As such, the HR represents a relative risk of abandonment that compares one instance of a binary feature (e.g. yes or no) to the other instance.
 
 \subsection{Bayesian Survival Analysis}
@@ -369,20 +369,20 @@ This study applies both the frequentist and Bayesian analysis methods to the dat
 The replication study performed in this paper yielded extremely similar results to those shown in the original paper. 
 Figure \ref{fig:K-M curves} depicts K-M curves along with their confidence intervals and p-values. 
 The p-values imply that the difference in survival probability for projects within each group is statistically significant.
-As seen in Figure \ref{fig:major_releases}, this study found out that projects with at least one major release have higher chances of survival. 
-The curve for projects with at least one major release plateaus around 65\% survival probability around the 120-month mark, whereas the survival probability of projects with no major releases ends up to be less than 20\% by the end of the study period. 
-Figure \ref{fig:host_type} represents the significance of hosting the project on different hosting services, it was observed that projects that are hosted on GitHub have higher survival chances in the long run, as the curves suggest all three hosting services have a similar trend for the first 55 months which is within the average duration of projects hosted on these services.
-In addition, having multiple repositories hosted on multiple services has significantly increased the chances of a project's survival.
-As seen in Figure \ref{fig:multi_repo}, the survival rate for such projects is 75\%, whereas around 20\% for projects with only one package repository system. 
-The Curve in Figure \ref{fig:author_count} implies the significance of network of developers for the survival of open source project, the project having more than 20 different authors end up having around 60\% survival rate which is significantly different from projects with a small team of developers with less than 20\% survival rate at the end of the study period.
+As seen in Figure \ref{fig:major_releases}, this study found that projects with at least one major release have higher chances of survival. 
+The curve for projects with at least one major release plateaus around 65\% survival probability around the 120-month mark, whereas the survival probability of projects with no major releases ends up less than 20\% by the end of the study period. 
+Figure \ref{fig:host_type} represents the significance of the type of hosting service used. It was observed that projects that are hosted on GitHub have higher survival chances in the long run, though the curves suggest all three hosting services have a similar trend for the first 55 months, which is within the average duration of projects hosted on these services.
+In addition, having multiple repositories hosted on multiple services significantly increased the chances of a project's survival.
+As seen in Figure \ref{fig:multi_repo}, the survival rate for such projects is close to 70\% by the end of the study period, whereas it is around 20\% for projects with only one package repository system. 
+The curve in Figure \ref{fig:author_count} illustrates the effect of the size of the network of developers, the projects with more than 20 different authors end up having a survival probability of about 60\% compared to a 20\% survival probability for projects with a small team of developers.
 
-Figure \ref{fig:Cox} quantifies the estimates of these attributes' effect on the survival probability using the Cox Proportional-hazards model. 
-The third column shows the hazards ratio which indicates the probability of abandonment with respect to the reference feature.
+Figure \ref{fig:Cox} presents the results of the Cox Proportional-Hazards model which quantifies the effect of these attributes on project survival probability. 
+The third column shows the hazard ratio which indicates the probability of abandonment with respect to the reference feature.
 In the first row, the hazard ratio for projects which do not publish major releases with respect to projects that do, is nearly 3. 
 This implies that the projects without major releases are three times more likely to become inactive compared to projects with at least one major release. 
 Similarly, projects with repositories on a single hosting service are 3.3 times more likely to be abandoned.
 The third row highlights that the projects with fewer developers are 19.3 times more likely to be inactive.
-For the type of hosting service used, the ratio implies that projects hosted on PyPi or Debian are less likely to be abandoned compared to projects that are hosted on GitHub. 
+For the type of hosting service used, the ratio implies that projects hosted on PyPI or Debian are less likely to be abandoned compared to projects that are hosted on GitHub. 
 This appears to contradict the results of the K-M curve and will be further discussed in Section \ref{discussion}.
 
 \begin{figure*}
@@ -421,7 +421,7 @@ This appears to contradict the results of the K-M curve and will be further disc
 \begin{figure*}
     \centering
     \includegraphics[scale=0.6, keepaspectratio=true]{img/CoxHR-table.jpg}
-    \caption{The Cox Proportional Hazards model. From left to right: project attribute, attribute value with counts, hazard ratio, box plot of hazard ratio, and p-value of log rank test.}
+    \caption{The Cox Proportional-Hazards model. From left to right: project attribute, attribute value with counts, hazard ratio, box plot of hazard ratio, and p-value of log rank test.}
     \label{fig:Cox}
 \end{figure*}
 
@@ -429,12 +429,12 @@ This appears to contradict the results of the K-M curve and will be further disc
 
 Shown in Figure \ref{fig:Bayesian posterior survival functions} are the posterior survival functions for variations of the selected project attributes. 
 The dotted lines represent the  2.5\% and 97.5\% quantiles, while the solid middle line represents the posterior mean of $\beta$ (the prior on the project attribute of interest). 
-The remaining lines all represent all valid posterior survival functions. 
+The remaining lines represent all valid posterior survival functions. 
 Figure \ref{fig:bayes_major_releases} clearly indicates that the survival function of the projects with no major releases decreases much faster than projects with releases. 
 Survival probability for projects with no major releases was lower than 25\% after 150 months compared to 55\% for projects with major releases.
-Figure \ref{fig:bayes_host_type} illustrates that projects hosted on Github have the highest survival chances compared to those hosted on PyPi and Debian. 
-At 150 months, the predicted survival probabilities for Github, PyPi and Debian were 87\%, 65\% and 25\%, respectively.
-Figure \ref{fig:bayes_multi_repo} shows that projects with repositories on more than 1 hosting service had significantly higher survival chances than projects with repositories on a single hosting service. 
+Figure \ref{fig:bayes_host_type} illustrates that projects hosted on Github have the highest survival chances compared to those hosted on PyPI and Debian. 
+At 150 months, the predicted survival probabilities for Github, PyPI and Debian were 87\%, 65\% and 25\%, respectively.
+Figure \ref{fig:bayes_multi_repo} shows that projects with repositories on more than one hosting service had significantly higher survival chances than projects with repositories on a single hosting service. 
 Above 65\% survival probability for multiple repositories compared to slightly over 25\% for single repository projects at the end of 150 months.
 Figure \ref{fig:bayes_author_count} demonstrates the importance of the number of contributing developers on the survival chances of open-source python projects. 
 For projects with more than 20 authors, the predicted survival probability was around 55\%, while less than 25\% for projects with less than 20 authors at the 150-month mark.
@@ -479,7 +479,7 @@ The K-M curves for revision frequency are different from the graphs generated fo
 A curve drop was observed for the projects with more than one revision per day in the beginning of the study period.
 In addition, the projects with lower revision frequencies out performed projects with higher revision frequencies during the mean duration period of the studied projects.
 Figure \ref{fig:Bayesian_curve_for_revision_frequency} shows the posterior survival functions for projects with more than one revision per day and those with revision per day less than or equal to one. Although a significant difference was not observed in predicted survival probabilities, projects with more than one revision per day had a slightly higher chance of survival by the end of the study period.
-As shown in the Figure \ref{fig:Cox}, the results of the regression model indicate that the projects with a higher revision frequency are more likely to be abandoned.
+As shown in Figure \ref{fig:Cox}, the results of the regression model indicate that the projects with a higher revision frequency are more likely to be abandoned.
 
 \begin{figure*}
     \centering
@@ -503,17 +503,17 @@ As shown in the Figure \ref{fig:Cox}, the results of the regression model indica
 \section{Discussion} \label{discussion}
 
 The replication was deemed successful in that the results were consistent with the qualitative findings of the original authors with respect to the first research question.
-As in other works \cite{samoladas2010survival}, the number of developers was found to be a significant indicator of a project's health in terms of duration (note the smaller confidence interval for Figure \ref{fig:author_count}), and this result lends support to "Linus's Law", which claims that a larger number of developers will make bug detection and resolution simpler \cite{raymond2001LinusLaw}, but this study does not make claims about a project's quality.
+As in other works \cite{samoladas2010survival}, the number of developers was found to be a significant indicator of a project's health in terms of duration (note the smaller confidence interval for Figure \ref{fig:author_count}), and this result lends support to "Linus's Law", which claims that a larger number of developers will make bug detection and resolution simpler \cite{raymond2001LinusLaw}, though this study does not make claims about a project's quality.
 Interestingly, Norick \emph{et al.} observed no significant evidence that software quality is affected by the number of developers \cite{norick2010effects}.
 This suggests a higher number of developers has an effect on the longevity of a project that is unrelated to the quality of the software.
 
-The Cox Proportional Hazards model operates under the assumption that the hazard ratio between the hazard functions of each group remains the same throughout the period of the study \cite{stel2011cox}.
+The Cox Proportional-Hazards model operates under the assumption that the hazard ratio between the hazard functions of each group remains the same throughout the period of the study \cite{stel2011cox}.
 Looking at the K-M curves for this study, it can be concluded that the proportional hazards assumption does not hold as the survival functions diverge over time and cross over each other rather than running in parallel \cite{persson2007ACO}.
 This means the hazard ratios are not applicable to the entire studied time frame.
 After inspecting the hazard ratios in Figure \ref{fig:Cox}, it is assumed the calculations in the Cox model give more weight to the portion of the study containing a larger number of subjects (i.e. the left most portion of the K-M curves).
 This partially explains why there is such a large discrepancy between the hazard ratio for the author count attribute found in this paper and the one found in the original paper (19.3 compared to 5.95).
 
-When comparing the results of the Bayesian analysis to that of the frequentist analysis, it is clear that the Bayesian survival functions reveal less information about the data set.
+When comparing the results of the Bayesian analysis to those of the frequentist analysis, it is clear that the Bayesian survival functions reveal less information about the data set.
 This is to be expected, however, as the models require the data to conform to the chosen prior distribution function and cannot reflect more complex detail.
 This comparison is especially apparent when looking at Figure \ref{fig:Revision frequency}.
 One of the advantages of Bayesian models is their ability to create predictions in the presence of new data.
@@ -583,7 +583,7 @@ Additionally, it cannot be ensured that the data contains a full history of the 
 The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking \cite{perils2009}.
 
 There are inherent differences in the ways developers use the different hosting services.
-Traditionally, services such as PyPi and Debian are used to host major releases of a product.
+Traditionally, services such as PyPI and Debian are used to host major releases of a product.
 This may hide information about the number of developers and the revision frequency.
 Additionally, the potential confounding factors mentioned in section \ref{limit-methods} are not represented in this data set.
 
@@ -607,7 +607,7 @@ It can be said with high confidence that this is the first application of Bayesi
 As such, prior distributions were uninformative and priors and likelihoods alike were chosen based on the application of Bayesian survival analysis done in other domains. 
 More investigation should be conducted to determine if the priors and likelihoods applied in this paper are suitable for OSS. 
 Furthermore, future work should investigate the predictive power of the Bayesian survival models presented here to determine their performance on other data sets. 
-Similarly, an evaluation of the assumptions present in the Cox Proportional Hazards model should be performed to determine if these assumptions are reasonable for the domain of OSS.
+Similarly, an evaluation of the assumptions present in the Cox Proportional-Hazards model should be performed to determine if these assumptions are reasonable for the domain of OSS.
 
 In regards to study design, future work should increase the time frame of the study to determine how the attributes analyzed in this paper play out over a longer time period. 
 Similarly, as only OSS written in Python was studied here, future work should evaluate the survival of OSS written in other popular languages such as Java. 
@@ -620,7 +620,7 @@ In line with Samoladas \emph{et al.}, distinguishing between core developers and
 
 The work presented in this paper aimed to replicate that of the original authors in addition to analyzing the effect of revision frequency on OSS project duration.
 Additionally, Bayesian survival analysis was used to study the attributes in the original paper as well as revision frequency.
-While the Kaplan Meier curves are consistent with those of the original paper, the Cox Proportional Hazards Model indicated a quantitative discrepancy with regard to the author count hazard ratio.
+While the Kaplan Meier curves are consistent with those of the original paper, the Cox Proportional-Hazards Model indicated a quantitative discrepancy with regard to the author count hazard ratio.
 This discrepancy is likely due to a difference in methods which could have been mitigated through the use of research artifacts.
 It was observed that a higher revision frequency lead to a better chance of survival by the end of the study duration. 
 The Bayesian survival analysis yielded similar results to the frequentist approach.
