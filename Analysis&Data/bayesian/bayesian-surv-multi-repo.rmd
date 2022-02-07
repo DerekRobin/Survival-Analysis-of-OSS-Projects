@@ -8,6 +8,7 @@ library(survival)
 library(tidyverse)
 library(tidybayes)
 library(scales)
+library(survminer)
 ```
  
 
@@ -154,13 +155,13 @@ exp_surv_model_survival
 ```{r}
 # plot the graphs
 (ggplot(data = exp_surv_model_survival, mapping = aes(x = t, y = survival, color = Strata, group = interaction(.chain,.draw,Strata))) 
+  + theme_survminer()
  + geom_line(size = 0.1, alpha = 0.02) 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_mean, group = Strata)) 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95upper, group = Strata), linetype = "dotted") 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95lower, group = Strata), linetype = "dotted")
- + scale_y_continuous(labels = percent_format(), limits=c(0,1))
- +labs(x = "Time (Months)", y = "Survival probability")
- + theme_bw()
- + theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.key = element_blank(), legend.position = 'top', plot.title = element_text(hjust = 0.5), strip.background = element_blank()))
+ + scale_y_continuous(limits=c(0,1))
+ + scale_x_continuous(breaks = c(0,40,80,120,160))
+ +labs(x = "Time (Months)", y = "Survival probability"))
 ```
 
