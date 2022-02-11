@@ -57,7 +57,7 @@
 %%
 %% The "author" command and its associated commands are used to define
 %% the authors and their affiliations.
-\settopmatter{authorsperrow=2}
+%\settopmatter{authorsperrow=2}
 \author{Derek Robinson}
 \email{drobinson@uvic.ca}
 \affiliation{%
@@ -118,8 +118,9 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-In this paper, both frequentist and Bayesian survival analysis methods were applied to a subset of the Software Heritage Graph \cite{pietri2019software}.
-The analysis focuses on the effects of certain attributes on the survival of open-source software (OSS) projects as measured by their revision activity.
+This paper serves as a replication of ``Cheating Death: A Statistical Survival Analysis of Publicly Available Python Projects'' by Ali \emph{et al.}
+In addition to their methods, we apply Bayesian survival analysis methods to the same dataset.
+Both analyses focus on the effects of certain attributes on the survival of open-source software projects as measured by their revision activity.
 Methods such as the Kaplan-Meier estimator, Cox Proportional-Hazards model, and the visualization of posterior survival functions were used for each of the project attributes.
 The results show that projects which publish major releases, have repositories on multiple hosting services, possess a large team of developers, and make frequent revisions have a higher likelihood of survival in the long run.
 The findings were similar to those of previous work; however, a deeper look revealed quantitative inconsistencies.
@@ -172,17 +173,17 @@ For example, survival analysis can determine the probability of a patient surviv
 However, death is not as well defined for a software project as it is for a living organism.
 A project may not receive revisions for an extended period only to be returned to at a later date, or perhaps a project no longer receives revisions at all, but the community that uses it continues to be active.
 Samoladas \emph{et al.} considered a project inactive if it received less than two revisions a month; two months of inactivity led to it being considered abandoned or dead \cite{samoladas2010survival}.
-Evangelopoulos \emph{et al.} and the original authors considered a project dead once there were no revisions at all \cite{evangelopoulos, ali2020cheating}.
+Evangelopoulos \emph{et al.}~\cite{evangelopoulos} and the original authors~\cite{ali2020cheating} considered a project dead once there were no revisions at all.
 The latter definition of project abandonment or death is used in this study to measure the duration of a project or its survival.
 
-The original authors use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator and the Cox Proportional-Hazards model \cite{kaplan1958nonparametric, cox1972regression}.
+The original authors use a frequentist approach to survival analysis utilizing such methods as the Kaplan-Meier (K-M) survival estimator~\cite{kaplan1958nonparametric} and the Cox Proportional-Hazards model~\cite{cox1972regression}.
 Though frequentist approaches are considered to be unbiased, minimal in variance, efficient, and generally sufficient, some consider them to lack robustness \cite{renganathan2016overview}. Another approach to survival analysis, Bayesian analysis, is considered to generate more robust models that perform well under the presence of new data being introduced and are generally easier to interpret results from \cite{renganathan2016overview}.
 
 The authors of this paper resonate with the motivation of the original authors. 
 This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to assess the validity of their analysis.
 This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease.
-For the sake of the authors' curiosity, an additional attribute of the data was analyzed: the revision frequency of the project.
-In addition to the replication, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of the frequentist and Bayesian approaches in the same domain.
+In addition to studying the same attributes as the original authors, we also study the the revision frequency of a given project.
+Furthermore, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of the frequentist and Bayesian approaches in the same domain.
 Thus, the research questions this paper answers are as follows:
 
 \begin{questions}
@@ -200,25 +201,25 @@ Section \ref{discussion} discusses the results, implications, and limitations of
 The final section concludes by summarizing the purpose and findings of this paper.
 
 \section{Related Work} \label{related}
-
+%domain specific survival
 Several other researchers have employed survival analysis to study the health of OSS projects. 
 For example, Samoladas \emph{et al.} studied the effect of application domain and developer count on OSS project health, which was measured using project duration \cite{samoladas2010survival}. 
 They found that applications within the domain of \emph{games and entertainment} and \emph{security} had the lowest probability of survival. 
 Additionally, they found that for each new developer introduced to a project, the projects survivability increased by 15.8\%.
-
+%developer survival
 On the topic of developers, several studies have used survival analysis to study developer disengagement from OSS projects \cite{miller2019people,lin2017developer,ortega2009survival}. 
 Miller \emph{et al.} made use of a survey and survival analyses, to determine the causes behind why a developer might stop contributing to an OSS project \cite{miller2019people}. 
 Their analysis revealed that developers have a higher probability of project disengagement when going through job transitions and when working longer hours. 
-Lin \emph{et al.} determined that developers who balance maintaining files they have created with maintaining files others have created have a higher survival probability than developers who only maintain their own files or only maintain others files \cite{lin2017developer}. 
+Lin \emph{et al.} determined that developers who maintained files created by both themselves and others have a higher survival probability than developers who only maintain their own files or only maintain others files \cite{lin2017developer}. 
 Additionally, Lin \emph{et al.} found that developers who maintained files and developers who mainly wrote code had a higher survival probability than those who solely created files and those whose main focus was writing documentation. 
-Ortega and Izquierdo-Cortazar analyzed the survival of FLOSS committers and Wikipedia editors and found that FLOSS committers have higher mean survival times than Wikipedia editors \cite{ortega2009survival}. 
-
+Ortega and Izquierdo-Cortazar analyzed the survival of OSS committers and Wikipedia editors and found that OSS committers have higher mean survival times than Wikipedia editors \cite{ortega2009survival}. 
+%survival of software specific data (bug fix time, dead code)
 Survival analysis can also be applied to the software itself, this has been demonstrated by Aman \emph{et al.} and Caivano \emph{et al.} \cite{aman2017survival, caivano2021exploratory}. 
 In \cite{aman2017survival}, survival analysis was used to analyze the time to a bug-fix for files modified by developers of different experience levels. 
 This analysis determined that files which were most recently modified by less experienced developers had an increased probability of needing a bug fix within a shorter time frame. 
 Caivano \emph{et al.} explored the effect of dead code within OSS projects using survival analysis \cite{caivano2021exploratory}. 
 They found that dead methods are present in Java code, persist for a long time before being buried or revived, are rarely revived, and that most dead methods have been dead since their inception. 
-
+%studying project health using non survival analysis methods
 Other studies have examined the health of OSS projects using methods other than survival analysis. 
 Xia \emph{et al.} predicted a number of health indicators of OSS projects, such as, the number of developers and the number of revisions.
 These predictions were made using regression trees that were optimized using differential evolution, leading to a 10\% increase in prediction accuracy over the base line \cite{xia2020predicting}. 
@@ -226,9 +227,9 @@ Norick \emph{et al.} analyzed OSS projects using code quality measures and obser
 
 \section{Data} \label{data}
 
-Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common hosting sites, including a history of all commits (revisions from here on out) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}. 
+Performing survival analysis of OSS projects requires a data set that records the repositories for projects on common hosting sites, including a history of all commits (referred to as revisions from here on) and major releases (revisions of note, often with a specific name and release date) \cite{ali2020cheating}. 
 The \emph{popular-3k-python} subset of the Software Heritage Graph \cite{pietri2019software} contains the necessary information and was used in the original paper and also in this paper.
-This data set contains information on 3052 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI, and records revisions between 1980 and 2019 at the time of writing (the Software Heritage Graph is subject to updates, which makes it a non-reproducible data set).
+This data set contains information on 3,052 popular Python projects hosted on GitHub/GitLab, Debian, and PyPI, and records revisions between 1980 and 2019 at the time of writing (the Software Heritage Graph is subject to updates, which makes it a non-reproducible data set).
 Following the tutorial provided by the Software Heritage organization \cite{SQLdataset}, a PostgreSQL database was hosted on the authors' local machines to facilitate data collection.
 
 Though the \emph{popular-3k-python} data set contains all the necessary information to perform survival analysis, it first must be manipulated into a more suitable format before the analysis can be carried out. 
@@ -256,7 +257,7 @@ Data collection and manipulation were performed in Jupyter Notebooks, which are 
 
 For their study, the original authors set a time frame of 165 months (where a month is defined as 28 days), starting in 2005 and ending in January 2018.
 This paper uses the same time frame and determines exact start and end dates.
-Using January 1, 2018, as a strict end date and maintaining the study duration as 4620 days (165 months as defined), the start date is found to be May 9, 2005.
+Using January 1, 2018, as a strict end date and maintaining the study duration as 4,620 days (165 months as defined), the start date is found to be May 9, 2005.
 After following the same procedures described in the original paper, a list of 2066 projects and their associated information was obtained.
 
 \section{Methods} \label{methods}
