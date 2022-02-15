@@ -115,7 +115,7 @@
 \begin{abstract}
     A recent study applied frequentist survival analysis methods to a subset of the Software Heritage Graph and determined which attributes of an OSS project contribute to its health. 
     This paper serves as a replication of that study. 
-    In addition, we apply Bayesian survival analysis methods to the same dataset and investigate an extra project attribute.
+    In addition, Bayesian survival analysis methods were applied to the same dataset and an additional project attribute was studied.
     Both analyses focus on the effects of certain attributes on the survival of open-source software projects as measured by their revision activity.
     Methods such as the Kaplan-Meier estimator, Cox Proportional-Hazards model, and the visualization of posterior survival functions were used for each of the project attributes.
     The results show that projects which publish major releases, have repositories on multiple hosting services, possess a large team of developers, and make frequent revisions have a higher likelihood of survival in the long run.
@@ -178,7 +178,7 @@ Though frequentist approaches are considered to be unbiased, minimal in variance
 The authors of this paper resonate with the motivation of the original authors. 
 This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to assess the validity of their analysis.
 This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease.
-In addition to studying the same attributes as the original authors, we also study the revision frequency of a given project.
+In addition to studying the same attributes as the original authors, the revision frequency of a given project was also studied.
 Furthermore, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of the frequentist and Bayesian approaches in the same domain.
 Thus, the research questions this paper answers are as follows:
 
@@ -606,8 +606,6 @@ This means the abandonment of most of the projects was not observed.
 As data points are censored (denoted by the vertical tick marks in the K-M curves), there is a smaller and smaller group of data points to study.
 This means that the results towards the 165 month mark may be less representative. Finally, the data set contained many revisions (over 4 million) that were not associated with project URLs, the cause of this is unclear.
 
-% Not sure we need this
-%\subsubsection{Replication Challenges}
 \subsection{Future Work} \label{future}
 
 It can be said with high confidence that this is the first application of Bayesian survival analysis in the context of OSS. 
