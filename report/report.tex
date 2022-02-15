@@ -176,7 +176,7 @@ The original authors use a frequentist approach to survival analysis utilizing s
 Though frequentist approaches are considered to be unbiased, minimal in variance, efficient, and generally sufficient, some consider them to lack robustness \cite{renganathan2016overview}. Another approach to survival analysis, Bayesian analysis, is considered to generate more robust models that perform well under the presence of new data being introduced and are generally easier to interpret results from \cite{renganathan2016overview}.
 
 The authors of this paper resonate with the motivation of the original authors. 
-This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to assess the validity of their analysis.
+This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to reproduce their analyses.
 This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease.
 In addition to studying the same attributes as the original authors, the revision frequency of a given project was also studied.
 Furthermore, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of the frequentist and Bayesian approaches in the same domain.
@@ -294,7 +294,7 @@ There are multiple types of censoring in survival analysis, but this study uses 
     \label{fig:figure-1}
 \end{figure}
 
-The distribution of the project durations over the studied time frame can be seen in Figure \ref{fig:figure-1}, which is a more detailed rendition of Figure 1 in the original paper.
+The distribution of the project durations over the studied time frame can be seen in Figure \ref{fig:figure-1}, which is a replication of Figure 1 in the original paper.
 Note that when the black lines extend to the end of the time frame, this likely indicates the project was censored.
 Overall, about 62\% of the studied projects were censored.
 
@@ -357,7 +357,7 @@ This model was then used to visualize the posterior survival functions for the f
 
 \subsection{Revision Frequency Analysis} \label{revisionFreq}
 
-The original paper mentions that ``The health of a project could be computed by the number and frequency of contributions...'' \cite{ali2020cheating} but never addresses this measurement.
+The original paper mentions that ``The health of a project could be computed by the number and frequency of contributions...'' \cite{ali2020cheating} but does not directly study this measurement.
 This paper seeks to explore the frequency of contributions as a method of assessment. 
 Simply analyzing the number of contributions would not yield useful results given the varying nature of the project durations in the studied time frame. 
 The revision frequency, defined as the number of commits divided by the number of days in the project's observed lifetime, was dichotomized into two groups depending on whether the frequency was above one revision per day.
@@ -412,7 +412,7 @@ Sections \ref{bayes-results} and \ref{rev-freq-results} describe the results of 
     \label{fig:Cox}
 \end{figure*}
 
-The replication study performed in this paper yielded extremely similar results to those shown in the original paper. 
+The replication study performed in this paper yielded extremely similar results to those presented in the original paper. 
 Figure \ref{fig:K-M curves} depicts K-M curves along with their confidence intervals and p-values. 
 The p-values imply that the difference in survival probability for projects within each group is statistically significant.
 As seen in Figure \ref{fig:major_releases}, this study found that \emph{projects with at least one major release have higher chances of survival.} 
@@ -556,12 +556,13 @@ Researchers may also wish to test the validity of the models produced in this st
 
 \subsubsection{Limitations of the Methods} \label{limit-methods}
 
-The original paper \cite{ali2020cheating} and the corresponding presentation given \cite{ali2020video} have contradicting methods of censoring.
+The original paper \cite{ali2020cheating} and the corresponding presentation given \cite{ali2020video} have seemingly contradicting methods of censoring.
 The method discussed in the original paper was deemed superior and is used in this paper.
 
-The original authors left out many details regarding the methods they used for data extraction, manipulation, and analysis.
-This led to assumptions being made when replicating their study.
-Hence, there are discrepancies in the values obtained compared to the original paper.
+%The original authors left out many details regarding the methods they used for data extraction, manipulation, and analysis. 
+%This is likely due to the limited number of pages available for their publication~\footnote{https://bit.ly/34CcSYJ}.
+%This led to assumptions being made when replicating their study.
+%Hence, there are discrepancies in the values obtained compared to the original paper.
 
 Being a replication, this study was limited to choosing the methods used by the original paper.
 These methods are also unanimous in the area of survival analysis, and there are few alternatives to them.
@@ -588,7 +589,7 @@ Prior distributions were chosen based on survival analysis done in other domains
 \subsubsection{Limitations of the Data}
 
 The data set in this study has been aggregated from multiple version control systems across the web over a large period of time.
-As such, the data set is not fully reproducible, as pointed out by the original authors of the Software Heritage organization \cite{pietri2019software}.
+As such, the data set is not fully reproducible, as pointed out by the authors of the Software Heritage organization \cite{pietri2019software}.
 Additionally, it cannot be ensured that the data contains a full history of the respective repositories.
 The lack of certainty about the full history is because the repository admin can modify the history of revisions to suit their liking \cite{perils2009}.
 
@@ -623,13 +624,18 @@ In line with Samoladas \emph{et al.} \cite{samoladas2010survival}, distinguishin
 
 \section{Conclusion} \label{conclusion}
 
-The work presented in this paper aimed to replicate that of the original authors \cite{ali2020cheating}. In addition, one more project attribute was analyzed, the effect of revision frequency on open-source software project duration.
+The work presented in this paper aimed to replicate that of the original authors \cite{ali2020cheating}. 
+In addition, one more project attribute was analyzed, the effect of revision frequency on open-source software project duration.
 Furthermore, Bayesian survival analysis was used to study the attributes in the original paper as well as revision frequency.
 While the Kaplan Meier curves are consistent with those of the original paper, the Cox Proportional-Hazards Model indicated a quantitative discrepancy with regard to the author count hazard ratio.
 This discrepancy is likely due to a difference in methods which could have been mitigated had the original paper provided research artifacts.
 It was observed that a higher revision frequency leads to a better chance of survival by the end of the study duration. 
 The Bayesian survival analysis yielded similar results to the frequentist approach.
 However, it is worth noting that the results obtained from the Bayesian approach were much less granular and are intended to predict new data rather than accurately describe the studied data.
+
+\begin{acks}
+    We like to sincerely thank Dr. Neil Ernst and the members of the CHISEL Group for their support and guidance throughout this research project. 
+\end{acks}
 \balance
 %%
 %% The next two lines define the bibliography style to be used, and
