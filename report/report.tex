@@ -325,7 +325,7 @@ The Bayesian analysis uses posterior distributions of model parameters to draw i
 These posterior distributions are obtained via Markov-Chain-Monte-Carlo (MCMC) algorithms. 
 The statistical modelling language used was Stan.
 
-This study applies the same methods as found in the section titled \emph{A detailed example} of \cite{kelter2020bayesian}. 
+This study applies the same methods as found in the section titled \emph{A detailed example} of ``Bayesian survival analysis in STAN for improved measuring of uncertainty in parameter estimates'' \cite{kelter2020bayesian}. 
 A parametric exponential model that assumes the survival times $y = (y_1, y_2, \dots, y_n)$ for the set of projects are exponentially distributed with parameter $\lambda$ was created as shown in Equation \ref{eq:surv_times}.
 
 \begin{equation} \label{eq:surv_times}
@@ -628,7 +628,7 @@ The work presented in this paper aimed to replicate that of the original authors
 In addition, one more project attribute was analyzed, the effect of revision frequency on open-source software project duration.
 Furthermore, Bayesian survival analysis was used to study the attributes in the original paper as well as revision frequency.
 While the Kaplan Meier curves are consistent with those of the original paper, the Cox Proportional-Hazards Model indicated a quantitative discrepancy with regard to the author count hazard ratio.
-This discrepancy is likely due to a difference in methods which could have been mitigated had the original paper provided research artifacts.
+This discrepancy is likely due to a difference in methods which could have been mitigated through the use of research artifacts.
 It was observed that a higher revision frequency leads to a better chance of survival by the end of the study duration. 
 The Bayesian survival analysis yielded similar results to the frequentist approach.
 However, it is worth noting that the results obtained from the Bayesian approach were much less granular and are intended to predict new data rather than accurately describe the studied data.
