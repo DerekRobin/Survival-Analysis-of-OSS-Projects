@@ -12,4 +12,17 @@
 *.html
 *.out
 *.nb.html
+**/*.cut
+**/*.aux
+**/*.bbl
+**/*.blg
+**/*.fdb_latexmk
+**/*.fls
+**/*.log
+**/*.synctex.gz
+**/.vscode
+**/.RData
+**/.Rhistory
+**/*.html
+**/*.out
 repl-package
