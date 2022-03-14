@@ -153,14 +153,16 @@ exp_surv_model_survival
 ```
 
 ```{r}
+cbPalette <- c("#D55E00", "#0072B2")
+
 # plot the graphs
 (ggplot(data = exp_surv_model_survival, mapping = aes(x = t, y = survival, color = Strata, group = interaction(.chain,.draw,Strata))) 
-  + theme_survminer()
+ + theme_survminer()
+ + scale_colour_manual(values=cbPalette)
  + geom_line(size = 0.1, alpha = 0.02) 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_mean, group = Strata)) 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95upper, group = Strata), linetype = "dotted") 
  + geom_line(data = exp_surv_model_survival_mean, mapping = aes(y = survival_95lower, group = Strata), linetype = "dotted")
- + scale_color_hue(direction = -1)
  + scale_y_continuous(limits=c(0,1))
  + scale_x_continuous(breaks = c(0,40,80,120,160))
  +labs(x = "Time (Months)", y = "Survival probability"))

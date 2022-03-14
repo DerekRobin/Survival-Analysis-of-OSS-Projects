@@ -40,6 +40,12 @@ surv_object <- Surv(time = a_data$duration_months, event = a_data$death_observed
 
 The survfit function creates survival curves based on a formula. The next step is to fit the Kaplan-Meier curves. we can easily do that by passing the surv_object to the survfit function. Let’s generate the overall survival curve for the entire cohort, assign it to object fit1 
 
+```{r}
+# colorblind palette
+threePalette <- c("#009E73", "#0072B2", "#D55E00")
+twoPalette <- c("#0072B2", "#D55E00")
+```
+
 ```{r, warning=FALSE, message=FALSE, results='hide'}
 fit1 <- survfit(surv_object ~ 1, data = a_data)
 summary(fit1)
@@ -54,7 +60,7 @@ Now. lets stratify the curve depending on the major releases
 fit2 <- survfit(surv_object ~ major_releases, data = a_data)
 summary(fit2)
 
-ggsurvplot(fit2, data = a_data, pval = TRUE, conf.int = TRUE, xlab="Time (Months)")
+ggsurvplot(fit2, data = a_data, pval = TRUE, conf.int = TRUE, xlab="Time (Months)", legend.labs=c("major releases=No", "major releases=Yes"), palette=twoPalette)
 ```
 
 
@@ -62,7 +68,7 @@ Next, lets stratify the curve depending on the host types
 ```{r, warning=FALSE, message=FALSE, results='hide'}
 fit3 <- survfit(surv_object ~ host_type, data = a_data)
 summary(fit3)
-ggsurvplot(fit3, data = a_data, pval = TRUE, conf.int = TRUE, palette=c("blue", "red","green"), xlab="Time (Months)")
+ggsurvplot(fit3, data = a_data, pval = TRUE, conf.int = TRUE, palette=threePalette, xlab="Time (Months)", legend.labs=c("host type=Debian", "host type=Git","host type=Pypi"))
 ```
 
 
@@ -71,7 +77,7 @@ Now. lets stratify the curve depending if the projects had multiple repositories
 ```{r, warning=FALSE, message=FALSE, results='hide'}
 fit4 <- survfit(surv_object ~ multi_repo, data = a_data)
 summary(fit4)
-ggsurvplot(fit4, data = a_data, pval = TRUE, conf.int = TRUE, xlab="Time (Months)")
+ggsurvplot(fit4, data = a_data, pval = TRUE, conf.int = TRUE, xlab="Time (Months)", legend.labs=c("multi repositories=No", "multi repositories=Yes"), palette=twoPalette)
 ```
 
 
@@ -79,13 +85,14 @@ at last, lets stratify the curve depending on the author count
 ```{r, warning=FALSE, message=FALSE, results='hide'}
 fit5 <- survfit(surv_object ~ high_author_count, data = a_data)
 summary(fit5)
-ggsurvplot(fit5, data = a_data, pval = TRUE, conf.int = TRUE, legend.labs = c("author count <= 20", "author count > 20"), xlab="Time (Months)")
+ggsurvplot(fit5, data = a_data, pval = TRUE, conf.int = TRUE, legend.labs = c("author count <= 20", "author count > 20"), xlab="Time (Months)", palette=twoPalette)
 ```
 lets stratify the curve by revision frequency (high is defined as greater than 1 revision a day)
 ```{r, warning=FALSE, message=FALSE, results='hide'}
+Palette <- c("#D55E00", "#0072B2")
 fit6 <- survfit(surv_object ~ high_rev_freq, data = a_data)
 summary(fit6)
-ggsurvplot(fit6, data = a_data, pval = TRUE, conf.int = TRUE, legend.labs = c("rev. per day <= 1", "rev. per day > 1"), xlab="Time (Months)")
+ggsurvplot(fit6, data = a_data, pval = TRUE, conf.int = TRUE, legend.labs = c("rev. per day <= 1", "rev. per day > 1"), xlab="Time (Months)", palette=Palette)
 ```
 Clearly there were a lot of projects with a large number of commits in a short period of time (as seen by the sudden drop in the blue curve) which skew the results here, but you can imagine the blue curve being lifted up that distance when removing such projects.
 
@@ -109,7 +116,7 @@ a_data$high_rev_freq = relevel(a_data$high_rev_freq, ref = "TRUE")
 
 fit.coxph <- coxph(surv_object ~ major_releases + multi_repo + high_author_count + host_type + high_rev_freq, data = a_data)
 
-ggforest(fit.coxph, data = a_data)
+ggforest(fit.coxph, data = a_data, fontsize=0.9)
 ```
 
 Lets see the results, breifly an HR > 1 indicates an increased risk of death and An HR < 1, on the other hand, indicates a decreased risk.
