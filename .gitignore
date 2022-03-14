@@ -11,3 +11,4 @@
 .Rhistory
 *.html
 *.out
+repl-package
