@@ -1,4 +1,4 @@
-\documentclass[sigconf,review]{acmart}
+\documentclass[sigconf]{acmart}
 \acmConference[ICPC 2022]{The 30th International Conference on Program Comprehension}{May 21-22, 2022}{Pittsburgh, PA, USA}
 % % Packages
 \usepackage{balance} % For balanced columns on the last page
@@ -54,53 +54,36 @@
 %% the authors and their affiliations.
 %\settopmatter{authorsperrow=2}
 \author{Derek Robinson}
-\email{drobinson@uvic.ca}
 \affiliation{%
-  \institution{University of Victoria}
-  \department{Computer Science}
-  \streetaddress{PO Box 1700 STN CSC}
-  \city{Victoria}
-  \state{British Columbia}
-  \country{Canada}
-  \postcode{V8W 2Y2}
+    \institution{University of Victoria}
+    \department{Computer Science}
+    \city{Victoria, Canada}
 }
+\email{drobinson@uvic.ca}
 
 \author{Keanelek Enns}
-\email{keanelekenns@uvic.ca}
 \affiliation{%
-  \institution{University of Victoria}
-  \department{Computer Science}
-  \streetaddress{PO Box 1700 STN CSC}
-  \city{Victoria}
-  \state{British Columbia}
-  \country{Canada}
-  \postcode{V8W 2Y2}
+    \institution{University of Victoria}
+    \department{Computer Science}
+    \city{Victoria, Canada}
 }
+\email{keanelekenns@uvic.ca}
 
 \author{Neha Koulecar}
-\email{nehakoulecar@uvic.ca}
 \affiliation{%
-  \institution{University of Victoria}
-  \department{Computer Science}
-  \streetaddress{PO Box 1700 STN CSC}
-  \city{Victoria}
-  \state{British Columbia}
-  \country{Canada}
-  \postcode{V8W 2Y2}
+    \institution{University of Victoria}
+    \department{Computer Science}
+    \city{Victoria, Canada}
 }
+\email{nehakoulecar@uvic.ca}
 
 \author{Manish Sihag}
-\email{manishsihag@uvic.ca}
 \affiliation{%
-  \institution{University of Victoria}
-  \department{Computer Science}
-  \streetaddress{PO Box 1700 STN CSC}
-  \city{Victoria}
-  \state{British Columbia}
-  \country{Canada}
-  \postcode{V8W 2Y2}
+    \institution{University of Victoria}
+    \department{Computer Science}
+    \city{Victoria, Canada}
 }
-
+\email{manishsihag@uvic.ca}
 %%
 %% By default, the full list of authors will be used in the page
 %% headers. Often, this list is too long, and will overlap
@@ -176,10 +159,11 @@ The original authors use a frequentist approach to survival analysis utilizing s
 Though frequentist approaches are considered to be unbiased, minimal in variance, efficient, and generally sufficient, some consider them to lack robustness \cite{renganathan2016overview}. Another approach to survival analysis, Bayesian analysis, is considered to generate more robust models that perform well under the presence of new data being introduced and are generally easier to interpret results from \cite{renganathan2016overview}.
 
 The authors of this paper resonate with the motivation of the original authors. 
-This paper serves as a replication of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to reproduce their analyses.
+This paper serves as an exact replication \cite{shull2008role} of their paper \cite{ali2020cheating} (referred to as the original paper from here on) and seeks to reproduce their analyses. 
 This replication also provides artifacts so that others may see how the study was conducted and reproduce it with ease.
 In addition to studying the same attributes as the original authors, the revision frequency of a given project was also studied.
 Furthermore, this paper analyzes the same data set using a Bayesian approach to survival analysis as outlined in \cite{kelter2020bayesian} and seeks to compare the results of the frequentist and Bayesian approaches in the same domain.
+The addition of the revision frequency analysis and the Bayesian analysis serve as a conceptual replication \cite{shull2008role} of the original study \cite{ali2020cheating}.
 Thus, the research questions this paper answers are as follows:
 
 \begin{questions}
